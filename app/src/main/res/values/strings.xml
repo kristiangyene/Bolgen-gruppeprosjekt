@@ -9,4 +9,5 @@
     <string name="pressure">Trykk</string>
     <string name="ce_mark">CE merking</string>
     <string name="measurement">Måleenheter</string>
+    <string name="background_image">backgrunnsbilde</string>
 </resources>
