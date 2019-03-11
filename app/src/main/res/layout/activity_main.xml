@@ -11,12 +11,6 @@
         tools:openDrawer="start"
         tools:context=".MainActivity">
 
-    <ImageView android:layout_width="fill_parent"
-               android:layout_height="fill_parent"
-               android:contentDescription="@string/background_image"
-               android:scaleType="centerCrop"
-               android:src="@drawable/ocean"/>
-
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
