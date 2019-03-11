@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">Sea</string>
+    <string name="app_name">Bølgen</string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <string name="settings">Instillinger</string>
+    <string name="temperature">Temperatur</string>
+    <string name="wind">Vind</string>
+    <string name="visibility">Synlighet</string>
+    <string name="pressure">Trykk</string>
+    <string name="ce_mark">CE merking</string>
+    <string name="measurement">Måleenheter</string>
 </resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+
+    <item android:title="@string/ce_mark"
+          android:checked="false"
+          android:id="@+id/ce"
+          android:icon="@drawable/ic_ce_mark"/>
+
+    <item android:title="@string/measurement">
+        <menu>
+            <group
+                    android:checkableBehavior="single"
+                    android:id="@+id/groupEn">
+                <item android:id="@+id/temperature"
+                      android:icon="@drawable/ic_thermometer"
+                      android:title="@string/temperature"/>
+                <item android:id="@+id/wind"
+                      android:icon="@drawable/ic_wind"
+                      android:title="@string/wind"/>
+                <item android:id="@+id/visibility"
+                      android:icon="@drawable/ic_visibility_black_24dp"
+                      android:title="@string/visibility"/>
+                <item android:id="@+id/pressure"
+                      android:icon="@drawable/ic_gauge"
+                      android:title="@string/pressure"/>
+            </group>
+        </menu>
+    </item>
+</menu>
