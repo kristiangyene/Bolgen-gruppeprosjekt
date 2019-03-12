@@ -1,5 +1,6 @@
 package com.example.sea
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -10,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
+import android.view.View
 
 class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
@@ -33,6 +35,11 @@ class MainActivity : AppCompatActivity() {
         toggle.drawerArrowDrawable.color = ContextCompat.getColor(this, R.color.drawer)
         drawer.addDrawerListener(toggle)
         toggle.syncState()
+    }
+
+    fun startMap(view : View) {
+        val intent = Intent(this, MapsActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onBackPressed() {

@@ -26,6 +26,11 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 android:elevation="4dp"/>
 
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Maps"
+                android:onClick="startMap"/>
+
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
