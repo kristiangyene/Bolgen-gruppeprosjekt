@@ -13,8 +13,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.view_pager.*
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewPager
 
 class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
@@ -39,24 +37,14 @@ class MainActivity : AppCompatActivity() {
         drawer.addDrawerListener(toggle)
         toggle.syncState()
 
-        // Find the view pager that will allow the user to swipe between fragments
-        val viewPager = findViewById<ViewPager>(R.id.viewpager)
-
-        // Create an adapter that knows which fragment should be shown on each page
+        // View Pager tillater brukeren å sveipe mellom fragmenter
+        // Oppretter en adapter som vet hvilken fragment som skal vises på hver side
         val adapter = PagerAdapter(supportFragmentManager)
+        viewpager.adapter = adapter
 
-        // Set the adapter onto the view pager
-        viewPager.adapter = adapter
-
-        // Find the tab layout that shows the tabs
-        val tabLayout = findViewById<TabLayout>(R.id.tabs)
-
-        // Connect the tab layout with the view pager. This will
-        //   1. Update the tab layout when the view pager is swiped
-        //   2. Update the view pager when a tab is selected
-        //   3. Set the tab layout's tab names with the view pager's adapter's titles
-        //      by calling onPageTitle()
-        tabLayout.setupWithViewPager(viewPager)
+        // Kobler sammen tab-en med view pageren. Tab-en vil oppdateres når brukeren sveiper, og når den blir klikket på.
+        // Tab-ene får også riktig tittel når metoden onPageTitle() kalles
+        tabs.setupWithViewPager(viewpager)
     }
 
     fun startMap(view : View) {
