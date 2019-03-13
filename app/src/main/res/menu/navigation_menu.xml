@@ -3,28 +3,28 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:showIn="navigation_view">
 
-    <item android:title="@string/ce_mark"
+    <item android:title="@string/navigation_drawer_ce_mark"
           android:checked="false"
           android:id="@+id/ce"
           android:icon="@drawable/ic_ce_mark"/>
 
-    <item android:title="@string/measurement">
+    <item android:title="@string/navigation_drawer_measurments">
         <menu>
             <group
                     android:checkableBehavior="single"
                     android:id="@+id/groupEn">
                 <item android:id="@+id/temperature"
                       android:icon="@drawable/ic_thermometer"
-                      android:title="@string/temperature"/>
+                      android:title="@string/navigation_drawer_temperature"/>
                 <item android:id="@+id/wind"
                       android:icon="@drawable/ic_wind"
-                      android:title="@string/wind"/>
+                      android:title="@string/navigation_drawer_wind"/>
                 <item android:id="@+id/visibility"
                       android:icon="@drawable/ic_visibility_black_24dp"
-                      android:title="@string/visibility"/>
+                      android:title="@string/navigation_drawer_visibility"/>
                 <item android:id="@+id/pressure"
                       android:icon="@drawable/ic_gauge"
-                      android:title="@string/pressure"/>
+                      android:title="@string/navigation_drawer_pressure"/>
             </group>
         </menu>
     </item>

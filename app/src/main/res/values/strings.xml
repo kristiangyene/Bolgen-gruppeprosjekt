@@ -1,15 +1,17 @@
 <resources>
     <string name="app_name">Bølgen</string>
-    <string name="navigation_drawer_open">Open Navigation Drawer</string>
-    <string name="navigation_drawer_close">Close Navigation Drawer</string>
-    <string name="settings">Instillinger</string>
-    <string name="temperature">Temperatur</string>
-    <string name="wind">Vind</string>
-    <string name="visibility">Synlighet</string>
-    <string name="pressure">Trykk</string>
-    <string name="ce_mark">CE merking</string>
-    <string name="measurement">Måleenheter</string>
     <string name="background_image">backgrunnsbilde</string>
     <string name="title_activity_maps">Map</string>
     <string name="start_maps_button">start maps</string>
+
+    <!-- Strings for the navigation_drawer -->
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <string name="navigation_drawer_settings">Instillinger</string>
+    <string name="navigation_drawer_measurments">Måleenheter</string>
+    <string name="navigation_drawer_ce_mark">CE merking</string>
+    <string name="navigation_drawer_temperature">Temperatur</string>
+    <string name="navigation_drawer_wind">Vind</string>
+    <string name="navigation_drawer_visibility">Synlighet</string>
+    <string name="navigation_drawer_pressure">Trykk</string>
 </resources>

@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
 import android.view.View
+import kotlinx.android.synthetic.main.view_pager.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         val checkedItemPosition = mutableListOf(0, 0, 0, 0, 0)
         drawerLayout = findViewById(R.id.drawer)
-        val navigationView: NavigationView = findViewById<NavigationView>(R.id.nav_view)
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener { menuItem ->
             if(menuItem.itemId in arrayOf(R.id.temperature, R.id.wind, R.id.visibility, R.id.pressure, R.id.ce)) {
                 dialog(menuItem, checkedItemPosition)
@@ -35,6 +36,15 @@ class MainActivity : AppCompatActivity() {
         toggle.drawerArrowDrawable.color = ContextCompat.getColor(this, R.color.drawer)
         drawer.addDrawerListener(toggle)
         toggle.syncState()
+
+        // View Pager tillater brukeren å sveipe mellom fragmenter
+        // Oppretter en adapter som vet hvilken fragment som skal vises på hver side
+        val adapter = PagerAdapter(supportFragmentManager)
+        viewpager.adapter = adapter
+
+        // Kobler sammen tab-en med view pageren. Tab-en vil oppdateres når brukeren sveiper, og når den blir klikket på.
+        // Tab-ene får også riktig tittel når metoden onPageTitle() kalles
+        tabs.setupWithViewPager(viewpager)
     }
 
     fun startMap(view : View) {
@@ -57,52 +67,52 @@ class MainActivity : AppCompatActivity() {
 
         when (menuItem.itemId) {
             R.id.ce -> {
-                builder.setTitle("CE merking")
+                builder.setTitle(R.string.navigation_drawer_ce_mark)
                 val measurements = arrayOf("A", "B", "C", "D")
-                builder.setSingleChoiceItems(measurements, checkedItemPosition[0]) { dialog, which ->
+                builder.setSingleChoiceItems(measurements, checkedItemPosition[0]) { dialog, _ ->
                     checkedItemPosition[0] = (dialog as AlertDialog).listView.checkedItemPosition
                     menuItem.isChecked = false
                     dialog.dismiss()
                 }
             }
             R.id.temperature -> {
-                builder.setTitle("Temperatur")
+                builder.setTitle(R.string.navigation_drawer_temperature)
                 val measurements = arrayOf("˚C", "˚F")
-                builder.setSingleChoiceItems(measurements, checkedItemPosition[1]) { dialog, which ->
+                builder.setSingleChoiceItems(measurements, checkedItemPosition[1]) { dialog, _ ->
                     checkedItemPosition[1] = (dialog as AlertDialog).listView.checkedItemPosition
                     menuItem.isChecked = false
                     dialog.dismiss()
                 }
             }
             R.id.wind -> {
-                builder.setTitle("Vind")
+                builder.setTitle(R.string.navigation_drawer_wind)
                 val measurements = arrayOf("Km/h", "Mph", "Mps")
-                builder.setSingleChoiceItems(measurements, checkedItemPosition[2]) { dialog, which ->
+                builder.setSingleChoiceItems(measurements, checkedItemPosition[2]) { dialog, _ ->
                     checkedItemPosition[2] = (dialog as AlertDialog).listView.checkedItemPosition
                     menuItem.isChecked = false
                     dialog.dismiss()
                 }
             }
             R.id.visibility -> {
-                builder.setTitle("Synlighet")
+                builder.setTitle(R.string.navigation_drawer_visibility)
                 val measurements = arrayOf("Km", "Miles")
-                builder.setSingleChoiceItems(measurements, checkedItemPosition[3]) { dialog, which ->
+                builder.setSingleChoiceItems(measurements, checkedItemPosition[3]) { dialog, _ ->
                     checkedItemPosition[3] = (dialog as AlertDialog).listView.checkedItemPosition
                     menuItem.isChecked = false
                     dialog.dismiss()
                 }
             }
             R.id.pressure -> {
-                builder.setTitle("Trykk")
+                builder.setTitle(R.string.navigation_drawer_pressure)
                 val measurements = arrayOf("HPa", "Mb", "bar", "mmHg")
-                builder.setSingleChoiceItems(measurements, checkedItemPosition[4]) { dialog, which ->
+                builder.setSingleChoiceItems(measurements, checkedItemPosition[4]) { dialog, _ ->
                     checkedItemPosition[4] = (dialog as AlertDialog).listView.checkedItemPosition
                     menuItem.isChecked = false
                     dialog.dismiss()
                 }
             }
         }
-        builder.setNegativeButton("Cancel") { dialogInterface, i ->
+        builder.setNegativeButton("Cancel") { _, _ ->
             menuItem.isChecked = false
         }
         builder.show()
