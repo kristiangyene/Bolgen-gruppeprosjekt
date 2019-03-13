@@ -111,6 +111,29 @@ class MainActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }
             }
+
+            R.id.værpreferanser -> {
+                builder.setTitle("Værpreferanser")
+                val selectedItemsindexList = ArrayList<Int>()
+                //val isSelectedArray = booleanArrayOf(false, false, false, false)
+                val parametre = arrayOf("Tidevann", "Vindretning", "Regn", "Tåke")
+
+                builder.setMultiChoiceItems(parametre, null) {dialog, which, isChecked ->
+                    if (isChecked) {
+                        selectedItemsindexList.add(which)
+                    } else if (selectedItemsindexList.contains(which)) {
+                        selectedItemsindexList.remove(Integer.valueOf(which))
+                    }
+
+                }
+                builder.setPositiveButton("Ok") {dialog, which ->
+                    // vis widgets for valgte parametre
+                }
+
+                builder.setNegativeButton("Avbryt") {dialog, which ->
+                    dialog.dismiss()
+                }
+            }
         }
         builder.setNegativeButton("Cancel") { _, _ ->
             menuItem.isChecked = false
