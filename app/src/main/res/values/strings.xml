@@ -14,6 +14,12 @@
     <string name="navigation_drawer_wind">Vind</string>
     <string name="navigation_drawer_visibility">Synlighet</string>
     <string name="navigation_drawer_pressure">Trykk</string>
+    <string name="navigation_drawer_tide">Tidevann</string>
+    <string name="navigation_drawer_rain">Regn</string>
+    <string name="navigation_drawer_fog">Tåke</string>
+    <string name="navigation_drawer_humidity">Fuktighet</string>
+    <string name="navigation_drawer_cloudiness">Skytetthet</string>
     <string name="navigation_drawer_weatherpreferences">Værpreferanser</string>
-
+    <string name="navigation_drawer_cancel">Avbryt</string>
+    <string name="navigation_drawer_ok">Ok</string>
 </resources>

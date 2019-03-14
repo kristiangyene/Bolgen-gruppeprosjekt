@@ -33,7 +33,8 @@ class MainActivity : AppCompatActivity() {
         }
         val checkedItemPosition = mutableListOf(0, 0, 0, 0, 0)
         drawerLayout = findViewById(R.id.drawer)
-        var checkedItems = booleanArrayOf(false, false, false, false, false, false)
+        val checkedItems = booleanArrayOf(false, false, false, false, false, false)
+        // håndterer klikk på itemene i navigation draweren
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener { menuItem ->
 
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+        // lager drawer icon til navigation draweren. Åpner navigation draweren når man trykker på iconet.
         val toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         toggle.drawerArrowDrawable.color = ContextCompat.getColor(this, R.color.drawer)
         drawer.addDrawerListener(toggle)
@@ -62,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    // lukker navigation draweren hvis den er åpen og man trykker på back knappen, ellers funker back knappen som vanlig.
     override fun onBackPressed() {
         if(drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
@@ -71,6 +74,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // lager alert dialoger for alle itemene i navigation draweren
     private fun dialog(menuItem: MenuItem, checkedItemPosition : MutableList<Int>, checkedItems : BooleanArray) {
         val builder = AlertDialog.Builder(this)
         menuItem.isChecked = true
@@ -143,7 +147,7 @@ class MainActivity : AppCompatActivity() {
                     menuItem.isChecked = false
                     dialog.dismiss()
                 }
-                builder.setNegativeButton("Avbryt") { _, _ ->
+                builder.setNegativeButton(R.string.navigation_drawer_cancel) { _, _ ->
                     menuItem.isChecked = false
                 }
             }
@@ -151,21 +155,21 @@ class MainActivity : AppCompatActivity() {
             R.id.værpreferanser -> {
                 builder.setTitle(getString(R.string.navigation_drawer_weatherpreferences))
                 val selectedItemsindexList = ArrayList<Int>()
-                val parameters = arrayOf("Tidevann", "Vindretning", "Regn", "Tåke", "Fuktighet", "Skytetthet")
+                val parameters = arrayOf(getString(R.string.navigation_drawer_tide), getString(R.string.navigation_drawer_wind), getString(R.string.navigation_drawer_rain), getString(R.string.navigation_drawer_fog), getString(R.string.navigation_drawer_humidity), getString(R.string.navigation_drawer_cloudiness))
 
                 builder.setMultiChoiceItems(parameters, checkedItems) {_, which, isChecked ->
-
                     if (isChecked) {
                         selectedItemsindexList.add(which)
-                    } else if (selectedItemsindexList.contains(which)) {
+                    }
+                    else {
                         selectedItemsindexList.remove(Integer.valueOf(which))
                     }
 
                 }
 
-                builder.setPositiveButton("Ok") {_, _ ->
+                builder.setPositiveButton(R.string.navigation_drawer_ok) {_, _ ->
                     // Legger til widgets for valgte parametre
-
+                    menuItem.isChecked = false
                 }
 
             }
