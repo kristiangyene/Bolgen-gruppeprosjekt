@@ -3,12 +3,14 @@ package com.example.sea
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Debug
 import android.support.design.widget.NavigationView
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
 import android.view.View
@@ -24,11 +26,12 @@ class MainActivity : AppCompatActivity() {
 
         val checkedItemPosition = mutableListOf(0, 0, 0, 0, 0)
         drawerLayout = findViewById(R.id.drawer)
+        var checkedItems = booleanArrayOf(false, false, false, false, false, false)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener { menuItem ->
-            if(menuItem.itemId in arrayOf(R.id.temperature, R.id.wind, R.id.visibility, R.id.pressure, R.id.ce)) {
-                dialog(menuItem, checkedItemPosition)
-            }
+
+            dialog(menuItem, checkedItemPosition, checkedItems)
+
             true
         }
 
@@ -61,18 +64,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun dialog(menuItem: MenuItem, checkedItemPosition : MutableList<Int>) {
+    private fun dialog(menuItem: MenuItem, checkedItemPosition : MutableList<Int>, checkedItems : BooleanArray) {
         val builder = AlertDialog.Builder(this)
         menuItem.isChecked = true
 
         when (menuItem.itemId) {
             R.id.ce -> {
                 builder.setTitle(R.string.navigation_drawer_ce_mark)
-                val measurements = arrayOf("A", "B", "C", "D")
+
+                // Midlertidlig løsning på beskrivelse av CE - merking
+                val A = "A - Havgående båter skal tåle en vindstyrke på mer enn 20,8 sekundmeter og en bølgehøyde på mer enn fire meter."
+                val B = "B - Båter til bruk utenfor kysten skal tåle til og med 20,7 sekundmeter og en bølgehøyde til fire meter."
+                val C = "C - Båter nær kysten skal tåle til og med 13,8 sekundmeter og bølger til og med to meter"
+                val D = "D - Båter i beskyttet farvann tåler mindre enn 7,7 sekundmeter i vindstyrke og til og med 0,3 meter i bølgehøyde."
+
+                val measurements = arrayOf(A, B, C, D)
                 builder.setSingleChoiceItems(measurements, checkedItemPosition[0]) { dialog, _ ->
                     checkedItemPosition[0] = (dialog as AlertDialog).listView.checkedItemPosition
                     menuItem.isChecked = false
                     dialog.dismiss()
+                }
+
+                builder.setNegativeButton("Avbryt") { _, _ ->
+                    menuItem.isChecked = false
                 }
             }
             R.id.temperature -> {
@@ -83,6 +97,10 @@ class MainActivity : AppCompatActivity() {
                     menuItem.isChecked = false
                     dialog.dismiss()
                 }
+
+                builder.setNegativeButton("Avbryt") { _, _ ->
+                    menuItem.isChecked = false
+                }
             }
             R.id.wind -> {
                 builder.setTitle(R.string.navigation_drawer_wind)
@@ -91,6 +109,10 @@ class MainActivity : AppCompatActivity() {
                     checkedItemPosition[2] = (dialog as AlertDialog).listView.checkedItemPosition
                     menuItem.isChecked = false
                     dialog.dismiss()
+                }
+
+                builder.setNegativeButton("Avbryt") { _, _ ->
+                    menuItem.isChecked = false
                 }
             }
             R.id.visibility -> {
@@ -101,6 +123,10 @@ class MainActivity : AppCompatActivity() {
                     menuItem.isChecked = false
                     dialog.dismiss()
                 }
+
+                builder.setNegativeButton("Avbryt") { _, _ ->
+                    menuItem.isChecked = false
+                }
             }
             R.id.pressure -> {
                 builder.setTitle(R.string.navigation_drawer_pressure)
@@ -110,11 +136,35 @@ class MainActivity : AppCompatActivity() {
                     menuItem.isChecked = false
                     dialog.dismiss()
                 }
+                builder.setNegativeButton("Avbryt") { _, _ ->
+                    menuItem.isChecked = false
+                }
+            }
+
+            R.id.værpreferanser -> {
+                builder.setTitle(getString(R.string.navigation_drawer_weatherpreferences))
+                val selectedItemsindexList = ArrayList<Int>()
+                val parameters = arrayOf("Tidevann", "Vindretning", "Regn", "Tåke", "Fuktighet", "Skytetthet")
+
+                builder.setMultiChoiceItems(parameters, checkedItems) {_, which, isChecked ->
+
+                    if (isChecked) {
+                        selectedItemsindexList.add(which)
+                    } else if (selectedItemsindexList.contains(which)) {
+                        selectedItemsindexList.remove(Integer.valueOf(which))
+                    }
+
+                }
+
+                builder.setPositiveButton("Ok") {_, _ ->
+                    // Legger til widgets for valgte parametre
+
+                }
+
             }
         }
-        builder.setNegativeButton("Cancel") { _, _ ->
-            menuItem.isChecked = false
-        }
+
+
         builder.show()
     }
 }
