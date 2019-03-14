@@ -26,9 +26,9 @@ class MainActivity : AppCompatActivity() {
         drawerLayout = findViewById(R.id.drawer)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener { menuItem ->
-            if(menuItem.itemId in arrayOf(R.id.temperature, R.id.wind, R.id.visibility, R.id.pressure, R.id.ce)) {
-                dialog(menuItem, checkedItemPosition)
-            }
+
+            dialog(menuItem, checkedItemPosition)
+
             true
         }
 
@@ -68,7 +68,10 @@ class MainActivity : AppCompatActivity() {
         when (menuItem.itemId) {
             R.id.ce -> {
                 builder.setTitle(R.string.navigation_drawer_ce_mark)
-                val measurements = arrayOf("A", "B", "C", "D")
+                val measurements = arrayOf("A: for havgående båter. De skal tåle en vindstyrke på mer enn 20,8 sekundmeter og en bølgehøyde på mer enn fire meter.",
+                                                        "B: for båter til bruk utenfor kysten. De skal tåle til og med 20,7 sekundmeter og en bølgehøyde til fire meter.",
+                                                        "C: for båter nær kysten. De skal tåle til og med 13,8 sekundmeter og bølger til og med to meter",
+                                                        "D: for båter i beskyttet farvann. De tåler mindre enn 7,7 sekundmeter i vindstyrke og til og med 0,3 meter i bølgehøyde.")
                 builder.setSingleChoiceItems(measurements, checkedItemPosition[0]) { dialog, _ ->
                     checkedItemPosition[0] = (dialog as AlertDialog).listView.checkedItemPosition
                     menuItem.isChecked = false
@@ -113,12 +116,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.værpreferanser -> {
-                builder.setTitle("Værpreferanser")
+                builder.setTitle(getString(R.string.navigation_drawer_weatherpreferences))
                 val selectedItemsindexList = ArrayList<Int>()
-                //val isSelectedArray = booleanArrayOf(false, false, false, false)
-                val parametre = arrayOf("Tidevann", "Vindretning", "Regn", "Tåke")
+                val parametre = arrayOf("Tidevann", "Vindretning", "Regn", "Tåke", "Fuktighet", "Skytetthet")
+
+                //val checkedItems = booleanArrayOf(false, false, false, false, false, false)
 
                 builder.setMultiChoiceItems(parametre, null) {dialog, which, isChecked ->
+
                     if (isChecked) {
                         selectedItemsindexList.add(which)
                     } else if (selectedItemsindexList.contains(which)) {
