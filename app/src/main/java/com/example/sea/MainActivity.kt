@@ -1,11 +1,13 @@
 package com.example.sea
 
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Debug
 import android.support.design.widget.NavigationView
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -23,7 +25,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
+        val sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+        //sjekker om den har blitt kjørt før
+       if (sharedPref.getBoolean("firstTime", true)) {
+            firstStart()
+            sharedPref.edit().putBoolean("firstTime", false).apply()
+        }
         val checkedItemPosition = mutableListOf(0, 0, 0, 0, 0)
         drawerLayout = findViewById(R.id.drawer)
         var checkedItems = booleanArrayOf(false, false, false, false, false, false)
@@ -166,5 +173,17 @@ class MainActivity : AppCompatActivity() {
 
 
         builder.show()
+    }
+    fun firstStart() {
+        //velger CE merke
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("velg CE merke")
+        val measurements = arrayOf("A", "B", "C", "D")
+        builder.setSingleChoiceItems(measurements, 0) { dialog, _ ->
+            dialog.dismiss()
+        }
+        val mDialog = builder.create()
+        mDialog.setCancelable(false)
+        mDialog.show()
     }
 }
