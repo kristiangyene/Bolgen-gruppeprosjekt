@@ -12,7 +12,7 @@
         <menu>
             <group
                     android:checkableBehavior="single"
-                    android:id="@+id/groupEn">
+                    android:id="@+id/groupOne">
                 <item android:id="@+id/temperature"
                       android:icon="@drawable/ic_thermometer"
                       android:title="@string/navigation_drawer_temperature"/>
@@ -33,7 +33,7 @@
         <menu>
             <group
                     android:checkableBehavior="single"
-                    android:id="@+id/grouEn">
+                    android:id="@+id/groupTwo">
                 <item android:id="@+id/værpreferanser"
                       android:title="Værpreferanser"/>
             </group>
