@@ -27,7 +27,7 @@
                 app:tabSelectedTextColor="@color/colorPrimary"
                 app:tabRippleColor="@color/colorPrimary"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -35,7 +35,7 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
