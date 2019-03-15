@@ -1,6 +1,8 @@
 package com.example.sea
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -14,24 +16,34 @@ import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.view_pager.*
 
+// TODO: appen vil kræsje hvis man bruker andre språk. Endre fra keysa
 class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var sharedPreferences: SharedPreferences
+    private val fileName = "com.example.sea"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        val checkedItemPosition = mutableListOf(0, 0, 0, 0, 0)
+        sharedPreferences = this.getSharedPreferences(fileName, Context.MODE_PRIVATE)
+        //sjekker om den har blitt kjørt før
+        if (sharedPreferences.getBoolean("firstTime", true)) {
+            firstStart()
+            sharedPreferences.edit().putBoolean("firstTime", false).apply()
+        }
+
         drawerLayout = findViewById(R.id.drawer)
+        val checkedItems = booleanArrayOf(false, false, false, false, false, false)
+        // håndterer klikk på itemene i navigation drawerenx
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener { menuItem ->
-            if(menuItem.itemId in arrayOf(R.id.temperature, R.id.wind, R.id.visibility, R.id.pressure, R.id.ce)) {
-                dialog(menuItem, checkedItemPosition)
-            }
+            dialog(menuItem, checkedItems)
             true
         }
 
+        // lager drawer icon til navigation draweren. Åpner navigation draweren når man trykker på iconet.
         val toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         toggle.drawerArrowDrawable.color = ContextCompat.getColor(this, R.color.drawer)
         drawer.addDrawerListener(toggle)
@@ -52,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    // lukker navigation draweren hvis den er åpen og man trykker på back knappen, ellers funker back knappen som vanlig.
     override fun onBackPressed() {
         if(drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
@@ -61,60 +74,165 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun dialog(menuItem: MenuItem, checkedItemPosition : MutableList<Int>) {
+    // lager alert dialoger for alle itemene i navigation draweren
+    private fun dialog(menuItem: MenuItem, checkedItems : BooleanArray) {
         val builder = AlertDialog.Builder(this)
         menuItem.isChecked = true
 
         when (menuItem.itemId) {
             R.id.ce -> {
                 builder.setTitle(R.string.navigation_drawer_ce_mark)
-                val measurements = arrayOf("A", "B", "C", "D")
-                builder.setSingleChoiceItems(measurements, checkedItemPosition[0]) { dialog, _ ->
-                    checkedItemPosition[0] = (dialog as AlertDialog).listView.checkedItemPosition
+                // Midlertidlig løsning på beskrivelse av CE - merking
+                val A = "A - Havgående båter skal tåle en vindstyrke på mer enn 20,8 sekundmeter og en bølgehøyde på mer enn fire meter."
+                val B = "B - Båter til bruk utenfor kysten skal tåle til og med 20,7 sekundmeter og en bølgehøyde til fire meter."
+                val C = "C - Båter nær kysten skal tåle til og med 13,8 sekundmeter og bølger til og med to meter"
+                val D = "D - Båter i beskyttet farvann tåler mindre enn 7,7 sekundmeter i vindstyrke og til og med 0,3 meter i bølgehøyde."
+                val measurements = arrayOf(A, B, C, D)
+                val position : Int?
+
+                position = measurements.indexOf(sharedPreferences.getString(getString(R.string.navigation_drawer_ce_mark), null))
+
+                builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
+                    sharedPreferences.edit().putString(getString(R.string.navigation_drawer_ce_mark), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
                     menuItem.isChecked = false
                     dialog.dismiss()
+                }
+
+                builder.setNegativeButton(R.string.navigation_drawer_cancel) { _, _ ->
+                    menuItem.isChecked = false
                 }
             }
             R.id.temperature -> {
                 builder.setTitle(R.string.navigation_drawer_temperature)
                 val measurements = arrayOf("˚C", "˚F")
-                builder.setSingleChoiceItems(measurements, checkedItemPosition[1]) { dialog, _ ->
-                    checkedItemPosition[1] = (dialog as AlertDialog).listView.checkedItemPosition
+                val position : Int?
+
+                position = if(sharedPreferences.getString(getString(R.string.navigation_drawer_temperature), null) == null) {
+                    0
+                }
+                else {
+                    measurements.indexOf(sharedPreferences.getString(getString(R.string.navigation_drawer_temperature), null))
+                }
+
+                builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
+                    sharedPreferences.edit().putString(getString(R.string.navigation_drawer_temperature), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
                     menuItem.isChecked = false
                     dialog.dismiss()
                 }
+
+                builder.setNegativeButton(R.string.navigation_drawer_cancel) { _, _ ->
+                    menuItem.isChecked = false
+                }
             }
             R.id.wind -> {
-                builder.setTitle(R.string.navigation_drawer_wind)
+                builder.setTitle(R.string.navigation_drawer_wind_speed)
                 val measurements = arrayOf("Km/h", "Mph", "Mps")
-                builder.setSingleChoiceItems(measurements, checkedItemPosition[2]) { dialog, _ ->
-                    checkedItemPosition[2] = (dialog as AlertDialog).listView.checkedItemPosition
+                val position : Int
+
+                position = if(sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null) == null) {
+                    0
+                }
+                else {
+                    measurements.indexOf(sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null))
+                }
+
+                builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
+                    sharedPreferences.edit().putString(getString(R.string.navigation_drawer_wind_speed), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
                     menuItem.isChecked = false
                     dialog.dismiss()
+                }
+
+                builder.setNegativeButton(R.string.navigation_drawer_cancel) { _, _ ->
+                    menuItem.isChecked = false
                 }
             }
             R.id.visibility -> {
                 builder.setTitle(R.string.navigation_drawer_visibility)
                 val measurements = arrayOf("Km", "Miles")
-                builder.setSingleChoiceItems(measurements, checkedItemPosition[3]) { dialog, _ ->
-                    checkedItemPosition[3] = (dialog as AlertDialog).listView.checkedItemPosition
+                val position : Int
+
+                position = if(sharedPreferences.getString(getString(R.string.navigation_drawer_visibility), null) == null) {
+                    0
+                }
+                else {
+                    measurements.indexOf(sharedPreferences.getString(getString(R.string.navigation_drawer_visibility), null))
+                }
+
+                builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
+                    sharedPreferences.edit().putString(getString(R.string.navigation_drawer_visibility), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
                     menuItem.isChecked = false
                     dialog.dismiss()
+                }
+
+                builder.setNegativeButton(R.string.navigation_drawer_cancel) { _, _ ->
+                    menuItem.isChecked = false
                 }
             }
             R.id.pressure -> {
                 builder.setTitle(R.string.navigation_drawer_pressure)
                 val measurements = arrayOf("HPa", "Mb", "bar", "mmHg")
-                builder.setSingleChoiceItems(measurements, checkedItemPosition[4]) { dialog, _ ->
-                    checkedItemPosition[4] = (dialog as AlertDialog).listView.checkedItemPosition
+                val position : Int?
+
+                position = if(sharedPreferences.getString(getString(R.string.navigation_drawer_pressure), null) == null) {
+                    0
+                }
+                else {
+                    measurements.indexOf(sharedPreferences.getString(getString(R.string.navigation_drawer_pressure), null))
+                }
+
+                builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
+                    sharedPreferences.edit().putString(getString(R.string.navigation_drawer_pressure), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
                     menuItem.isChecked = false
                     dialog.dismiss()
                 }
+
+                builder.setNegativeButton(R.string.navigation_drawer_cancel) { _, _ ->
+                    menuItem.isChecked = false
+                }
+            }
+            R.id.værpreferanser -> {
+                builder.setTitle(getString(R.string.navigation_drawer_weatherpreferences))
+                val parameters = arrayOf(getString(R.string.navigation_drawer_tide), getString(R.string.navigation_drawer_temperature_2), getString(R.string.navigation_drawer_weather), getString(R.string.navigation_drawer_fog), getString(R.string.navigation_drawer_humidity), getString(R.string.navigation_drawer_cloudiness))
+
+                for(item in 0 until parameters.size) {
+                    if(sharedPreferences.getBoolean(parameters[item], false)) {
+                        checkedItems[item] = true
+                    }
+                }
+
+                builder.setMultiChoiceItems(parameters, checkedItems) {_, which, isChecked ->
+                    if (isChecked) {
+                        sharedPreferences.edit().putBoolean(parameters[which], true).apply()
+                    }
+                    else {
+                        sharedPreferences.edit().putBoolean(parameters[which], false).apply()
+                    }
+                }
+
+                builder.setPositiveButton(R.string.navigation_drawer_ok) {_, _ ->
+                    // Legger til widgets for valgte parametre
+                    menuItem.isChecked = false
+                }
             }
         }
-        builder.setNegativeButton("Cancel") { _, _ ->
-            menuItem.isChecked = false
-        }
+        builder.setCancelable(false)
         builder.show()
+    }
+    fun firstStart() {
+        //velger CE merke
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.navigation_drawer_ce_mark)
+        val A = "A - Havgående båter skal tåle en vindstyrke på mer enn 20,8 sekundmeter og en bølgehøyde på mer enn fire meter."
+        val B = "B - Båter til bruk utenfor kysten skal tåle til og med 20,7 sekundmeter og en bølgehøyde til fire meter."
+        val C = "C - Båter nær kysten skal tåle til og med 13,8 sekundmeter og bølger til og med to meter"
+        val D = "D - Båter i beskyttet farvann tåler mindre enn 7,7 sekundmeter i vindstyrke og til og med 0,3 meter i bølgehøyde."
+        val measurements = arrayOf(A, B, C, D)
+        builder.setSingleChoiceItems(measurements, 0) { dialog, _ ->
+            sharedPreferences.edit().putString(getString(R.string.navigation_drawer_ce_mark), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
+            dialog.dismiss()
+        }
+        val mDialog = builder.create()
+        mDialog.setCancelable(false)
+        mDialog.show()
     }
 }
