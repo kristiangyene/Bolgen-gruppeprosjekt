@@ -25,4 +25,7 @@
     <string name="navigation_drawer_weatherpreferences">Værpreferanser</string>
     <string name="navigation_drawer_cancel">Avbryt</string>
     <string name="navigation_drawer_ok">OK</string>
+    <string name="navigation_drawer_wind_base">Km/h</string>
+    <string name="navigation_drawer_visibility_base">Km</string>
+    <string name="navigation_drawer_pressure_base">HPa</string>
 </resources>

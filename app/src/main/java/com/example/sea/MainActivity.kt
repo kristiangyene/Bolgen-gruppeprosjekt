@@ -14,7 +14,10 @@ import android.support.v7.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import kotlinx.android.synthetic.main.view_pager.*
+import android.view.LayoutInflater
+import kotlinx.android.synthetic.main.navigation_menu_items.*
 
 // TODO: appen vil kræsje hvis man bruker andre språk. Endre fra keysa
 class MainActivity : AppCompatActivity() {
@@ -43,6 +46,10 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+        for(i in 0 .. 4) {
+            updateTextViewStart(i)
+        }
+
         // lager drawer icon til navigation draweren. Åpner navigation draweren når man trykker på iconet.
         val toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         toggle.drawerArrowDrawable.color = ContextCompat.getColor(this, R.color.drawer)
@@ -57,6 +64,105 @@ class MainActivity : AppCompatActivity() {
         // Kobler sammen tab-en med view pageren. Tab-en vil oppdateres når brukeren sveiper, og når den blir klikket på.
         // Tab-ene får også riktig tittel når metoden onPageTitle() kalles
         tabs.setupWithViewPager(viewpager)
+    }
+
+    private fun updateTextViewStart(position: Int) {
+        val inflaterLayout = layoutInflater.inflate(R.layout.navigation_menu_items, root_nav_preview, false)
+
+        when(position) {
+            0 ->  {
+                val ceMarkTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
+                val ceMarkText = sharedPreferences.getString(getString(R.string.navigation_drawer_ce_mark), null)
+                if(ceMarkText == null) {
+                    ceMarkTextView.text = "A"
+                }
+                else {
+                    ceMarkTextView.text = ceMarkText.split(" ")[0]
+                }
+                nav_view.menu.findItem(R.id.ce).actionView = inflaterLayout
+            }
+            1 -> {
+                val temperatureTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
+                val temperatureText = sharedPreferences.getString(getString(R.string.navigation_drawer_temperature), null)
+                if(temperatureText == null) {
+                    temperatureTextView.text = "˚C"
+                }
+                else {
+                    temperatureTextView.text = temperatureText
+                }
+                nav_view.menu.findItem(R.id.temperature).actionView = inflaterLayout
+            }
+            2 -> {
+                val windTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
+                val windText = sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null)
+                if(windText == null) {
+                    windTextView.text = getString(R.string.navigation_drawer_wind_base)
+                }
+                else {
+                    windTextView.text = windText
+                }
+                nav_view.menu.findItem(R.id.wind).actionView = inflaterLayout
+            }
+            3 -> {
+                val visibilityTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
+                val visibilityText = sharedPreferences.getString(getString(R.string.navigation_drawer_visibility), null)
+                if(visibilityText == null) {
+                    visibilityTextView.text = getString(R.string.navigation_drawer_visibility_base)
+                }
+                else {
+                    visibilityTextView.text = visibilityText
+                }
+                nav_view.menu.findItem(R.id.visibility).actionView = inflaterLayout
+            }
+            else -> {
+                val pressureTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
+                val pressureText = sharedPreferences.getString(getString(R.string.navigation_drawer_pressure), null)
+                if(pressureText == null) {
+                    pressureTextView.text = getString(R.string.navigation_drawer_pressure_base)
+                }
+                else {
+                    pressureTextView.text = pressureText
+                }
+                nav_view.menu.findItem(R.id.pressure).actionView = inflaterLayout
+            }
+        }
+    }
+
+    private fun updateTextView(position : Int) {
+        val inflaterLayout = layoutInflater.inflate(R.layout.navigation_menu_items, root_nav_preview, false)
+
+        when(position) {
+            R.id.ce -> {
+                val ceMarkTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
+                val ceMarkText = sharedPreferences.getString(getString(R.string.navigation_drawer_ce_mark), null)
+                if(ceMarkText != null) ceMarkTextView.text = ceMarkText.split(" ")[0]
+                nav_view.menu.findItem(R.id.ce).actionView = inflaterLayout
+            }
+            R.id.temperature -> {
+                val temperatureTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
+                val temperatureText = sharedPreferences.getString(getString(R.string.navigation_drawer_temperature), null)
+                temperatureTextView.text = temperatureText
+                nav_view.menu.findItem(R.id.temperature).actionView = inflaterLayout
+            }
+            R.id.wind -> {
+                val windTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
+                val windText = sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null)
+                windTextView.text = windText
+                nav_view.menu.findItem(R.id.wind).actionView = inflaterLayout
+            }
+            R.id.visibility -> {
+                val visibilityTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
+                val visibilityText = sharedPreferences.getString(getString(R.string.navigation_drawer_visibility), null)
+                visibilityTextView.text = visibilityText
+                nav_view.menu.findItem(R.id.visibility).actionView = inflaterLayout
+            }
+            R.id.pressure -> {
+                val pressureTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
+                val pressureText = sharedPreferences.getString(getString(R.string.navigation_drawer_pressure), null)
+                pressureTextView.text = pressureText
+                nav_view.menu.findItem(R.id.pressure).actionView = inflaterLayout
+            }
+        }
     }
 
     fun startMap(view : View) {
@@ -95,6 +201,7 @@ class MainActivity : AppCompatActivity() {
                 builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
                     sharedPreferences.edit().putString(getString(R.string.navigation_drawer_ce_mark), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
                     menuItem.isChecked = false
+                    updateTextView(menuItem.itemId)
                     dialog.dismiss()
                 }
 
@@ -117,6 +224,7 @@ class MainActivity : AppCompatActivity() {
                 builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
                     sharedPreferences.edit().putString(getString(R.string.navigation_drawer_temperature), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
                     menuItem.isChecked = false
+                    updateTextView(menuItem.itemId)
                     dialog.dismiss()
                 }
 
@@ -139,6 +247,7 @@ class MainActivity : AppCompatActivity() {
                 builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
                     sharedPreferences.edit().putString(getString(R.string.navigation_drawer_wind_speed), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
                     menuItem.isChecked = false
+                    updateTextView(menuItem.itemId)
                     dialog.dismiss()
                 }
 
@@ -161,6 +270,7 @@ class MainActivity : AppCompatActivity() {
                 builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
                     sharedPreferences.edit().putString(getString(R.string.navigation_drawer_visibility), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
                     menuItem.isChecked = false
+                    updateTextView(menuItem.itemId)
                     dialog.dismiss()
                 }
 
@@ -183,6 +293,7 @@ class MainActivity : AppCompatActivity() {
                 builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
                     sharedPreferences.edit().putString(getString(R.string.navigation_drawer_pressure), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
                     menuItem.isChecked = false
+                    updateTextView(menuItem.itemId)
                     dialog.dismiss()
                 }
 
