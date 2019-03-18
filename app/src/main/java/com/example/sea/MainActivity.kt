@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         tabs.setupWithViewPager(viewpager)
     }
 
+    // oppdaterer previewen i navigation draweren først man starter appen
     private fun updateTextViewStart(position: Int) {
         val inflaterLayout = layoutInflater.inflate(R.layout.navigation_menu_items, root_nav_preview, false)
 
@@ -128,6 +129,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // oppdaterer previewen i navigation draweren når man endrer måleenhet
     private fun updateTextView(position : Int) {
         val inflaterLayout = layoutInflater.inflate(R.layout.navigation_menu_items, root_nav_preview, false)
 
