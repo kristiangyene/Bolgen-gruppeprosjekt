@@ -130,7 +130,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         if(marker != null) {
             marker!!.remove()
         }
-        
+
         val locationName = getCity(p0!!.latitude, p0.longitude)
         marker = mMap.addMarker(MarkerOptions().position(p0).title(locationName))
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(p0.latitude, p0.longitude), 8f), 2000, null)
