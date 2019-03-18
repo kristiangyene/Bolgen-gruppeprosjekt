@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        for(i in 0 .. 4) {
+        for(i in 1 .. 4) {
             updateTextViewStart(i)
         }
 
@@ -340,6 +340,7 @@ class MainActivity : AppCompatActivity() {
         val measurements = arrayOf(A, B, C, D)
         builder.setSingleChoiceItems(measurements, 0) { dialog, _ ->
             sharedPreferences.edit().putString(getString(R.string.navigation_drawer_ce_mark), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
+            updateTextViewStart(0)
             dialog.dismiss()
         }
         val mDialog = builder.create()
