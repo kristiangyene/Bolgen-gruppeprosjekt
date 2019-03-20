@@ -22,16 +22,16 @@ data class Forecast (
 
 data class OceanForecast (
     @SerializedName("gml:id") val id : String,
-    @SerializedName("mox:seaIcePresence") val seaIcePresence : Value,
-    @SerializedName("mox:seaCurrentDirection") val seaCurrentDirection : Value,
-    @SerializedName("mox:significantTotalWaveHeight") val significantTotalWaveHeight : Value,
-    @SerializedName("mox:seaCurrentSpeed") val seaCurrentSpeed : Value,
-    @SerializedName("mox:seaBottomTopography") val seaBottomTopography : Value,
-    @SerializedName("mox:meanTotalWaveDirection") val meanTotalWaveDirection : Value,
-    @SerializedName("mox:seaTemperature") val seaTemperature : Value
+    @SerializedName("mox:seaIcePresence") val seaIcePresence : OceanValue,
+    @SerializedName("mox:seaCurrentDirection") val seaCurrentDirection : OceanValue,
+    @SerializedName("mox:significantTotalWaveHeight") val significantTotalWaveHeight : OceanValue,
+    @SerializedName("mox:seaCurrentSpeed") val seaCurrentSpeed : OceanValue,
+    @SerializedName("mox:seaBottomTopography") val seaBottomTopography : OceanValue,
+    @SerializedName("mox:meanTotalWaveDirection") val meanTotalWaveDirection : OceanValue,
+    @SerializedName("mox:seaTemperature") val seaTemperature : OceanValue
 )
 
-data class Value (
+data class OceanValue (
     val uom : String,
     val content : String
 )

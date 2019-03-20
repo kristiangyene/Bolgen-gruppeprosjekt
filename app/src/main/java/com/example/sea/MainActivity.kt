@@ -1,7 +1,6 @@
 package com.example.sea
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -13,13 +12,11 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
-import android.view.View
 import android.widget.TextView
 import kotlinx.android.synthetic.main.view_pager.*
-import android.widget.Toast
 import kotlinx.android.synthetic.main.navigation_menu_items.*
 
-// TODO: appen vil kræsje hvis man bruker andre språk. Endre fra keysa
+// TODO: appen vil kræsje hvis man bruker andre språk. Endre sharedpreference keysa
 class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var sharedPreferences: SharedPreferences
