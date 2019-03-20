@@ -16,14 +16,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import kotlinx.android.synthetic.main.view_pager.*
-import android.view.LayoutInflater
-import android.widget.Toast
 import kotlinx.android.synthetic.main.navigation_menu_items.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 
 // TODO: appen vil kræsje hvis man bruker andre språk. Endre fra keysa
 class MainActivity : AppCompatActivity() {
@@ -70,30 +63,7 @@ class MainActivity : AppCompatActivity() {
         // Kobler sammen tab-en med view pageren. Tab-en vil oppdateres når brukeren sveiper, og når den blir klikket på.
         // Tab-ene får også riktig tittel når metoden onPageTitle() kalles
         tabs.setupWithViewPager(viewpager)
-        val client = Retrofit.Builder()
-            .baseUrl("https://in2000-apiproxy.ifi.uio.no/" )
-            .addConverterFactory(SimpleXmlConverterFactory.create())
-            .build()
-            .create(WeatherService::class.java)
-
-        val weather = client.getWeather(60.1, 9.58, 70)
-        weather.enqueue(object : Callback<Locationforecast> {
-            //henter bare null verdier skal fikses
-            override fun onResponse(call: Call<Locationforecast>, response: Response<Locationforecast>) {
-                Toast.makeText(this@MainActivity, "jaa", Toast.LENGTH_SHORT).show()
-                val product =  response.body()?.product?.time
-                Toast.makeText(this@MainActivity, product?.get(1).toString(), Toast.LENGTH_SHORT).show()
-                val list = product?.get(0)?.location
-                val altitude = list?.altitude
-                val longitude = list?.longitude
-                val latitude = list?.latitude
-                Toast.makeText(this@MainActivity, list.toString(), Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onFailure(call: Call<Locationforecast>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "rip", Toast.LENGTH_SHORT).show()
-            }
-        })
+        DataAPI().fetchData(this)
     }
 
     // oppdaterer previewen i navigation draweren først man starter appen
