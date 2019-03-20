@@ -16,6 +16,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import kotlinx.android.synthetic.main.view_pager.*
+import android.widget.Toast
 import kotlinx.android.synthetic.main.navigation_menu_items.*
 
 // TODO: appen vil kræsje hvis man bruker andre språk. Endre fra keysa
@@ -305,7 +306,13 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.værpreferanser -> {
                 builder.setTitle(getString(R.string.navigation_drawer_weatherpreferences))
-                val parameters = arrayOf(getString(R.string.navigation_drawer_tide), getString(R.string.navigation_drawer_temperature_2), getString(R.string.navigation_drawer_weather), getString(R.string.navigation_drawer_fog), getString(R.string.navigation_drawer_humidity), getString(R.string.navigation_drawer_cloudiness))
+                val parameters = arrayOf(
+                    getString(R.string.navigation_drawer_tide),
+                    getString(R.string.navigation_drawer_temperature),
+                    getString(R.string.navigation_drawer_weather),
+                    getString(R.string.navigation_drawer_fog),
+                    getString(R.string.navigation_drawer_humidity),
+                    getString(R.string.navigation_drawer_cloudiness))
 
                 for(item in 0 until parameters.size) {
                     if(sharedPreferences.getBoolean(parameters[item], false)) {
@@ -325,6 +332,8 @@ class MainActivity : AppCompatActivity() {
                 builder.setPositiveButton(R.string.navigation_drawer_ok) {_, _ ->
                     // Legger til widgets for valgte parametre
                     menuItem.isChecked = false
+                    recreate()
+
                 }
             }
         }

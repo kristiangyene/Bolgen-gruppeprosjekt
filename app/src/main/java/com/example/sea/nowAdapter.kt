@@ -22,10 +22,18 @@ class NowAdapter(private val elementList: ArrayList<Widget>) : RecyclerView.Adap
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val iconString = elementList[position].image
         holder.desc.text = elementList[position].text
-        if(iconString == "drop") holder.icon.setImageResource(R.drawable.drop)
-        else if(iconString == "visibility") holder.icon.setImageResource(R.drawable.visibility)
-        else if(iconString == "wind") holder.icon.setImageResource(R.drawable.wind)
-        else if(iconString == "waves") holder.icon.setImageResource(R.drawable.waves)
+        when (iconString) {
+            "Synlighet" -> holder.icon.setImageResource(R.drawable.visibility)
+            "Vind" -> holder.icon.setImageResource(R.drawable.wind)
+            "Bølgehøyde" -> holder.icon.setImageResource(R.drawable.waves)
+            "Tidevann" -> holder.icon.setImageResource(R.drawable.tide)
+            "Temperatur" -> holder.icon.setImageResource(R.drawable.thermometer)
+            "Nedbør" -> holder.icon.setImageResource(R.drawable.drop)
+            "Tåke" -> holder.icon.setImageResource(R.drawable.fog)
+            "Fuktighet" -> holder.icon.setImageResource(R.drawable.humidity)
+            "Skytetthet" -> holder.icon.setImageResource(R.drawable.cloud)
+        }
+
 
     }
 

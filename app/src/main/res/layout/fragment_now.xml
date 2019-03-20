@@ -6,6 +6,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/now_fragment"
         tools:context=".NowFragment">
 
 
@@ -16,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:paddingTop="240dp"
+            android:paddingTop="270dp"
             android:clipToPadding="false"
     />
 

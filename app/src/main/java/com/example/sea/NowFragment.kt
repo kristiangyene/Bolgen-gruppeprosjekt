@@ -1,6 +1,7 @@
 package com.example.sea
 
-
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
@@ -12,41 +13,54 @@ import android.support.v7.widget.GridLayoutManager
 
 
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- *
- */
 class NowFragment : Fragment() {
-    val strings: HashMap<String, String> = hashMapOf("visibility" to "2.4km", "wind" to "5.0m/s", "waves" to "3.0m")
+    private lateinit var sharedPreferences: SharedPreferences
+    private val fileName = "com.example.sea"
+    private lateinit var strings : HashMap<String, String>
     private var recyclerView: RecyclerView? = null
-
     private var adapter: RecyclerView.Adapter<*>? = null
     var listOfElements: ArrayList<Widget> = ArrayList()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
 
         val rootView = inflater.inflate(R.layout.fragment_now, container, false)
+        sharedPreferences = activity!!.getSharedPreferences(fileName, Context.MODE_PRIVATE)
 
+
+        strings = hashMapOf(resources.getString(R.string.navigation_drawer_visibility) to "",
+            resources.getString(R.string.navigation_drawer_wind) to "", resources.getString(R.string.navigation_drawer_wave) to "")
 
         //adding default widgets
         strings.forEach{ (key, value) ->
             val element = Widget(value, key)
             listOfElements.add(element)
-
         }
+        getOtherWidgets()
         recyclerView = rootView.findViewById(R.id.recycler_view)
-        recyclerView!!.layoutManager = GridLayoutManager(context, 1) as RecyclerView.LayoutManager?
+        recyclerView!!.layoutManager = GridLayoutManager(context, 1)
         adapter = NowAdapter(listOfElements)
         recyclerView!!.adapter = adapter
         return rootView
 
+    }
+    fun getOtherWidgets(){
+        val parameters = arrayOf(
+            resources.getString(R.string.navigation_drawer_tide),
+            resources.getString(R.string.navigation_drawer_temperature),
+            resources.getString(R.string.navigation_drawer_weather),
+            resources.getString(R.string.navigation_drawer_fog),
+            resources.getString(R.string.navigation_drawer_humidity),
+            resources.getString(R.string.navigation_drawer_cloudiness))
+        for(item in 0 until parameters.size) {
+            if(sharedPreferences.getBoolean(parameters[item], false) && parameters[item] !in strings){
+                strings.put(parameters[item], "")
+                val element = Widget("", parameters[item])
+                listOfElements.add(element)
+            }
+            strings.remove(parameters[item])
+        }
     }
 }
 

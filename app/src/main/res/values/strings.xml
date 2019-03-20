@@ -11,7 +11,6 @@
     <string name="navigation_drawer_measurments">Måleenheter</string>
     <string name="navigation_drawer_ce_mark">CE merking</string>
     <string name="navigation_drawer_temperature">Temperatur</string>
-    <string name="navigation_drawer_temperature_2">Varmegrader</string>
     <string name="navigation_drawer_wind">Vind</string>
     <string name="navigation_drawer_wind_speed">Vindstyrke</string>
     <string name="navigation_drawer_visibility">Synlighet</string>
@@ -20,6 +19,7 @@
     <string name="navigation_drawer_rain">Regn</string>
     <string name="navigation_drawer_weather">Nedbør</string>
     <string name="navigation_drawer_fog">Tåke</string>
+    <string name="navigation_drawer_wave">Bølgehøyde</string>
     <string name="navigation_drawer_humidity">Fuktighet</string>
     <string name="navigation_drawer_cloudiness">Skytetthet</string>
     <string name="navigation_drawer_weatherpreferences">Værpreferanser</string>
