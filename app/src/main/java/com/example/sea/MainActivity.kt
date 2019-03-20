@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         // Kobler sammen tab-en med view pageren. Tab-en vil oppdateres når brukeren sveiper, og når den blir klikket på.
         // Tab-ene får også riktig tittel når metoden onPageTitle() kalles
         tabs.setupWithViewPager(viewpager)
-        DataAPI().fetchData(this)
+        RetrofitClient().getClient()
     }
 
     // oppdaterer previewen i navigation draweren først man starter appen
@@ -166,11 +166,6 @@ class MainActivity : AppCompatActivity() {
                 nav_view.menu.findItem(R.id.pressure).actionView = inflaterLayout
             }
         }
-    }
-
-    fun startMap(view : View) {
-        val intent = Intent(this, MapsActivity::class.java)
-        startActivity(intent)
     }
 
     // lukker navigation draweren hvis den er åpen og man trykker på back knappen, ellers funker back knappen som vanlig.
