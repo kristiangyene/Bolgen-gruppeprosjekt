@@ -1,6 +1,5 @@
 package com.example.sea
 
-
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
@@ -52,7 +51,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         }
 
         val locationName = getCity(p0!!.latitude, p0.longitude)
-        marker = map.addMarker(MarkerOptions().position(p0!!).title(locationName))
+        marker = map.addMarker(MarkerOptions().position(p0).title(locationName))
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(p0.latitude, p0.longitude), 8f), 2000, null)
     }
 

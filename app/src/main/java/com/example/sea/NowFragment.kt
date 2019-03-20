@@ -48,7 +48,7 @@ class NowFragment : Fragment() {
     fun getOtherWidgets(){
         val parameters = arrayOf(
             resources.getString(R.string.navigation_drawer_tide),
-            resources.getString(R.string.navigation_drawer_temperature),
+            "Grader",
             resources.getString(R.string.navigation_drawer_weather),
             resources.getString(R.string.navigation_drawer_fog),
             resources.getString(R.string.navigation_drawer_humidity),

@@ -27,7 +27,7 @@ class NowAdapter(private val elementList: ArrayList<Widget>) : RecyclerView.Adap
             "Vind" -> holder.icon.setImageResource(R.drawable.wind)
             "Bølgehøyde" -> holder.icon.setImageResource(R.drawable.waves)
             "Tidevann" -> holder.icon.setImageResource(R.drawable.tide)
-            "Temperatur" -> holder.icon.setImageResource(R.drawable.thermometer)
+            "Grader" -> holder.icon.setImageResource(R.drawable.thermometer)
             "Nedbør" -> holder.icon.setImageResource(R.drawable.drop)
             "Tåke" -> holder.icon.setImageResource(R.drawable.fog)
             "Fuktighet" -> holder.icon.setImageResource(R.drawable.humidity)

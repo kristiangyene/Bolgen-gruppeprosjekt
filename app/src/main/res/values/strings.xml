@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bølgen</string>
+    <string name="app_name" translatable="false">Bølgen</string>
     <string name="background_image">backgrunnsbilde</string>
     <string name="title_activity_maps">Map</string>
     <string name="start_maps_button">start maps</string>
@@ -11,6 +11,7 @@
     <string name="navigation_drawer_measurments">Måleenheter</string>
     <string name="navigation_drawer_ce_mark">CE merking</string>
     <string name="navigation_drawer_temperature">Temperatur</string>
+    <string name="navigation_drawer_temperature2">Grader</string>
     <string name="navigation_drawer_wind">Vind</string>
     <string name="navigation_drawer_wind_speed">Vindstyrke</string>
     <string name="navigation_drawer_visibility">Synlighet</string>

@@ -308,7 +308,7 @@ class MainActivity : AppCompatActivity() {
                 builder.setTitle(getString(R.string.navigation_drawer_weatherpreferences))
                 val parameters = arrayOf(
                     getString(R.string.navigation_drawer_tide),
-                    getString(R.string.navigation_drawer_temperature),
+                    getString(R.string.navigation_drawer_temperature2),
                     getString(R.string.navigation_drawer_weather),
                     getString(R.string.navigation_drawer_fog),
                     getString(R.string.navigation_drawer_humidity),
