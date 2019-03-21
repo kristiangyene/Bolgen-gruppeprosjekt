@@ -15,18 +15,35 @@ import android.view.MenuItem
 import android.widget.TextView
 import kotlinx.android.synthetic.main.view_pager.*
 import kotlinx.android.synthetic.main.navigation_menu_items.*
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.LatLng
+import android.location.Geocoder
+import android.widget.EditText
+import android.location.Address;
+import android.support.design.widget.BottomNavigationView
+import android.support.v7.app.ActionBar
+import android.view.View
+import com.google.android.gms.maps.GoogleMap
+import java.io.IOException;
+import kotlin.collections.List;
+
 
 // TODO: appen vil kræsje hvis man bruker andre språk. Endre sharedpreference keysa
 class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var sharedPreferences: SharedPreferences
     private val fileName = "com.example.sea"
+    private lateinit var mMap: GoogleMap
+
+    lateinit var toolbar_bottom: ActionBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
+        toolbar_bottom = supportActionBar!!
+        //val bottomNavigation: BottomNavigationView = findViewById(R.id.navigation)
         sharedPreferences = this.getSharedPreferences(fileName, Context.MODE_PRIVATE)
         //sjekker om den har blitt kjørt før
         if (sharedPreferences.getBoolean("firstTime", true)) {
@@ -62,9 +79,62 @@ class MainActivity : AppCompatActivity() {
         // Tab-ene får også riktig tittel når metoden onPageTitle() kalles
         tabs.setupWithViewPager(viewpager)
         RetrofitClient().getClient()
+        //navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
     }
 
+/*    fun onMapSearch(view: View) {
+        val locationSearch = findViewById(R.id.editText) as EditText
+        val location = locationSearch.text.toString()
+        var addressList: List<Address>? = null
+
+        if (location != null || location != "") {
+            val geocoder = Geocoder(this)
+            //val geocoder = Geocoder(this)
+            try {
+                addressList = geocoder.getFromLocationName(location, 1)
+                //addressList = geocoder.getFromLocationName(location, 1)
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+            val address = addressList!![0]
+            val latLng = LatLng(address.getLatitude(), address.getLongitude())
+            mMap.addMarker(MarkerOptions().position(latLng).title("Marker"))
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+        }
+    }*/
+
+
+    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        when (item.itemId) {
+            R.id.nav_weather -> {
+                supportFragmentManager.beginTransaction().replace(R.id.container, NowFragment(), NowFragment().javaClass.simpleName)
+                    .commit()
+                //tabs!!.visibility = View.VISIBLE
+
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.nav_search -> {
+                //supportFragmentManager.beginTransaction().replace(R.id.container, HourlyFragment(), HourlyFragment().javaClass.simpleName)
+                    //.commit()
+                //tabs!!.visibility = View.GONE
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.nav_map -> {
+                supportFragmentManager.beginTransaction().replace(R.id.container, MapFragment(), MapFragment().javaClass.simpleName)
+                    .commit()
+                //tabs!!.visibility = View.GONE
+                return@OnNavigationItemSelectedListener true
+            }
+        }
+        false
+    }
+
+
     // oppdaterer previewen i navigation draweren først man starter appen
+
     private fun updateTextViewStart(position: Int) {
         val inflaterLayout = layoutInflater.inflate(R.layout.navigation_menu_items, root_nav_preview, false)
 
