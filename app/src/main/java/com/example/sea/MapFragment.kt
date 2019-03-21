@@ -19,10 +19,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.OnSuccessListener
 import java.io.IOException
 import java.util.*
@@ -100,6 +97,17 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
             fusedLocationClient.lastLocation.addOnSuccessListener(this)
         }
 
+        // Lager en LatLngBound som inkluderer Norge.
+        val Norway = LatLngBounds(
+            LatLng(52.177844, -15.245368),
+            LatLng(81.685035, 49.537870)
+        )
+
+        // Begrenser kamera rundt Norge
+        map.setLatLngBoundsForCameraTarget(Norway)
+        map.setMinZoomPreference(4.0f)
+
+        // Setter map style
         val style = MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_style)
         map.setMapStyle(style)
 
