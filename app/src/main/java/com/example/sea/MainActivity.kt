@@ -15,7 +15,6 @@ import android.view.MenuItem
 import android.widget.TextView
 import kotlinx.android.synthetic.main.view_pager.*
 import kotlinx.android.synthetic.main.navigation_menu_items.*
-import android.support.design.widget.BottomNavigationView
 
 // TODO: appen vil kræsje hvis man bruker andre språk. Endre sharedpreference keysa
 class MainActivity : AppCompatActivity() {
@@ -27,11 +26,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
-        if(savedInstanceState == null) {
-            supportFragmentManager.beginTransaction().replace(R.id.container, NowFragment(), NowFragment().javaClass.simpleName)
-                .commit()
-        }
+//        supportActionBar?.title = "title"
 
         sharedPreferences = this.getSharedPreferences(fileName, Context.MODE_PRIVATE)
         //sjekker om den har blitt kjørt før
@@ -49,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        for(i in 1 .. 4) {
+        for(i in 0 .. 4) {
             updateTextViewStart(i)
         }
 
@@ -61,46 +56,46 @@ class MainActivity : AppCompatActivity() {
 
         // View Pager tillater brukeren å sveipe mellom fragmenter
         // Oppretter en adapter som vet hvilken fragment som skal vises på hver side
-        val adapter = PagerAdapter(supportFragmentManager)
+        val adapter = PagerAdapter(supportFragmentManager, this)
         viewpager.adapter = adapter
 
         // Kobler sammen tab-en med view pageren. Tab-en vil oppdateres når brukeren sveiper, og når den blir klikket på.
         // Tab-ene får også riktig tittel når metoden onPageTitle() kalles
         tabs.setupWithViewPager(viewpager)
         RetrofitClient().getClient()
+
         //navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
     }
 
 
 
-    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.nav_weather -> {
-                supportFragmentManager.beginTransaction().replace(R.id.container, NowFragment(), NowFragment().javaClass.simpleName)
-                    .commit()
-                //tabs!!.visibility = View.VISIBLE
-
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.nav_search -> {
-                //supportFragmentManager.beginTransaction().replace(R.id.container, HourlyFragment(), HourlyFragment().javaClass.simpleName)
-                    //.commit()
-                //tabs!!.visibility = View.GONE
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.nav_map -> {
-                supportFragmentManager.beginTransaction().replace(R.id.container, MapFragment(), MapFragment().javaClass.simpleName)
-                    .commit()
-                //tabs!!.visibility = View.GONE
-                return@OnNavigationItemSelectedListener true
-            }
-        }
-        false
-    }
+//    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+//        when (item.itemId) {
+//            R.id.nav_weather -> {
+//                supportFragmentManager.beginTransaction().replace(R.id.container, NowFragment(), NowFragment().javaClass.simpleName)
+//                    .commit()
+//                //tabs!!.visibility = View.VISIBLE
+//
+//                return@OnNavigationItemSelectedListener true
+//            }
+//            R.id.nav_search -> {
+//                //supportFragmentManager.beginTransaction().replace(R.id.container, HourlyFragment(), HourlyFragment().javaClass.simpleName)
+//                    //.commit()
+//                //tabs!!.visibility = View.GONE
+//                return@OnNavigationItemSelectedListener true
+//            }
+//            R.id.nav_map -> {
+//                supportFragmentManager.beginTransaction().replace(R.id.container, MapFragment(), MapFragment().javaClass.simpleName)
+//                    .commit()
+//                //tabs!!.visibility = View.GONE
+//                return@OnNavigationItemSelectedListener true
+//            }
+//        }
+//        false
+//    }
 
 
     // oppdaterer previewen i navigation draweren først man starter appen
-
     private fun updateTextViewStart(position: Int) {
         val inflaterLayout = layoutInflater.inflate(R.layout.navigation_menu_items, root_nav_preview, false)
 
@@ -361,7 +356,6 @@ class MainActivity : AppCompatActivity() {
                     // Legger til widgets for valgte parametre
                     menuItem.isChecked = false
                     recreate()
-
                 }
             }
         }
