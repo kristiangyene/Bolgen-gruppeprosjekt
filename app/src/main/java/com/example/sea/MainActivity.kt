@@ -1,7 +1,6 @@
 package com.example.sea
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -13,21 +12,11 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
-import android.view.View
 import android.widget.TextView
 import kotlinx.android.synthetic.main.view_pager.*
-import android.view.LayoutInflater
-import android.widget.Toast
 import kotlinx.android.synthetic.main.navigation_menu_items.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.gson.GsonConverterFactory.*
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 
-// TODO: appen vil kræsje hvis man bruker andre språk. Endre fra keysa
+// TODO: appen vil kræsje hvis man bruker andre språk. Endre sharedpreference keysa
 class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var sharedPreferences: SharedPreferences
@@ -72,31 +61,7 @@ class MainActivity : AppCompatActivity() {
         // Kobler sammen tab-en med view pageren. Tab-en vil oppdateres når brukeren sveiper, og når den blir klikket på.
         // Tab-ene får også riktig tittel når metoden onPageTitle() kalles
         tabs.setupWithViewPager(viewpager)
-        val client = Retrofit.Builder()
-            .baseUrl("https://in2000-apiproxy.ifi.uio.no/" )
-            .addConverterFactory(SimpleXmlConverterFactory.create())
-            .build()
-            .create(WeatherService::class.java)
-
-        val weather = client.getWeather(60.1, 9.58, 70)
-        weather.enqueue(object : Callback<Locationforecast>
-        {
-            //henter bare null verdier skal fikses
-            override fun onResponse(call: Call<Locationforecast>, response: Response<Locationforecast>) {
-                Toast.makeText(this@MainActivity, "jaa", Toast.LENGTH_SHORT).show()
-                val product =  response.body()?.product?.time
-                Toast.makeText(this@MainActivity, product?.get(1).toString(), Toast.LENGTH_SHORT).show()
-                val list = product?.get(0)?.location
-                val altitude = list?.altitude
-                val longitude = list?.longitude
-                val latitude = list?.latitude
-                Toast.makeText(this@MainActivity, list.toString(), Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onFailure(call: Call<Locationforecast>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "rip", Toast.LENGTH_SHORT).show()
-            }
-        })
+        RetrofitClient().getClient()
     }
 
     // oppdaterer previewen i navigation draweren først man starter appen
@@ -198,11 +163,6 @@ class MainActivity : AppCompatActivity() {
                 nav_view.menu.findItem(R.id.pressure).actionView = inflaterLayout
             }
         }
-    }
-
-    fun startMap(view : View) {
-        val intent = Intent(this, MapsActivity::class.java)
-        startActivity(intent)
     }
 
     // lukker navigation draweren hvis den er åpen og man trykker på back knappen, ellers funker back knappen som vanlig.
@@ -338,7 +298,13 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.værpreferanser -> {
                 builder.setTitle(getString(R.string.navigation_drawer_weatherpreferences))
-                val parameters = arrayOf(getString(R.string.navigation_drawer_tide), getString(R.string.navigation_drawer_temperature_2), getString(R.string.navigation_drawer_weather), getString(R.string.navigation_drawer_fog), getString(R.string.navigation_drawer_humidity), getString(R.string.navigation_drawer_cloudiness))
+                val parameters = arrayOf(
+                    getString(R.string.navigation_drawer_tide),
+                    getString(R.string.navigation_drawer_temperature2),
+                    getString(R.string.navigation_drawer_weather),
+                    getString(R.string.navigation_drawer_fog),
+                    getString(R.string.navigation_drawer_humidity),
+                    getString(R.string.navigation_drawer_cloudiness))
 
                 for(item in 0 until parameters.size) {
                     if(sharedPreferences.getBoolean(parameters[item], false)) {
@@ -358,6 +324,8 @@ class MainActivity : AppCompatActivity() {
                 builder.setPositiveButton(R.string.navigation_drawer_ok) {_, _ ->
                     // Legger til widgets for valgte parametre
                     menuItem.isChecked = false
+                    recreate()
+
                 }
             }
         }
