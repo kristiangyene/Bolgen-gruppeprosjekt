@@ -1,7 +1,6 @@
 package com.example.sea
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -13,13 +12,11 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
-import android.view.View
 import android.widget.TextView
 import kotlinx.android.synthetic.main.view_pager.*
-import android.widget.Toast
 import kotlinx.android.synthetic.main.navigation_menu_items.*
 
-// TODO: appen vil kræsje hvis man bruker andre språk. Endre fra keysa
+// TODO: appen vil kræsje hvis man bruker andre språk. Endre sharedpreference keysa
 class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var sharedPreferences: SharedPreferences
@@ -64,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         // Kobler sammen tab-en med view pageren. Tab-en vil oppdateres når brukeren sveiper, og når den blir klikket på.
         // Tab-ene får også riktig tittel når metoden onPageTitle() kalles
         tabs.setupWithViewPager(viewpager)
-        DataAPI().fetchData(this)
+        RetrofitClient().getClient()
     }
 
     // oppdaterer previewen i navigation draweren først man starter appen
@@ -166,11 +163,6 @@ class MainActivity : AppCompatActivity() {
                 nav_view.menu.findItem(R.id.pressure).actionView = inflaterLayout
             }
         }
-    }
-
-    fun startMap(view : View) {
-        val intent = Intent(this, MapsActivity::class.java)
-        startActivity(intent)
     }
 
     // lukker navigation draweren hvis den er åpen og man trykker på back knappen, ellers funker back knappen som vanlig.
