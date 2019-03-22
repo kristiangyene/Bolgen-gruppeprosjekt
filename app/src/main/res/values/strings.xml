@@ -31,8 +31,11 @@
     <string name="navigation_drawer_pressure_base">HPa</string>
     <string name="navigation_drawer_now">Nå</string>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- Strings for the tab -->
+    <string name="tabs_now">Nå</string>
+    <string name="tabs_time">Time</string>
+    <string name="tabs_day">Uke</string>
+    <string name="tabs_maps">Kart</string>
 </resources>
