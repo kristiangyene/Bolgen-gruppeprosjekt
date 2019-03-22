@@ -327,7 +327,7 @@ class MainActivity : AppCompatActivity() {
                     menuItem.isChecked = false
                 }
             }
-            R.id.værpreferanser -> {
+            R.id.preferences -> {
                 builder.setTitle(getString(R.string.navigation_drawer_weatherpreferences))
                 val parameters = arrayOf(
                     getString(R.string.navigation_drawer_tide),

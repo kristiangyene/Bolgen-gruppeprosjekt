@@ -24,18 +24,19 @@
                       android:title="@string/navigation_drawer_visibility"/>
                 <item android:id="@+id/pressure"
                       android:icon="@drawable/ic_gauge"
-                      android:title="Trykk"/>
+                      android:title="@string/navigation_drawer_pressure"/>
             </group>
         </menu>
     </item>
 
-    <item android:title="Nå">
+    <item android:title="@string/navigation_drawer_now">
         <menu>
             <group
                     android:checkableBehavior="single"
                     android:id="@+id/groupTwo">
-                <item android:id="@+id/værpreferanser"
-                      android:title="Værpreferanser"/>
+                <item android:id="@+id/preferences"
+                      android:icon="@drawable/ic_preferences"
+                      android:title="@string/navigation_drawer_weatherpreferences"/>
             </group>
         </menu>
     </item>

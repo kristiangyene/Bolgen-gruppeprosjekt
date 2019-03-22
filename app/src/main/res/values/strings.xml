@@ -29,6 +29,7 @@
     <string name="navigation_drawer_wind_base">Km/h</string>
     <string name="navigation_drawer_visibility_base">Km</string>
     <string name="navigation_drawer_pressure_base">HPa</string>
+    <string name="navigation_drawer_now">Nå</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
