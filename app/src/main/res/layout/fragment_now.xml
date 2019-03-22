@@ -9,6 +9,24 @@
         android:id="@+id/now_fragment"
         tools:context=".NowFragment">
 
+    <android.support.v7.widget.CardView
+            android:id="@+id/card"
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            app:cardBackgroundColor="#000000"
+            app:cardElevation="3dp"
+            tools:ignore="MissingConstraints">
+        <ProgressBar
+                android:id="@+id/determinateBar"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="7dp"
+                android:layout_marginTop="50dp"
+                android:progress="100"
+                android:max="100"
+                android:progressDrawable="@drawable/custom_progress"/>
+    </android.support.v7.widget.CardView>
+
 
 
 
@@ -17,10 +35,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:paddingTop="270dp"
+            android:paddingTop="150dp"
             android:clipToPadding="false"
     />
-
 
 
 

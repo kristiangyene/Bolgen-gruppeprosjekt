@@ -32,9 +32,14 @@ class NowFragment : Fragment() {
         strings = hashMapOf(resources.getString(R.string.navigation_drawer_visibility) to "",
             resources.getString(R.string.navigation_drawer_wind) to "", resources.getString(R.string.navigation_drawer_wave) to "")
 
+
         //adding default widgets
+        var element = Widget("Skiftende bris. Oppholdsvær. Lokal tåke. Utpå ettermiddagen litt sludd regn. Moderat sikt i nedbør.\n" +
+                "Bølgehøyde: Omkring 0,5 m.", "")
+        listOfElements.add(element)
+
         strings.forEach{ (key, value) ->
-            val element = Widget(value, key)
+            element = Widget(value, key)
             listOfElements.add(element)
         }
         getOtherWidgets()
