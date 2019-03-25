@@ -28,6 +28,7 @@
                 android:id="@+id/tabs"
                 app:tabTextColor="@android:color/black"
                 app:tabSelectedTextColor="@color/colorPrimary"
+                app:tabRippleColor="@color/colorPrimary"
                 app:tabIndicatorColor="@color/colorPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
