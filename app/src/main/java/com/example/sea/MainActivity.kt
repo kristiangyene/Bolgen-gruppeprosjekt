@@ -1,18 +1,26 @@
 package com.example.sea
 
+import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
+import android.telephony.SmsManager
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import com.ebanx.swipebtn.SwipeButton
 import kotlinx.android.synthetic.main.view_pager.*
 import kotlinx.android.synthetic.main.navigation_menu_items.*
 
@@ -21,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var sharedPreferences: SharedPreferences
     private val fileName = "com.example.sea"
+    private val permission = 1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +75,32 @@ class MainActivity : AppCompatActivity() {
         RetrofitClient().getClient()
 
         //navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
+        val SOSknapp =findViewById<SwipeButton>(R.id.swipe_btn)
+        SOSknapp.setOnActiveListener{
+            if (checkPermission()) {
+                val smsManager = SmsManager.getDefault()
+                val tlf = "46954940"
+                smsManager.sendTextMessage(tlf, null, "test", null, null)
+                Toast.makeText(this@MainActivity, "tekstmelding sendt til 46954940", Toast.LENGTH_SHORT).show()
+                SOSknapp.toggleState()
+            }
+            else {
+                Toast.makeText(this@MainActivity, "har ikke lov å sende melding", Toast.LENGTH_SHORT).show()
+                requestPermission()
+            }
+        }
     }
+
+
+    private fun checkPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
+    }
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), permission)
+    }
+
+
 
 
 
@@ -379,5 +414,11 @@ class MainActivity : AppCompatActivity() {
         val mDialog = builder.create()
         mDialog.setCancelable(false)
         mDialog.show()
+        if (checkPermission()) {
+            Log.e("permission", "Permission already granted.")
+        }
+        else {
+            requestPermission()
+        }
     }
 }

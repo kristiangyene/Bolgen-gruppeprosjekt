@@ -31,14 +31,28 @@
                 android:orientation="horizontal"
                 android:padding="16dp">
 
-            <com.mahfa.dnswitch.DayNightSwitch
-                    android:id="@+id/day_night_switch"
-                    android:layout_width="60dp"
-                    android:layout_height="31.5dp"
-                    android:layout_gravity="center|start" app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+            <com.ebanx.swipebtn.SwipeButton
+            android:id="@+id/swipe_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:inner_text="SOS"
+            app:inner_text_color="@android:color/holo_red_dark"
+            app:inner_text_size="16sp"
+            app:inner_text_top_padding="18dp"
+            app:inner_text_bottom_padding="18dp"
+            app:inner_text_background="@drawable/shape_rounded"
+            app:button_image_height="60dp"
+            app:button_image_width="60dp"
+            app:button_left_padding="20dp"
+            app:button_right_padding="20dp"
+            app:button_top_padding="20dp"
+            app:button_bottom_padding="20dp"
+            app:button_background="@drawable/shape_button"
+            app:initial_state="disabled"
+            app:has_activate_state="true"
+            />
         </FrameLayout>
 
 
