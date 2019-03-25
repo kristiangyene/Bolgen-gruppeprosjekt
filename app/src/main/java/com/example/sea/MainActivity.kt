@@ -1,18 +1,26 @@
 package com.example.sea
 
+import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
+import android.telephony.SmsManager
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import com.ebanx.swipebtn.SwipeButton
 import kotlinx.android.synthetic.main.view_pager.*
 import kotlinx.android.synthetic.main.navigation_menu_items.*
 
@@ -21,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var sharedPreferences: SharedPreferences
     private val fileName = "com.example.sea"
+    private val permission = 1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         drawerLayout = findViewById(R.id.drawer)
-        val checkedItems = booleanArrayOf(false, false, false, false, false, false)
+        val checkedItems = booleanArrayOf(false, false, false, false, false, false, false)
         // håndterer klikk på itemene i navigation draweren
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener { menuItem ->
@@ -65,7 +75,32 @@ class MainActivity : AppCompatActivity() {
         RetrofitClient().getClient()
 
         //navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
+        val SOSknapp =findViewById<SwipeButton>(R.id.swipe_btn)
+        SOSknapp.setOnActiveListener{
+            if (checkPermission()) {
+                val smsManager = SmsManager.getDefault()
+                val tlf = "46954940"
+                smsManager.sendTextMessage(tlf, null, "test", null, null)
+                Toast.makeText(this@MainActivity, "tekstmelding sendt til 46954940", Toast.LENGTH_SHORT).show()
+                SOSknapp.toggleState()
+            }
+            else {
+                Toast.makeText(this@MainActivity, "har ikke lov å sende melding", Toast.LENGTH_SHORT).show()
+                requestPermission()
+            }
+        }
     }
+
+
+    private fun checkPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
+    }
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), permission)
+    }
+
+
 
 
 
@@ -215,10 +250,10 @@ class MainActivity : AppCompatActivity() {
             R.id.ce -> {
                 builder.setTitle(R.string.navigation_drawer_ce_mark)
                 // Midlertidlig løsning på beskrivelse av CE - merking
-                val A = "A - Havgående båter skal tåle en vindstyrke på mer enn 20,8 sekundmeter og en bølgehøyde på mer enn fire meter."
-                val B = "B - Båter til bruk utenfor kysten skal tåle til og med 20,7 sekundmeter og en bølgehøyde til fire meter."
-                val C = "C - Båter nær kysten skal tåle til og med 13,8 sekundmeter og bølger til og med to meter"
-                val D = "D - Båter i beskyttet farvann tåler mindre enn 7,7 sekundmeter i vindstyrke og til og med 0,3 meter i bølgehøyde."
+                val A = "A - Vindstyrke: < 20,8sm Bølgehøyde: < 4m"
+                val B = "B - Vindstyrke: 20,7sm Bølgehøyde: 4m"
+                val C = "C - Vindstyrke: 13,8sm Bølgehøyde: 2m"
+                val D = "D - Vindstyrke: > 7,7sm Bølgehøyde: 0,3m"
                 val measurements = arrayOf(A, B, C, D)
                 val position : Int?
 
@@ -335,7 +370,8 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.navigation_drawer_weather),
                     getString(R.string.navigation_drawer_fog),
                     getString(R.string.navigation_drawer_humidity),
-                    getString(R.string.navigation_drawer_cloudiness))
+                    getString(R.string.navigation_drawer_cloudiness),
+                    getString(R.string.navigation_drawer_pressure))
 
                 for(item in 0 until parameters.size) {
                     if(sharedPreferences.getBoolean(parameters[item], false)) {
@@ -379,5 +415,11 @@ class MainActivity : AppCompatActivity() {
         val mDialog = builder.create()
         mDialog.setCancelable(false)
         mDialog.show()
+        if (checkPermission()) {
+            Log.e("permission", "Permission already granted.")
+        }
+        else {
+            requestPermission()
+        }
     }
 }

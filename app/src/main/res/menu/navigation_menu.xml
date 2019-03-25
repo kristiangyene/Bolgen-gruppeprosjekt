@@ -37,6 +37,12 @@
                 <item android:id="@+id/preferences"
                       android:icon="@drawable/ic_preferences"
                       android:title="@string/navigation_drawer_weatherpreferences"/>
+
+                <!--<item-->
+                <!--android:id="@+id/settingsss"-->
+                <!--android:title="Setting"-->
+                <!--android:icon="@drawable/ic_settings_black_24dp"-->
+                <!--/>-->
             </group>
         </menu>
     </item>
