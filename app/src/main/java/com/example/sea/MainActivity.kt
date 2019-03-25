@@ -371,7 +371,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.navigation_drawer_fog),
                     getString(R.string.navigation_drawer_humidity),
                     getString(R.string.navigation_drawer_cloudiness),
-                    getString(R.string.navigation_drawer_pressure))
+                    getString(R.string.navigation_drawer_pressure2))
 
                 for(item in 0 until parameters.size) {
                     if(sharedPreferences.getBoolean(parameters[item], false)) {
