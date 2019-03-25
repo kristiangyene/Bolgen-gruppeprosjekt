@@ -35,4 +35,10 @@ interface WeatherService {
                    @Query("date") date: String,
                    @Query("offset") offset: String,
                    @Query("days") days: Int?) : Call<SunData>
+
+    @Headers("User-Agent: Gruppe17")
+    @GET("weatherapi/tidalwater/1.1/")
+    fun getTidalWater(@Query("harbor") harbor: String,
+                      @Query("content_type") contentType: String,
+                      @Query("datatype") datatype: String) : Call<String>
 }
