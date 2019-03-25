@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.location.Location
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -14,13 +15,12 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
 import android.telephony.SmsManager
-import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.ebanx.swipebtn.SwipeButton
+import com.google.android.gms.location.*
 import kotlinx.android.synthetic.main.view_pager.*
 import kotlinx.android.synthetic.main.navigation_menu_items.*
 
@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private val fileName = "com.example.sea"
     private val permission = 1
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,28 +75,52 @@ class MainActivity : AppCompatActivity() {
 
         //navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-        val SOSknapp =findViewById<SwipeButton>(R.id.swipe_btn)
-        SOSknapp.setOnActiveListener{
-            if (checkPermission()) {
+
+
+
+        val sosButton =findViewById<SwipeButton>(R.id.swipe_btn)
+        sosButton.setOnActiveListener{
+            if (checkPermission("sms")) {
                 val smsManager = SmsManager.getDefault()
-                val tlf = "46954940"
-                smsManager.sendTextMessage(tlf, null, "test", null, null)
-                Toast.makeText(this@MainActivity, "tekstmelding sendt til 46954940", Toast.LENGTH_SHORT).show()
-                SOSknapp.toggleState()
+                val phoneNumber = "46954940"
+                smsManager.sendTextMessage(phoneNumber, null, "test", null, null)
+                Toast.makeText(this@MainActivity, "Tekstmelding sendt til 46954940", Toast.LENGTH_SHORT).show()
             }
             else {
-                Toast.makeText(this@MainActivity, "har ikke lov å sende melding", Toast.LENGTH_SHORT).show()
-                requestPermission()
+                Toast.makeText(this@MainActivity, "Har ikke tilatelse til å sende melding!", Toast.LENGTH_LONG).show()
+                requestPermission("sms")
+            }
+            sosButton.toggleState()
+        }
+    }
+
+    private fun checkPermission(permissionOption : String): Boolean {
+        when(permissionOption) {
+            "sms" -> {
+                return ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
+            }
+            "location" -> {
+                return ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            }
+            else -> {
+                return ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
+                        && ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
             }
         }
     }
 
-
-    private fun checkPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
-    }
-    private fun requestPermission() {
-        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), permission)
+    private fun requestPermission(permissionOption : String) {
+        when (permissionOption) {
+            "sms" -> {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), permission)
+            }
+            "location" -> {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), permission)
+            }
+            else -> {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_COARSE_LOCATION), permission)
+            }
+        }
     }
 
 
@@ -402,10 +425,10 @@ class MainActivity : AppCompatActivity() {
         //velger CE merke
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.navigation_drawer_ce_mark)
-        val A = "A - Havgående båter skal tåle en vindstyrke på mer enn 20,8 sekundmeter og en bølgehøyde på mer enn fire meter."
-        val B = "B - Båter til bruk utenfor kysten skal tåle til og med 20,7 sekundmeter og en bølgehøyde til fire meter."
-        val C = "C - Båter nær kysten skal tåle til og med 13,8 sekundmeter og bølger til og med to meter"
-        val D = "D - Båter i beskyttet farvann tåler mindre enn 7,7 sekundmeter i vindstyrke og til og med 0,3 meter i bølgehøyde."
+        val A = "A - Vindstyrke: < 20,8sm Bølgehøyde: < 4m"
+        val B = "B - Vindstyrke: 20,7sm Bølgehøyde: 4m"
+        val C = "C - Vindstyrke: 13,8sm Bølgehøyde: 2m"
+        val D = "D - Vindstyrke: > 7,7sm Bølgehøyde: 0,3m"
         val measurements = arrayOf(A, B, C, D)
         builder.setSingleChoiceItems(measurements, 0) { dialog, _ ->
             sharedPreferences.edit().putString(getString(R.string.navigation_drawer_ce_mark), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
@@ -415,11 +438,9 @@ class MainActivity : AppCompatActivity() {
         val mDialog = builder.create()
         mDialog.setCancelable(false)
         mDialog.show()
-        if (checkPermission()) {
-            Log.e("permission", "Permission already granted.")
-        }
-        else {
-            requestPermission()
+
+        if (!checkPermission("both")) {
+            requestPermission("both")
         }
     }
 }
