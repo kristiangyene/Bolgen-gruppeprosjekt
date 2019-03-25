@@ -13,11 +13,17 @@ interface WeatherService {
     fun getOceanData(@Query("lat") lat: Double,
                    @Query("lon") lon: Double) : Call<OceanData>
 
+    @Headers("User-Agent: Gruppe17")
     @GET("weatherapi/locationforecast/1.9/.json")
     fun getLocationData(@Query("lat") lat: Double,
                         @Query("lon") lon: Double,
                         @Query("msl") msl: Double) : Call<LocationData> // msl parameteret er valgfri, send inn null hvis du ikke vil sende inn msl verdi
 
+    @Headers("User-Agent: Gruppe17")
     @GET("weatherapi/spotwind/1.0/.json")
     fun getWindData() : Call<WindData>
+
+    @Headers("User-Agent: Gruppe17")
+    @GET("weatherapi/textforecast/2.0/")
+    fun getTextData(@Query("forecast") forecast: String) : Call<TextData>
 }
