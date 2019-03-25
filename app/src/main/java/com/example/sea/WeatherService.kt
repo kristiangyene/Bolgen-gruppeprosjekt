@@ -26,4 +26,13 @@ interface WeatherService {
     @Headers("User-Agent: Gruppe17")
     @GET("weatherapi/textforecast/2.0/")
     fun getTextData(@Query("forecast") forecast: String) : Call<TextData>
+
+    @Headers("User-Agent: Gruppe17")
+    @GET("weatherapi/sunrise/2.0/")
+    fun getSunData(@Query("lat") lat: Double,
+                   @Query("lon") lon: Double,
+                   @Query("height") height: Int?,
+                   @Query("date") date: String,
+                   @Query("offset") offset: String,
+                   @Query("days") days: Int?) : Call<SunData>
 }
