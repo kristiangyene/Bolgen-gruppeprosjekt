@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         drawerLayout = findViewById(R.id.drawer)
-        val checkedItems = booleanArrayOf(false, false, false, false, false, false)
+        val checkedItems = booleanArrayOf(false, false, false, false, false, false, false)
         // håndterer klikk på itemene i navigation draweren
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener { menuItem ->
@@ -250,10 +250,10 @@ class MainActivity : AppCompatActivity() {
             R.id.ce -> {
                 builder.setTitle(R.string.navigation_drawer_ce_mark)
                 // Midlertidlig løsning på beskrivelse av CE - merking
-                val A = "A - Havgående båter skal tåle en vindstyrke på mer enn 20,8 sekundmeter og en bølgehøyde på mer enn fire meter."
-                val B = "B - Båter til bruk utenfor kysten skal tåle til og med 20,7 sekundmeter og en bølgehøyde til fire meter."
-                val C = "C - Båter nær kysten skal tåle til og med 13,8 sekundmeter og bølger til og med to meter"
-                val D = "D - Båter i beskyttet farvann tåler mindre enn 7,7 sekundmeter i vindstyrke og til og med 0,3 meter i bølgehøyde."
+                val A = "A - Vindstyrke: < 20,8sm Bølgehøyde: < 4m"
+                val B = "B - Vindstyrke: 20,7sm Bølgehøyde: 4m"
+                val C = "C - Vindstyrke: 13,8sm Bølgehøyde: 2m"
+                val D = "D - Vindstyrke: > 7,7sm Bølgehøyde: 0,3m"
                 val measurements = arrayOf(A, B, C, D)
                 val position : Int?
 
@@ -370,7 +370,8 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.navigation_drawer_weather),
                     getString(R.string.navigation_drawer_fog),
                     getString(R.string.navigation_drawer_humidity),
-                    getString(R.string.navigation_drawer_cloudiness))
+                    getString(R.string.navigation_drawer_cloudiness),
+                    getString(R.string.navigation_drawer_pressure))
 
                 for(item in 0 until parameters.size) {
                     if(sharedPreferences.getBoolean(parameters[item], false)) {
