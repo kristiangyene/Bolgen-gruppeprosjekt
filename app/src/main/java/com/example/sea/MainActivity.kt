@@ -2,8 +2,10 @@ package com.example.sea
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -87,7 +89,14 @@ class MainActivity : AppCompatActivity() {
             }
             else {
                 Toast.makeText(this@MainActivity, "har ikke lov å sende melding", Toast.LENGTH_SHORT).show()
-                requestPermission()
+                val intent = Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("smsto: 46954940")  // This ensures only SMS apps respond
+                    putExtra("sms_body", "test")
+                }
+
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                }
             }
         }
     }
@@ -99,10 +108,6 @@ class MainActivity : AppCompatActivity() {
     private fun requestPermission() {
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), permission)
     }
-
-
-
-
 
 //    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 //        when (item.itemId) {
@@ -374,7 +379,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.navigation_drawer_pressure2))
 
                 for(item in 0 until parameters.size) {
-                    if(sharedPreferences.getBoolean(parameters[item], false)) {
+                    if(sharedPreferences.getBoolean(parameters[item],false)) {
                         checkedItems[item] = true
                     }
                 }
