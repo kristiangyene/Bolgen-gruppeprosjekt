@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import net.cachapa.expandablelayoutdemo.HourlyFragment
 
 class PagerAdapter(fm : FragmentManager) : FragmentStatePagerAdapter(fm) {
 
@@ -17,7 +18,7 @@ class PagerAdapter(fm : FragmentManager) : FragmentStatePagerAdapter(fm) {
     override fun getItem(p0: Int): Fragment {
         return when(p0) {
             0 -> NowFragment()
-            1 -> HourlyFragment()
+            1 -> HourlyFragment1()
             2 -> WeeklyFragment()
             else -> {
                 MapFragment()

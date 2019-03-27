@@ -38,7 +38,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-//        supportActionBar?.title = "title"
+        val bundle: Bundle? = intent.extras
+        val titleLocation: String? = bundle?.getString("Location")
+        supportActionBar?.title = titleLocation;
 
         sharedPreferences = this.getSharedPreferences(fileName, Context.MODE_PRIVATE)
         //sjekker om den har blitt kjørt før

@@ -1,5 +1,6 @@
 package com.example.sea
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
@@ -74,6 +75,10 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
             val address = addresses[0]
             // Fetch the address lines using getAddressLine, join them, and send them to the thread.
             val addressFragments = with(address) { (0..maxAddressLineIndex).map { getAddressLine(it)}}
+            Toast.makeText(activity!!, addressFragments[0], Toast.LENGTH_LONG).show()
+            val intent = Intent(activity!!, MainActivity::class.java)
+            intent.putExtra("Location", addressFragments[0])
+            startActivity(intent)
             return addressFragments.joinToString(separator = "\n")
         }
         return "Fant ikke addressen"
