@@ -1,9 +1,12 @@
 package com.example.sea
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.content.SharedPreferences
+import android.location.Location
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
@@ -15,23 +18,37 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.telephony.SmsManager
-import android.util.Log
-import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.ebanx.swipebtn.SwipeButton
-import kotlinx.android.synthetic.main.view_pager.*
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import com.google.android.gms.tasks.Task
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.navigation_menu_items.*
+import kotlinx.android.synthetic.main.view_pager.*
 
 // TODO: appen vil kræsje hvis man bruker andre språk. Endre sharedpreference keysa
 class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var sharedPreferences: SharedPreferences
     private val fileName = "com.example.sea"
-    private val permission = 1
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var lastLocation: Location
+    private lateinit var locationCallback: LocationCallback
+    private var locationUpdateState = false
+    private var locationStart = 0
+    private var locationRequest : LocationRequest? = null
+
+    companion object {
+        private const val SMS_PERMISSION = 1
+        private const val LOCATION_PERMISSION = 2
+        private const val BOTH_PERMISSION = 3
+        private const val REQUEST_CHECK_SETTINGS = 4
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,35 +98,173 @@ class MainActivity : AppCompatActivity() {
 
         //navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-        val SOSknapp =findViewById<SwipeButton>(R.id.swipe_btn)
-        SOSknapp.setOnActiveListener{
-            if (checkPermission()) {
+        createLocationRequest()
+
+
+        val sosButton =findViewById<SwipeButton>(R.id.swipe_btn)
+        sosButton.setOnActiveListener{
+            if (checkPermission("sms")) {
                 val smsManager = SmsManager.getDefault()
-                val tlf = "46954940"
-                smsManager.sendTextMessage(tlf, null, "test", null, null)
-                Toast.makeText(this@MainActivity, "tekstmelding sendt til 46954940", Toast.LENGTH_SHORT).show()
-                SOSknapp.toggleState()
+                val phoneNumber = "46954940"
+                smsManager.sendTextMessage(phoneNumber, null, "test", null, null)
+                Toast.makeText(this@MainActivity, "Tekstmelding sendt til 46954940", Toast.LENGTH_SHORT).show()
             }
             else {
-                Toast.makeText(this@MainActivity, "har ikke lov å sende melding", Toast.LENGTH_SHORT).show()
-                val intent = Intent(Intent.ACTION_SENDTO).apply {
-                    data = Uri.parse("smsto: 46954940")  // This ensures only SMS apps respond
-                    putExtra("sms_body", "test")
-                }
+                Toast.makeText(this@MainActivity, "Har ikke tilatelse til å sende melding!", Toast.LENGTH_LONG).show()
+              requestPermission("sms")
+            }
+            sosButton.toggleState()
+        }
+    }
 
-                if (intent.resolveActivity(packageManager) != null) {
-                    startActivity(intent)
+    private fun checkPermission(permissionOption : String): Boolean {
+        return when(permissionOption) {
+            "sms" -> {
+                ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
+            }
+            "location" -> {
+                ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            }
+            else -> {
+                (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
+                        && ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            }
+        }
+    }
+
+    private fun requestPermission(permissionOption : String) {
+        when (permissionOption) {
+            "sms" -> {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SMS_PERMISSION)
+            }
+            "location" -> {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_PERMISSION)
+            }
+            else -> {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_COARSE_LOCATION), BOTH_PERMISSION)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            LOCATION_PERMISSION -> {
+                if (!(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Toast.makeText(this@MainActivity, "Appen funker ikke uten posisjon tilgang", Toast.LENGTH_LONG).show()
+                }
+            }
+            BOTH_PERMISSION -> {
+                if (!(grantResults.isNotEmpty() && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
+                    Toast.makeText(this@MainActivity, "Appen funker ikke uten posisjon tilgang", Toast.LENGTH_LONG).show()
+                }
+                else if (!(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Toast.makeText(this@MainActivity, "Du kan endre tillatelsene i innstillinger", Toast.LENGTH_LONG).show()
+                }
+            }
+            SMS_PERMISSION -> {
+                if (!(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Toast.makeText(this@MainActivity, "Du kan endre tillatelsene i innstillinger", Toast.LENGTH_LONG).show()
+                  Toast.makeText(this@MainActivity, "har ikke lov å sende melding", Toast.LENGTH_SHORT).show()
+                  val intent = Intent(Intent.ACTION_SENDTO).apply {
+                      data = Uri.parse("smsto: 46954940")  // This ensures only SMS apps respond
+                      putExtra("sms_body", "test")
+                  }
+
+                  if (intent.resolveActivity(packageManager) != null) {
+                      startActivity(intent)
+                  }
+            }
+        }
+    }
+
+    private fun createLocationRequest() {
+        // lager en request, hvor den gir nøyaktig plassering, men samtidig ved å ikke bruke veldig mye strøm, og bruker som regel 300 ms på å motta posisjonoppdateringer
+        // interval angir hastigheten i millisekunder der appen foretrekker å motta posisjonsoppdateringer
+        locationRequest = LocationRequest.create()?.apply {
+            interval = 300
+            fastestInterval = 200
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            numUpdates = 1
+        }
+
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest!!)
+        val client: SettingsClient = LocationServices.getSettingsClient(this)
+        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+
+        // Kalle på API og hente brukerens posisjon bare hvis vi har både tillatelse til å hente enhetens posisjon og at lokasjon instillingen er på,
+        // Lokasjon instillingen er på og appen har tillatelse til å hente enhetens posisjon
+        task.addOnSuccessListener {
+            getLocation(locationRequest!!)
+        }
+
+        task.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException) {
+                // Lokasjon innstillingene er ikke tilfredsstilt
+                try {
+                    // viser en dialog som ber brukeren å skru på lokasjon innstillingen
+                    exception.startResolutionForResult(this@MainActivity, REQUEST_CHECK_SETTINGS)
+                } catch (sendEx: IntentSender.SendIntentException) {}
+            }
+        }
+    }
+
+    private fun getLocation(locationRequest : LocationRequest) {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        if(checkPermission("location")) {
+            // henter siste registrerte posisjon i enheten, posisjonen kan være null for ulike grunner, når bruker skrur av posisjon innstillingen
+            // sletter cache, eller at enheten aldri registrerte en posisjon. Retunerer null ganske sjeldent
+            fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
+                if (location != null) {
+                    locationUpdateState = false
+                    lastLocation = location
+                    locationStart = 1
+                    Toast.makeText(this, "Fant last location: " + lastLocation.latitude + ", " + lastLocation.longitude, Toast.LENGTH_LONG).show()
+                }
+                else {
+                    // Hvis enheten ikke finner siste posisjon, så opprettes en ny klient og ber om plasseringsoppdateringer
+                    locationUpdateState = true
+
+                    locationCallback = object : LocationCallback() {
+                        override fun onLocationResult(p0: LocationResult) {
+                            super.onLocationResult(p0)
+                            lastLocation = p0.lastLocation
+                            Toast.makeText(this@MainActivity, "${lastLocation.latitude} ,  ${lastLocation.longitude}", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
                 }
             }
         }
     }
 
-
-    private fun checkPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
+            if (resultCode == Activity.RESULT_OK) {
+                locationUpdateState = true
+                createLocationRequest()
+            }
+        }
     }
-    private fun requestPermission() {
-        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), permission)
+
+    private fun stopUpdate() {
+        if(locationUpdateState) {
+            fusedLocationClient.removeLocationUpdates(locationCallback)
+            locationUpdateState = false
+            locationStart = 1
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopUpdate()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(locationStart != 0) {
+            getLocation(locationRequest!!)
+        }
     }
 
 //    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -410,14 +565,14 @@ class MainActivity : AppCompatActivity() {
         //velger CE merke
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.navigation_drawer_ce_mark)
-        val A = "A - Havgående båter skal tåle en vindstyrke på mer enn 20,8 sekundmeter og en bølgehøyde på mer enn fire meter."
-        val B = "B - Båter til bruk utenfor kysten skal tåle til og med 20,7 sekundmeter og en bølgehøyde til fire meter."
-        val C = "C - Båter nær kysten skal tåle til og med 13,8 sekundmeter og bølger til og med to meter"
-        val D = "D - Båter i beskyttet farvann tåler mindre enn 7,7 sekundmeter i vindstyrke og til og med 0,3 meter i bølgehøyde."
 
+        val A = "A - Vindstyrke: < 20,8sm Bølgehøyde: < 4m"
+        val B = "B - Vindstyrke: 20,7sm Bølgehøyde: 4m"
+        val C = "C - Vindstyrke: 13,8sm Bølgehøyde: 2m"
+        val D = "D - Vindstyrke: > 7,7sm Bølgehøyde: 0,3m"
         var sjekk:Int? = null
-
         val measurements = arrayOf(A, B, C, D)
+
         builder.setSingleChoiceItems(measurements, 0) { dialog, _ ->
             sharedPreferences.edit().putString(getString(R.string.navigation_drawer_ce_mark), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
             updateTextViewStart(0)
@@ -427,12 +582,11 @@ class MainActivity : AppCompatActivity() {
         val mDialog = builder.create()
         mDialog.setCancelable(false)
         mDialog.show()
-        if (checkPermission()) {
-            Log.e("permission", "Permission already granted.")
+
+        if (!checkPermission("both")) {
+            requestPermission("both")
         }
-        else {
-            requestPermission()
-        }
+      
         if(sjekk == null) {
             return false
         }
