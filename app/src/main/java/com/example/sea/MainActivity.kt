@@ -18,7 +18,6 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.telephony.SmsManager
 import android.view.MenuItem
 import android.widget.TextView
@@ -41,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var locationCallback: LocationCallback
     private var locationUpdateState = false
     private var locationStart = 0
-    private var locationRequest : LocationRequest? = null
+    private var locationRequest: LocationRequest? = null
 
     companion object {
         private const val SMS_PERMISSION = 1
@@ -61,10 +60,8 @@ class MainActivity : AppCompatActivity() {
         sharedPreferences = this.getSharedPreferences(fileName, Context.MODE_PRIVATE)
         //sjekker om den har blitt kjørt før
         if (sharedPreferences.getBoolean("firstTime", true)) {
-            val sjekk = firstStart()
-            if(sjekk) {
-                sharedPreferences.edit().putBoolean("firstTime", false).apply()
-            }
+            firstStart()
+            sharedPreferences.edit().putBoolean("firstTime", false).apply()
         }
 
         drawerLayout = findViewById(R.id.drawer)
@@ -76,7 +73,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        for(i in 0 .. 4) {
+        for (i in 0..4) {
             updateTextViewStart(i)
         }
 
@@ -101,24 +98,31 @@ class MainActivity : AppCompatActivity() {
         createLocationRequest()
 
 
-        val sosButton =findViewById<SwipeButton>(R.id.swipe_btn)
-        sosButton.setOnActiveListener{
+        val sosButton = findViewById<SwipeButton>(R.id.swipe_btn)
+        sosButton.setOnActiveListener {
             if (checkPermission("sms")) {
                 val smsManager = SmsManager.getDefault()
                 val phoneNumber = "46954940"
                 smsManager.sendTextMessage(phoneNumber, null, "test", null, null)
                 Toast.makeText(this@MainActivity, "Tekstmelding sendt til 46954940", Toast.LENGTH_SHORT).show()
-            }
-            else {
+            } else {
                 Toast.makeText(this@MainActivity, "Har ikke tilatelse til å sende melding!", Toast.LENGTH_LONG).show()
-              requestPermission("sms")
+
+                val intent = Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("smsto: 46954940")
+                    putExtra("sms_body", "test")
+                }
+
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                }
             }
             sosButton.toggleState()
         }
     }
 
-    private fun checkPermission(permissionOption : String): Boolean {
-        return when(permissionOption) {
+    private fun checkPermission(permissionOption: String): Boolean {
+        return when (permissionOption) {
             "sms" -> {
                 ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
             }
@@ -132,16 +136,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun requestPermission(permissionOption : String) {
+    private fun requestPermission(permissionOption: String) {
         when (permissionOption) {
             "sms" -> {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SMS_PERMISSION)
             }
             "location" -> {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_PERMISSION)
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_PERMISSION
+                )
             }
             else -> {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_COARSE_LOCATION), BOTH_PERMISSION)
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_COARSE_LOCATION), BOTH_PERMISSION
+                )
             }
         }
     }
@@ -160,19 +166,15 @@ class MainActivity : AppCompatActivity() {
                 else if (!(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     Toast.makeText(this@MainActivity, "Du kan endre tillatelsene i innstillinger", Toast.LENGTH_LONG).show()
                 }
+                else if (grantResults.isNotEmpty() && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    createLocationRequest()
+                }
             }
             SMS_PERMISSION -> {
                 if (!(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     Toast.makeText(this@MainActivity, "Du kan endre tillatelsene i innstillinger", Toast.LENGTH_LONG).show()
-                  Toast.makeText(this@MainActivity, "har ikke lov å sende melding", Toast.LENGTH_SHORT).show()
-                  val intent = Intent(Intent.ACTION_SENDTO).apply {
-                      data = Uri.parse("smsto: 46954940")  // This ensures only SMS apps respond
-                      putExtra("sms_body", "test")
-                  }
-
-                  if (intent.resolveActivity(packageManager) != null) {
-                      startActivity(intent)
-                  }
+                    Toast.makeText(this@MainActivity, "har ikke lov å sende melding", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -208,12 +210,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getLocation(locationRequest : LocationRequest) {
+    private fun getLocation(locationRequest: LocationRequest) {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        if(checkPermission("location")) {
+        if (checkPermission("location")) {
             // henter siste registrerte posisjon i enheten, posisjonen kan være null for ulike grunner, når bruker skrur av posisjon innstillingen
             // sletter cache, eller at enheten aldri registrerte en posisjon. Retunerer null ganske sjeldent
-            fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     locationUpdateState = false
                     lastLocation = location
@@ -248,7 +250,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun stopUpdate() {
-        if(locationUpdateState) {
+        if (locationUpdateState) {
             fusedLocationClient.removeLocationUpdates(locationCallback)
             locationUpdateState = false
             locationStart = 1
@@ -262,7 +264,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if(locationStart != 0) {
+        if (locationStart != 0) {
             getLocation(locationRequest!!)
         }
     }
@@ -297,11 +299,11 @@ class MainActivity : AppCompatActivity() {
     private fun updateTextViewStart(position: Int) {
         val inflaterLayout = layoutInflater.inflate(R.layout.navigation_menu_items, root_nav_preview, false)
 
-        when(position) {
-            0 ->  {
+        when (position) {
+            0 -> {
                 val ceMarkTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
                 val ceMarkText = sharedPreferences.getString(getString(R.string.navigation_drawer_ce_mark), null)
-                if(ceMarkText == null) {
+                if (ceMarkText == null) {
                     ceMarkTextView.text = "A"
                 }
                 else {
@@ -312,7 +314,7 @@ class MainActivity : AppCompatActivity() {
             1 -> {
                 val temperatureTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
                 val temperatureText = sharedPreferences.getString(getString(R.string.navigation_drawer_temperature), null)
-                if(temperatureText == null) {
+                if (temperatureText == null) {
                     temperatureTextView.text = "˚C"
                 }
                 else {
@@ -323,7 +325,7 @@ class MainActivity : AppCompatActivity() {
             2 -> {
                 val windTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
                 val windText = sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null)
-                if(windText == null) {
+                if (windText == null) {
                     windTextView.text = getString(R.string.navigation_drawer_wind_base)
                 }
                 else {
@@ -334,7 +336,7 @@ class MainActivity : AppCompatActivity() {
             3 -> {
                 val visibilityTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
                 val visibilityText = sharedPreferences.getString(getString(R.string.navigation_drawer_visibility), null)
-                if(visibilityText == null) {
+                if (visibilityText == null) {
                     visibilityTextView.text = getString(R.string.navigation_drawer_visibility_base)
                 }
                 else {
@@ -345,7 +347,7 @@ class MainActivity : AppCompatActivity() {
             else -> {
                 val pressureTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
                 val pressureText = sharedPreferences.getString(getString(R.string.navigation_drawer_pressure), null)
-                if(pressureText == null) {
+                if (pressureText == null) {
                     pressureTextView.text = getString(R.string.navigation_drawer_pressure_base)
                 }
                 else {
@@ -357,14 +359,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     // oppdaterer previewen i navigation draweren når man endrer måleenhet
-    private fun updateTextView(position : Int) {
+    private fun updateTextView(position: Int) {
         val inflaterLayout = layoutInflater.inflate(R.layout.navigation_menu_items, root_nav_preview, false)
 
-        when(position) {
+        when (position) {
             R.id.ce -> {
                 val ceMarkTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
                 val ceMarkText = sharedPreferences.getString(getString(R.string.navigation_drawer_ce_mark), null)
-                if(ceMarkText != null) ceMarkTextView.text = ceMarkText.split(" ")[0]
+                if (ceMarkText != null) ceMarkTextView.text = ceMarkText.split(" ")[0]
                 nav_view.menu.findItem(R.id.ce).actionView = inflaterLayout
             }
             R.id.temperature -> {
@@ -396,7 +398,7 @@ class MainActivity : AppCompatActivity() {
 
     // lukker navigation draweren hvis den er åpen og man trykker på back knappen, ellers funker back knappen som vanlig.
     override fun onBackPressed() {
-        if(drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
         }
         else {
@@ -405,7 +407,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // lager alert dialoger for alle itemene i navigation draweren
-    private fun dialog(menuItem: MenuItem, checkedItems : BooleanArray) {
+    private fun dialog(menuItem: MenuItem, checkedItems: BooleanArray) {
         val builder = AlertDialog.Builder(this, R.style.AlertDialogStyle)
         menuItem.isChecked = true
 
@@ -418,7 +420,7 @@ class MainActivity : AppCompatActivity() {
                 val C = "C - Vindstyrke: 13,8sm Bølgehøyde: 2m"
                 val D = "D - Vindstyrke: > 7,7sm Bølgehøyde: 0,3m"
                 val measurements = arrayOf(A, B, C, D)
-                val position : Int?
+                val position: Int?
 
                 position = measurements.indexOf(sharedPreferences.getString(getString(R.string.navigation_drawer_ce_mark), null))
 
@@ -436,9 +438,9 @@ class MainActivity : AppCompatActivity() {
             R.id.temperature -> {
                 builder.setTitle(R.string.navigation_drawer_temperature)
                 val measurements = arrayOf("˚C", "˚F")
-                val position : Int?
+                val position: Int?
 
-                position = if(sharedPreferences.getString(getString(R.string.navigation_drawer_temperature), null) == null) {
+                position = if (sharedPreferences.getString(getString(R.string.navigation_drawer_temperature), null) == null) {
                     0
                 }
                 else {
@@ -459,9 +461,9 @@ class MainActivity : AppCompatActivity() {
             R.id.wind -> {
                 builder.setTitle(R.string.navigation_drawer_wind_speed)
                 val measurements = arrayOf("Km/h", "Mph", "Mps")
-                val position : Int
+                val position: Int
 
-                position = if(sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null) == null) {
+                position = if (sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null) == null) {
                     0
                 }
                 else {
@@ -482,9 +484,9 @@ class MainActivity : AppCompatActivity() {
             R.id.visibility -> {
                 builder.setTitle(R.string.navigation_drawer_visibility)
                 val measurements = arrayOf("Km", "Miles")
-                val position : Int
+                val position: Int
 
-                position = if(sharedPreferences.getString(getString(R.string.navigation_drawer_visibility), null) == null) {
+                position = if (sharedPreferences.getString(getString(R.string.navigation_drawer_visibility), null) == null) {
                     0
                 }
                 else {
@@ -505,14 +507,14 @@ class MainActivity : AppCompatActivity() {
             R.id.pressure -> {
                 builder.setTitle(R.string.navigation_drawer_pressure)
                 val measurements = arrayOf("HPa", "Mb", "bar", "mmHg")
-                val position : Int?
+                val position: Int?
 
-                position = if(sharedPreferences.getString(getString(R.string.navigation_drawer_pressure), null) == null) {
-                    0
-                }
-                else {
-                    measurements.indexOf(sharedPreferences.getString(getString(R.string.navigation_drawer_pressure), null))
-                }
+                position = if (sharedPreferences.getString(getString(R.string.navigation_drawer_pressure), null) == null) {
+                        0
+                    }
+                    else {
+                        measurements.indexOf(sharedPreferences.getString(getString(R.string.navigation_drawer_pressure), null))
+                    }
 
                 builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
                     sharedPreferences.edit().putString(getString(R.string.navigation_drawer_pressure), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
@@ -534,24 +536,24 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.navigation_drawer_fog),
                     getString(R.string.navigation_drawer_humidity),
                     getString(R.string.navigation_drawer_cloudiness),
-                    getString(R.string.navigation_drawer_pressure2))
+                    getString(R.string.navigation_drawer_pressure2)
+                )
 
-                for(item in 0 until parameters.size) {
-                    if(sharedPreferences.getBoolean(parameters[item],false)) {
+                for (item in 0 until parameters.size) {
+                    if (sharedPreferences.getBoolean(parameters[item], false)) {
                         checkedItems[item] = true
                     }
                 }
 
-                builder.setMultiChoiceItems(parameters, checkedItems) {_, which, isChecked ->
+                builder.setMultiChoiceItems(parameters, checkedItems) { _, which, isChecked ->
                     if (isChecked) {
                         sharedPreferences.edit().putBoolean(parameters[which], true).apply()
-                    }
-                    else {
+                    } else {
                         sharedPreferences.edit().putBoolean(parameters[which], false).apply()
                     }
                 }
 
-                builder.setPositiveButton(R.string.navigation_drawer_ok) {_, _ ->
+                builder.setPositiveButton(R.string.navigation_drawer_ok) { _, _ ->
                     // Legger til widgets for valgte parametre
                     menuItem.isChecked = false
                     recreate()
@@ -561,7 +563,8 @@ class MainActivity : AppCompatActivity() {
         builder.setCancelable(false)
         builder.show()
     }
-    fun firstStart():Boolean {
+
+    fun firstStart(): Boolean {
         //velger CE merke
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.navigation_drawer_ce_mark)
@@ -570,7 +573,7 @@ class MainActivity : AppCompatActivity() {
         val B = "B - Vindstyrke: 20,7sm Bølgehøyde: 4m"
         val C = "C - Vindstyrke: 13,8sm Bølgehøyde: 2m"
         val D = "D - Vindstyrke: > 7,7sm Bølgehøyde: 0,3m"
-        var sjekk:Int? = null
+        var sjekk: Int? = null
         val measurements = arrayOf(A, B, C, D)
 
         builder.setSingleChoiceItems(measurements, 0) { dialog, _ ->
@@ -586,10 +589,11 @@ class MainActivity : AppCompatActivity() {
         if (!checkPermission("both")) {
             requestPermission("both")
         }
-      
-        if(sjekk == null) {
+
+        if (sjekk == null) {
             return false
         }
         return true
     }
 }
+
