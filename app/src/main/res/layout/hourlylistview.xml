@@ -15,6 +15,7 @@
                 android:background="?android:windowBackground"
                 android:elevation="6dp"
                 android:foreground="?selectableItemBackground"
+                app:cardCornerRadius="40dp"
                 app:cardElevation="3dp">
 
             <LinearLayout
@@ -73,14 +74,15 @@
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_weight="1"
-            android:background="#000000"
+            android:background="@drawable/round_corner"
             app:el_duration="800"
             app:el_expanded="false"
-            app:el_parallax="0.5">
+            app:el_parallax="0.5"
+            >
 
 
         <TextView
-                android:background="#FFF"
+                android:background="@drawable/round_corner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
