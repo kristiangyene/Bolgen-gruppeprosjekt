@@ -6,8 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.location.Location
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.ActivityCompat
@@ -53,13 +55,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-//        supportActionBar?.title = "title"
-
+        val bundle: Bundle? = intent.extras
+        val titleLocation: String? = bundle?.getString("Location")
+        supportActionBar?.title = titleLocation
         sharedPreferences = this.getSharedPreferences(fileName, Context.MODE_PRIVATE)
         //sjekker om den har blitt kjørt før
         if (sharedPreferences.getBoolean("firstTime", true)) {
-            firstStart()
-            sharedPreferences.edit().putBoolean("firstTime", false).apply()
+            val sjekk = firstStart()
+            if(sjekk) {
+                sharedPreferences.edit().putBoolean("firstTime", false).apply()
+            }
         }
 
         drawerLayout = findViewById(R.id.drawer)
@@ -159,7 +164,15 @@ class MainActivity : AppCompatActivity() {
             SMS_PERMISSION -> {
                 if (!(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     Toast.makeText(this@MainActivity, "Du kan endre tillatelsene i innstillinger", Toast.LENGTH_LONG).show()
-                }
+                  Toast.makeText(this@MainActivity, "har ikke lov å sende melding", Toast.LENGTH_SHORT).show()
+                  val intent = Intent(Intent.ACTION_SENDTO).apply {
+                      data = Uri.parse("smsto: 46954940")  // This ensures only SMS apps respond
+                      putExtra("sms_body", "test")
+                  }
+
+                  if (intent.resolveActivity(packageManager) != null) {
+                      startActivity(intent)
+                  }
             }
         }
     }
@@ -253,8 +266,6 @@ class MainActivity : AppCompatActivity() {
             getLocation(locationRequest!!)
         }
     }
-
-
 
 //    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 //        when (item.itemId) {
@@ -395,7 +406,7 @@ class MainActivity : AppCompatActivity() {
 
     // lager alert dialoger for alle itemene i navigation draweren
     private fun dialog(menuItem: MenuItem, checkedItems : BooleanArray) {
-        val builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogStyle)
         menuItem.isChecked = true
 
         when (menuItem.itemId) {
@@ -526,7 +537,7 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.navigation_drawer_pressure2))
 
                 for(item in 0 until parameters.size) {
-                    if(sharedPreferences.getBoolean(parameters[item], false)) {
+                    if(sharedPreferences.getBoolean(parameters[item],false)) {
                         checkedItems[item] = true
                     }
                 }
@@ -550,20 +561,23 @@ class MainActivity : AppCompatActivity() {
         builder.setCancelable(false)
         builder.show()
     }
-    fun firstStart() {
+    fun firstStart():Boolean {
         //velger CE merke
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.navigation_drawer_ce_mark)
+
         val A = "A - Vindstyrke: < 20,8sm Bølgehøyde: < 4m"
         val B = "B - Vindstyrke: 20,7sm Bølgehøyde: 4m"
         val C = "C - Vindstyrke: 13,8sm Bølgehøyde: 2m"
         val D = "D - Vindstyrke: > 7,7sm Bølgehøyde: 0,3m"
+        var sjekk:Int? = null
         val measurements = arrayOf(A, B, C, D)
 
         builder.setSingleChoiceItems(measurements, 0) { dialog, _ ->
             sharedPreferences.edit().putString(getString(R.string.navigation_drawer_ce_mark), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
             updateTextViewStart(0)
             dialog.dismiss()
+            sjekk = (dialog).listView.checkedItemPosition
         }
         val mDialog = builder.create()
         mDialog.setCancelable(false)
@@ -572,5 +586,10 @@ class MainActivity : AppCompatActivity() {
         if (!checkPermission("both")) {
             requestPermission("both")
         }
+      
+        if(sjekk == null) {
+            return false
+        }
+        return true
     }
 }

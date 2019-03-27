@@ -7,27 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 
-class ListAdapter (val elementList: ArrayList<HourlyElement>) : RecyclerView.Adapter<ListAdapter.ViewHolder>(){
+class ListAdapter(private val list: List<HourlyElement>, val clickListener: (HourlyElement) -> Unit)
+    : RecyclerView.Adapter<HourlyViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListAdapter.ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.hourlyelement, parent, false)
-        return ViewHolder(v)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HourlyViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return HourlyViewHolder(inflater, parent)
     }
 
-    override fun onBindViewHolder(holder: ListAdapter.ViewHolder, position: Int) {
-        holder.bindItems(elementList[position])
-
+    override fun onBindViewHolder(holder: HourlyViewHolder, position: Int) {
+        val time: HourlyElement = list[position]
+        holder.bind(time, clickListener)
     }
 
-    override fun getItemCount(): Int {
+    override fun getItemCount(): Int = list.size
 
-        return elementList.size
-    }
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        fun bindItems(e : HourlyElement){
-            val textTitle = itemView.findViewById(R.id.title) as TextView
-            textTitle.text = e.title
-        }
-    }
 }
