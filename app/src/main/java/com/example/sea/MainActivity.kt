@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         sharedPreferences = this.getSharedPreferences(fileName, Context.MODE_PRIVATE)
         //sjekker om den har blitt kjørt før
         if (sharedPreferences.getBoolean("firstTime", true)) {
+            firstStart()
             sharedPreferences.edit().putBoolean("firstTime", false).apply()
         }
 
