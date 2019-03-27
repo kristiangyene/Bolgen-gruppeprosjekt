@@ -40,13 +40,14 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         val bundle: Bundle? = intent.extras
         val titleLocation: String? = bundle?.getString("Location")
-        supportActionBar?.title = titleLocation;
-
+        supportActionBar?.title = titleLocation
         sharedPreferences = this.getSharedPreferences(fileName, Context.MODE_PRIVATE)
         //sjekker om den har blitt kjørt før
         if (sharedPreferences.getBoolean("firstTime", true)) {
-            firstStart()
-            sharedPreferences.edit().putBoolean("firstTime", false).apply()
+            val sjekk = firstStart()
+            if(sjekk) {
+                sharedPreferences.edit().putBoolean("firstTime", false).apply()
+            }
         }
 
         drawerLayout = findViewById(R.id.drawer)
@@ -405,7 +406,7 @@ class MainActivity : AppCompatActivity() {
         builder.setCancelable(false)
         builder.show()
     }
-    fun firstStart() {
+    fun firstStart():Boolean {
         //velger CE merke
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.navigation_drawer_ce_mark)
@@ -413,11 +414,15 @@ class MainActivity : AppCompatActivity() {
         val B = "B - Båter til bruk utenfor kysten skal tåle til og med 20,7 sekundmeter og en bølgehøyde til fire meter."
         val C = "C - Båter nær kysten skal tåle til og med 13,8 sekundmeter og bølger til og med to meter"
         val D = "D - Båter i beskyttet farvann tåler mindre enn 7,7 sekundmeter i vindstyrke og til og med 0,3 meter i bølgehøyde."
+
+        var sjekk:Int? = null
+
         val measurements = arrayOf(A, B, C, D)
         builder.setSingleChoiceItems(measurements, 0) { dialog, _ ->
             sharedPreferences.edit().putString(getString(R.string.navigation_drawer_ce_mark), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
             updateTextViewStart(0)
             dialog.dismiss()
+            sjekk = (dialog).listView.checkedItemPosition
         }
         val mDialog = builder.create()
         mDialog.setCancelable(false)
@@ -428,5 +433,9 @@ class MainActivity : AppCompatActivity() {
         else {
             requestPermission()
         }
+        if(sjekk == null) {
+            return false
+        }
+        return true
     }
 }
