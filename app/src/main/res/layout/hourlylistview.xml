@@ -75,7 +75,7 @@
             android:layout_height="400dp"
             android:layout_weight="1"
             android:background="@drawable/round_corner"
-            app:el_duration="800"
+            app:el_duration="1400"
             app:el_expanded="false"
             app:el_parallax="0.5"
             >
