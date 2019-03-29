@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.Task
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.navigation_menu_items.*
 import kotlinx.android.synthetic.main.view_pager.*
+import java.text.DecimalFormat
 
 // TODO: appen vil kræsje hvis man bruker andre språk. Endre sharedpreference keysa
 class MainActivity : AppCompatActivity() {
@@ -54,9 +55,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        val bundle: Bundle? = intent.extras
-        val titleLocation: String? = bundle?.getString("Location")
-        supportActionBar?.title = titleLocation
+        supportActionBar?.title = getString(R.string.app_name)
         sharedPreferences = this.getSharedPreferences(fileName, Context.MODE_PRIVATE)
         //sjekker om den har blitt kjørt før
         if (sharedPreferences.getBoolean("firstTime", true)) {
@@ -96,7 +95,6 @@ class MainActivity : AppCompatActivity() {
         //navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
         createLocationRequest()
-
 
         val sosButton = findViewById<SwipeButton>(R.id.swipe_btn)
         sosButton.setOnActiveListener {
@@ -212,6 +210,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getLocation(locationRequest: LocationRequest) {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        val format = DecimalFormat("#.###")
         if (checkPermission("location")) {
             // henter siste registrerte posisjon i enheten, posisjonen kan være null for ulike grunner, når bruker skrur av posisjon innstillingen
             // sletter cache, eller at enheten aldri registrerte en posisjon. Retunerer null ganske sjeldent
@@ -220,7 +219,10 @@ class MainActivity : AppCompatActivity() {
                     locationUpdateState = false
                     lastLocation = location
                     locationStart = 1
+                    lastLocation.latitude = format.format(lastLocation.latitude).toDouble()
+                    lastLocation.longitude = format.format(lastLocation.longitude).toDouble()
                     Toast.makeText(this, "Fant last location: " + lastLocation.latitude + ", " + lastLocation.longitude, Toast.LENGTH_LONG).show()
+                    supportActionBar?.title = "${lastLocation.latitude}, ${lastLocation.longitude}"
                 }
                 else {
                     // Hvis enheten ikke finner siste posisjon, så opprettes en ny klient og ber om plasseringsoppdateringer
@@ -230,7 +232,10 @@ class MainActivity : AppCompatActivity() {
                         override fun onLocationResult(p0: LocationResult) {
                             super.onLocationResult(p0)
                             lastLocation = p0.lastLocation
+                            lastLocation.latitude = format.format(lastLocation.latitude).toDouble()
+                            lastLocation.longitude = format.format(lastLocation.longitude).toDouble()
                             Toast.makeText(this@MainActivity, "${lastLocation.latitude} ,  ${lastLocation.longitude}", Toast.LENGTH_LONG).show()
+                            supportActionBar?.title = "${lastLocation.latitude}, ${lastLocation.longitude}"
                         }
                     }
                     fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
