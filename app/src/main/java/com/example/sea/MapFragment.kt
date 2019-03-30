@@ -31,6 +31,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
 
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var foundAddress = false
     private var marker : Marker? = null
     private lateinit var lastLocation: Location
     private var lat : Double? = null
@@ -117,11 +118,14 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         }
 
         if(addresses.isNotEmpty()) {
+            foundAddress = true
             val address = addresses[0]
             // Fetch the address lines using getAddressLine, join them, and send them to the thread.
             val addressFragments = with(address) {(0..maxAddressLineIndex).map { getAddressLine(it)}}
             return addressFragments.joinToString(separator = "\n")
         }
+
+        foundAddress = false
         return "$lat , $long"
     }
 
@@ -135,12 +139,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
 
         val locationName = getAddress(p0.latitude, p0.longitude)
         marker = map.addMarker(MarkerOptions().position(p0).title(locationName))
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(p0.latitude, p0.longitude), 8f), 2000, null)
 
         val format = DecimalFormat("#.###")
-        // Setting an info window adapter allows us to change the both the contents and look of the info window.
-        map.setInfoWindowAdapter(CustomInfoWindowAdapter(activity!!, format.format(lat!!), format.format(long!!)))
+        map.setInfoWindowAdapter(CustomInfoWindowAdapter(activity!!, format.format(lat!!), format.format(long!!), foundAddress, locationName))
         map.setOnInfoWindowClickListener(this)
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(p0.latitude, p0.longitude), 8f), 2000, null)
     }
 
     override fun onInfoWindowClick(p0: Marker?) {
