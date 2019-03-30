@@ -1,19 +1,18 @@
 package com.example.sea
 
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.support.design.widget.TabLayout
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -27,9 +26,9 @@ import java.io.IOException
 import java.text.DecimalFormat
 import java.util.*
 
-
 class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener,
-    GoogleMap.OnMyLocationButtonClickListener, OnSuccessListener<Location> {
+    GoogleMap.OnMyLocationButtonClickListener, OnSuccessListener<Location>, GoogleMap.OnInfoWindowClickListener {
+
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var marker : Marker? = null
@@ -42,7 +41,17 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_map, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_map, container, false)
+
+        // Setter språket til norsk
+        val language = "no"
+        val config = Configuration()
+        val locale = Locale(language)
+        Locale.setDefault(locale)
+        config.setLocale(locale)
+        activity!!.createConfigurationContext(config)
+
+        return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,7 +68,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         map.setOnMarkerClickListener(this)
         map.setOnMapClickListener(this)
 
-        getLocationPermission()
         if(checkPermission()) {
             map.isMyLocationEnabled = true
             map.setOnMyLocationButtonClickListener(this)
@@ -80,6 +88,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         // Setter map style
         val style = MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_style)
         map.setMapStyle(style)
+        map.setOnInfoWindowClickListener(this@MapFragment)
     }
 
     override fun onSuccess(location: Location?) {
@@ -107,13 +116,10 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
             return "Fant ikke addressen"
         }
 
-        this.lat = lat
-        this.long = long
-
         if(addresses.isNotEmpty()) {
             val address = addresses[0]
             // Fetch the address lines using getAddressLine, join them, and send them to the thread.
-            val addressFragments = with(address) { (0..maxAddressLineIndex).map { getAddressLine(it)}}
+            val addressFragments = with(address) {(0..maxAddressLineIndex).map { getAddressLine(it)}}
             return addressFragments.joinToString(separator = "\n")
         }
         return "$lat , $long"
@@ -124,50 +130,31 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
             marker!!.remove()
         }
 
-        val locationName = getAddress(p0!!.latitude, p0.longitude)
+        lat = p0!!.latitude
+        long = p0.longitude
+
+        val locationName = getAddress(p0.latitude, p0.longitude)
         marker = map.addMarker(MarkerOptions().position(p0).title(locationName))
+
+        val format = DecimalFormat("#.###")
+        // Setting an info window adapter allows us to change the both the contents and look of the info window.
+        map.setInfoWindowAdapter(CustomInfoWindowAdapter(activity!!, format.format(lat!!), format.format(long!!)))
+        map.setOnInfoWindowClickListener(this)
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(p0.latitude, p0.longitude), 8f), 2000, null)
     }
 
-    override fun onMarkerClick(p0: Marker?) : Boolean {
+    override fun onInfoWindowClick(p0: Marker?) {
         val format = DecimalFormat("#.###")
+
         activity!!.toolbar.title = "${format.format(lat)} , ${format.format(long)}"
         val tab = activity!!.findViewById<TabLayout>(R.id.tabs)
         tab.getTabAt(0)!!.select()
-        return true
     }
 
+    override fun onMarkerClick(p0: Marker?) = false
     override fun onMyLocationButtonClick() = false
-
-    private fun getLocationPermission() {
-        if(checkPermission()) {
-            Log.e("permission", "Permission already granted.")
-        }
-        else {
-            requestPermission()
-        }
-    }
 
     private fun checkPermission(): Boolean {
         return ContextCompat.checkSelfPermission(activity!!, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun requestPermission() {
-        ActivityCompat.requestPermissions(activity!!, arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION),
-            MapFragment.LOCATION_PERMISSION_REQUEST_CODE
-        )
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            MapFragment.LOCATION_PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(activity!!, "Permission accepted", Toast.LENGTH_LONG).show()
-                }
-                else {
-                    Toast.makeText(activity!!, "Permission denied", Toast.LENGTH_LONG).show()
-                }
-            }
-        }
     }
 }
