@@ -1,103 +1,43 @@
 [
   {
-    "featureType": "administrative",
-    "elementType": "all",
+    "featureType": "administrative.land_parcel",
+    "elementType": "labels",
     "stylers": [
       {
-        "visibility": "on"
-      },
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.neighborhood",
+    "elementType": "labels",
+    "stylers": [
       {
-        "weight": "1.00"
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.province",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "visibility": "off"
       }
     ]
   },
   {
     "featureType": "landscape",
-    "elementType": "all",
+    "elementType": "labels",
     "stylers": [
       {
-        "visibility": "simplified"
-      }
-    ]
-  },
-  {
-    "featureType": "landscape.man_made",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#ece2d9"
-      }
-    ]
-  },
-  {
-    "featureType": "landscape.natural",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "visibility": "on"
-      },
-      {
-        "color": "#b8cb93"
+        "visibility": "off"
       }
     ]
   },
   {
     "featureType": "poi",
-    "elementType": "all",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.business",
-    "elementType": "all",
-    "stylers": [
-      {
-        "visibility": "simplified"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.medical",
-    "elementType": "all",
-    "stylers": [
-      {
-        "visibility": "on"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.park",
-    "elementType": "all",
-    "stylers": [
-      {
-        "visibility": "on"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.park",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#ccdca1"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.sports_complex",
-    "elementType": "all",
-    "stylers": [
-      {
-        "visibility": "on"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "all",
+    "elementType": "labels",
     "stylers": [
       {
         "visibility": "off"
@@ -106,43 +46,24 @@
   },
   {
     "featureType": "road",
-    "elementType": "geometry.fill",
+    "elementType": "labels",
     "stylers": [
       {
-        "hue": "#ff0000"
-      },
-      {
-        "saturation": -100
-      },
-      {
-        "lightness": 99
+        "visibility": "off"
       }
     ]
   },
   {
-    "featureType": "road",
-    "elementType": "geometry.stroke",
+    "featureType": "road.arterial",
     "stylers": [
       {
-        "color": "#808080"
-      },
-      {
-        "lightness": 54
+        "visibility": "off"
       }
     ]
   },
   {
-    "featureType": "road",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#767676"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "labels.text.stroke",
+    "featureType": "road.highway",
+    "elementType": "geometry",
     "stylers": [
       {
         "color": "#ffffff"
@@ -150,8 +71,15 @@
     ]
   },
   {
-    "featureType": "transit",
-    "elementType": "all",
+    "featureType": "road.highway.controlled_access",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road.local",
     "stylers": [
       {
         "visibility": "off"
@@ -160,28 +88,37 @@
   },
   {
     "featureType": "transit.line",
-    "elementType": "all",
+    "elementType": "labels",
     "stylers": [
       {
-        "visibility": "on"
+        "visibility": "off"
       }
     ]
   },
   {
-    "featureType": "water",
-    "elementType": "all",
+    "featureType": "transit.station.airport",
+    "elementType": "labels",
     "stylers": [
       {
-        "saturation": 43
-      },
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "transit.station.bus",
+    "elementType": "labels",
+    "stylers": [
       {
-        "lightness": -11
-      },
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "transit.station.rail",
+    "elementType": "labels",
+    "stylers": [
       {
-        "hue": "#0088ff"
-      },
-      {
-        "visibility": "on"
+        "visibility": "off"
       }
     ]
   }

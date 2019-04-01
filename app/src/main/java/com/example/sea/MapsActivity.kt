@@ -1,5 +1,6 @@
 package com.example.sea
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.location.Address
@@ -89,6 +90,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
                 if (location != null) {
                     lastLocation = location
+                    Toast.makeText(this@MapsActivity, "Sjekker om det her!!!!!!", Toast.LENGTH_LONG).show()
+
                     val currentLatLng = LatLng(location.latitude, location.longitude)
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 8f))
                 }
@@ -130,10 +133,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         if(marker != null) {
             marker!!.remove()
         }
-
         val locationName = getCity(p0!!.latitude, p0.longitude)
+        Toast.makeText(this@MapsActivity, "Sjekker om det her!!!!!!", Toast.LENGTH_LONG).show()
+
+        Toast.makeText(this@MapsActivity, locationName, Toast.LENGTH_LONG).show()
+
         marker = mMap.addMarker(MarkerOptions().position(p0).title(locationName))
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(p0.latitude, p0.longitude), 8f), 2000, null)
+
+
+
+
     }
 
     private fun getCity(lat : Double, long : Double) : String {
@@ -157,6 +167,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             val address = addresses[0]
             // Fetch the address lines using getAddressLine, join them, and send them to the thread.
             val addressFragments = with(address) { (0..maxAddressLineIndex).map { getAddressLine(it)}}
+            Toast.makeText(this@MapsActivity, addressFragments.joinToString(), Toast.LENGTH_LONG).show()
+            Toast.makeText(this@MapsActivity, "Sjekker om det her!!!!!!", Toast.LENGTH_LONG).show()
+
             return addressFragments.joinToString(separator = "\n")
         }
         return "Fant ikke addressen"
