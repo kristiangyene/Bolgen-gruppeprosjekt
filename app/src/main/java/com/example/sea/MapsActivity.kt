@@ -29,7 +29,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var marker : Marker? = null
-    private lateinit var lastLocation: Location
+    lateinit var lastLocation: Location
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1

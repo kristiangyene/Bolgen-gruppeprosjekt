@@ -17,11 +17,14 @@ data class LocationData (
                 val latitude : String,
                 val longitude : String,
                 val temperature : LocationValue,
+                val precipitation : LocationValue,
+                val windDirection : LocationValue,
                 val cloudiness : LocationValue,
                 val pressure : LocationValue,
                 val fog : LocationValue,
                 val windSpeed : LocationValue,
                 val areaMaxWindSpeed : LocationValue,
+                val humidity : LocationValue,
                 val dewpointTemperature : LocationValue,
                 val windGust : LocationValue,
                 val precipitation: LocationValue,
@@ -35,6 +38,8 @@ data class LocationData (
                     val deg : String,
                     val name : String,
                     val beaufort : String,
+                    val minvalue : String,
+                    val maxValue: LocationValue,
                     val mps : String
                 )
             }

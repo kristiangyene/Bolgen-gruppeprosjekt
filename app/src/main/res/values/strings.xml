@@ -15,6 +15,8 @@
     <string name="navigation_drawer_wind">Vind</string>
     <string name="navigation_drawer_wind_speed">Vindstyrke</string>
     <string name="navigation_drawer_visibility">Synlighet</string>
+    <string name="navigation_drawer_pressure">Trykk</string>
+    <string name="navigation_drawer_pressure1">Trykk</string>
     <string name="navigation_drawer_pressure">Trykkmåling</string>
     <string name="navigation_drawer_tide">Tidevann</string>
     <string name="navigation_drawer_rain">Regn</string>
