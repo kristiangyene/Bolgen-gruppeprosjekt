@@ -23,17 +23,16 @@ class NowAdapter(private val elementList: ArrayList<Widget>) : RecyclerView.Adap
         val iconString = elementList[position].image
         holder.desc.text = elementList[position].text
         when (iconString) {
-            "Synlighet" -> holder.icon.setImageResource(R.drawable.visibility)
-            "Vind" -> holder.icon.setImageResource(R.drawable.wind)
-            "Bølgehøyde" -> holder.icon.setImageResource(R.drawable.waves)
-            "Tidevann" -> holder.icon.setImageResource(R.drawable.tide)
-            "Grader" -> holder.icon.setImageResource(R.drawable.thermometer)
-            "Nedbør" -> holder.icon.setImageResource(R.drawable.drop)
-            "Tåke" -> holder.icon.setImageResource(R.drawable.fog)
-            "Fuktighet" -> holder.icon.setImageResource(R.drawable.humidity)
-            "Skytetthet" -> holder.icon.setImageResource(R.drawable.cloud)
+            "Synlighet" -> holder.icon.setImageResource(R.drawable.visibility_black)
+            "Vind" -> holder.icon.setImageResource(R.drawable.wind_black)
+            "Bølgehøyde" -> holder.icon.setImageResource(R.drawable.waves_black)
+            "Tidevann" -> holder.icon.setImageResource(R.drawable.tide_black)
+            "Grader" -> holder.icon.setImageResource(R.drawable.thermometer_black)
+            "Nedbør" -> holder.icon.setImageResource(R.drawable.rain_black)
+            "Tåke" -> holder.icon.setImageResource(R.drawable.fog_black)
+            "Fuktighet" -> holder.icon.setImageResource(R.drawable.humidity_black)
+            "Skytetthet" -> holder.icon.setImageResource(R.drawable.cloud_black)
         }
-
 
     }
 
