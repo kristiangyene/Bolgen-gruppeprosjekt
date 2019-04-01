@@ -1,5 +1,6 @@
 package com.example.sea
 
+
 data class LocationData (
     val product : Product,
     val created : String
