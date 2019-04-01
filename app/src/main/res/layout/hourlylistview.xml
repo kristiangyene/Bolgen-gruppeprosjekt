@@ -24,9 +24,7 @@
                 android:orientation="horizontal">
             <TextView
                     android:id="@+id/KL"
-                    android:text="KL12"
                     android:layout_marginTop="50dp"
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="14dp"
@@ -36,16 +34,16 @@
                     android:layout_gravity="start|center" android:padding="0dp" android:paddingRight="0dp"/>
 
             <ImageView
-                    android:id="@+id/hour_vind_bilde"
+                    android:id="@+id/hour_wind_image"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_margin="17dp"
                     android:src="@drawable/wind"
+                    android:contentDescription="@string/wind_image"
                     android:layout_gravity="start|center"
                     android:baselineAligned="false"/>
             <TextView
-                    android:id="@+id/hour_vind"
-                    android:text="VIND"
+                    android:id="@+id/hour_wind"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="14dp"
@@ -53,17 +51,16 @@
                     android:textColor="#ffffff"
                     android:layout_gravity="center"/>
             <ImageView
-                    android:id="@+id/hour_bølge_bilde"
+                    android:id="@+id/hour_wave_image"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_margin="17dp"
                     android:src="@drawable/waves"
-
+                    android:contentDescription="@string/waves_image"
                     android:layout_gravity="start|center"
             />
             <TextView
-                    android:id="@+id/hour_bølge"
-                    android:text="Bølge"
+                    android:id="@+id/hour_wave"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="14dp"
@@ -76,23 +73,13 @@
     <net.cachapa.expandablelayout.ExpandableLayout
             android:id="@+id/expandable_layout_2"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:background="@drawable/round_corner"
             app:el_duration="1400"
             app:el_expanded="false"
-            app:el_parallax="0.5"
-            >
+            app:el_parallax="0.5">
 
-
-        <!--<TextView
-                android:background="@drawable/round_corner"
-                android:layout_width="match_parent"
-                android:layout_height="395dp"
-                android:gravity="center"
-                android:text="Fill text"
-                android:textColor="@color/colorPrimaryDark"
-        /> -->
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -101,112 +88,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:paddingLeft="0dp"
-                    android:paddingTop="50dp"
+                    android:paddingTop="5dp"
                     android:layout_gravity="center">
-
 
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:paddingLeft="0dp"
-                        android:paddingRight="20dp"
-                        android:layout_gravity="left">
+                        android:paddingStart="0dp"
+                        android:paddingEnd="20dp"
+                        android:layout_gravity="start">
                     <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_margin="10dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/fog"/>
+                            android:src="@drawable/fog"
+                            android:contentDescription="@string/fog_image"/>
 
                     <TextView
                             android:id="@+id/hour_fog"
-                            android:text="FOG"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_margin="14dp"
-                            android:textSize="20sp"
-                            android:textColor="#ffffff"
-                            android:layout_gravity="center"/>
-                </LinearLayout>
-
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:layout_gravity="center">
-                    <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_margin="10dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/thermometer"/>
-
-                    <TextView
-                            android:id="@+id/hour_thermo"
-                            android:text="Thermometer"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_margin="14dp"
-                            android:textSize="20sp"
-                            android:textColor="#ffffff"
-                            android:layout_gravity="center"/>
-                </LinearLayout>
-
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="0dp"
-                        android:layout_gravity="right">
-                    <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_margin="10dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/tide"/>
-
-                    <TextView
-                            android:id="@+id/hour_tide"
-                            android:text="Tide"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_margin="14dp"
-                            android:textSize="20sp"
-                            android:textColor="#ffffff"
-                            android:layout_gravity="center"/>
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:paddingLeft="0dp"
-                    android:paddingTop="20dp"
-                    android:layout_gravity="center">
-
-
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:paddingLeft="0dp"
-                        android:paddingRight="20dp"
-                        android:layout_gravity="left">
-                    <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_margin="10dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/water"/>
-
-                    <TextView
-                            android:id="@+id/hour_water"
-                            android:text="Water"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_margin="14dp"
@@ -226,11 +127,11 @@
                             android:layout_height="50dp"
                             android:layout_margin="10dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/visibility"/>
+                            android:src="@drawable/thermometer"
+                            android:contentDescription="@string/thermometer_image"/>
 
                     <TextView
-                            android:id="@+id/hour_visi"
-                            android:text="Visbility"
+                            android:id="@+id/hour_thermo"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_margin="14dp"
@@ -238,24 +139,102 @@
                             android:textColor="#ffffff"
                             android:layout_gravity="center"/>
                 </LinearLayout>
-
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="0dp"
-                        android:layout_gravity="right">
+                        android:paddingStart="20dp"
+                        android:paddingEnd="0dp"
+                        android:layout_gravity="end">
                     <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_margin="10dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/humidity"/>
+                            android:src="@drawable/tide"
+                            android:contentDescription="@string/tide_image"/>
 
                     <TextView
+                            android:id="@+id/hour_tide"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="14dp"
+                            android:textSize="20sp"
+                            android:textColor="#ffffff"
+                            android:layout_gravity="center"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingTop="5dp"
+                    android:layout_gravity="center">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="20dp"
+                        android:layout_gravity="start">
+                    <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_margin="10dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/water"
+                            android:contentDescription="@string/water_image"/>
+
+                    <TextView
+                            android:id="@+id/hour_water"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="14dp"
+                            android:textSize="20sp"
+                            android:textColor="#ffffff"
+                            android:layout_gravity="center"/>
+                </LinearLayout>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingLeft="25dp"
+                        android:paddingRight="25dp"
+                        android:layout_gravity="center">
+                    <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_margin="10dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/visibility"
+                            android:contentDescription="@string/visibility_image"/>
+
+                    <TextView
+                            android:id="@+id/hour_visibility"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="14dp"
+                            android:textSize="20sp"
+                            android:textColor="#ffffff"
+                            android:layout_gravity="center"/>
+                </LinearLayout>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="0dp"
+                        android:layout_gravity="end">
+                    <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_margin="10dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/humidity"
+                            android:contentDescription="@string/humidity_image"/>
+                    <TextView
                             android:id="@+id/hour_humid"
-                            android:text="Humid"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_margin="14dp"
