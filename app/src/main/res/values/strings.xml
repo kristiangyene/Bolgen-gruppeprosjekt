@@ -50,4 +50,12 @@
     <string name="fab_map_rain">Regn</string>
     <string name="fab_map_wind">Vind</string>
     <string name="fab_map_waves">Bølger</string>
+    <string name="humidity_image">humidity image</string>
+    <string name="visibility_image">visibility image</string>
+    <string name="water_image">water image</string>
+    <string name="tide_image">tide image</string>
+    <string name="thermometer_image">thermometer image</string>
+    <string name="fog_image">fog image</string>
+    <string name="waves_image">waves image</string>
+    <string name="wind_image">wind image</string>
 </resources>
