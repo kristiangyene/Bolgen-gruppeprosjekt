@@ -40,7 +40,7 @@ class HourlyFragment1 : Fragment() {
 
 
     fun threadcreation(){
-        val client = RetrofitClient().getClient()
+        val client = RetrofitClient().getClient("json")
         val locationCall = client.getLocationData(60.10, 9.58, null )
         val oceanCall = client.getOceanData(60.10, 5.0)
          thread {
