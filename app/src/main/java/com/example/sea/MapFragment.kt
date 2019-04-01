@@ -13,6 +13,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -21,6 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.OnSuccessListener
+import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.view_pager.*
 import java.io.IOException
 import java.text.DecimalFormat
@@ -29,16 +32,14 @@ import java.util.*
 class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener,
     GoogleMap.OnMyLocationButtonClickListener, OnSuccessListener<Location>, GoogleMap.OnInfoWindowClickListener {
 
-    private lateinit var map: GoogleMap
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var foundAddress = false
+    private lateinit var map : GoogleMap
+    private lateinit var fusedLocationClient : FusedLocationProviderClient
     private var marker : Marker? = null
     private lateinit var lastLocation: Location
     private var lat : Double? = null
     private var long : Double? = null
-    companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
-    }
+    private var foundAddress = false
+    private var fabOpen = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -60,6 +61,44 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map1) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        val showButton = AnimationUtils.loadAnimation(activity!!, R.anim.show_button)
+        val hideButton = AnimationUtils.loadAnimation(activity!!, R.anim.hide_button)
+
+        fab.setOnClickListener {
+            if(fabOpen) {
+                hide(hideButton)
+            }
+            else {
+                show(showButton)
+            }
+        }
+
+        fab_waves.setOnClickListener{hide(hideButton)}
+        fab_wind.setOnClickListener{hide(hideButton)}
+        fab_rain.setOnClickListener{hide(hideButton)}
+    }
+
+    private fun show(showButton : Animation?) {
+        fab.startAnimation(showButton)
+        fab_waves.show()
+        fab_wind.show()
+        fab_rain.show()
+        fab_waves_text.visibility = View.VISIBLE
+        fab_wind_text.visibility = View.VISIBLE
+        fab_rain_text.visibility = View.VISIBLE
+        fabOpen = true
+    }
+
+    private fun hide(hideButton : Animation?) {
+        fab_waves.hide()
+        fab_wind.hide()
+        fab_rain.hide()
+        fab_waves_text.visibility = View.GONE
+        fab_wind_text.visibility = View.GONE
+        fab_rain_text.visibility = View.GONE
+        fab.startAnimation(hideButton)
+        fabOpen = false
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

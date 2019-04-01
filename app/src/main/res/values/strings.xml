@@ -39,8 +39,15 @@
     <string name="tabs_time">Time</string>
     <string name="tabs_day">Uke</string>
     <string name="tabs_maps">Kart</string>
+
+    <!-- Strings for the marker i map -->
     <string name="marker_position">Posisjon</string>
     <string name="marker_latitude">Latitude:</string>
     <string name="marker_longitude">Longitude:</string>
-    <string name="marker_button_text">Se værmelding</string>
+    <string name="marker_button_text">Trykk for å se værmelding</string>
+
+    <!-- Strings for the fab in map -->
+    <string name="fab_map_rain">Regn</string>
+    <string name="fab_map_wind">Vind</string>
+    <string name="fab_map_waves">Bølger</string>
 </resources>
