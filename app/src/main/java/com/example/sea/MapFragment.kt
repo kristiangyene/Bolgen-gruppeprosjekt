@@ -1,19 +1,20 @@
 package com.example.sea
 
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.support.design.widget.TabLayout
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -22,27 +23,37 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.OnSuccessListener
+import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.view_pager.*
 import java.io.IOException
 import java.text.DecimalFormat
 import java.util.*
 
-
 class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener,
-    GoogleMap.OnMyLocationButtonClickListener, OnSuccessListener<Location> {
-    private lateinit var map: GoogleMap
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    GoogleMap.OnMyLocationButtonClickListener, OnSuccessListener<Location>, GoogleMap.OnInfoWindowClickListener {
+
+    private lateinit var map : GoogleMap
+    private lateinit var fusedLocationClient : FusedLocationProviderClient
     private var marker : Marker? = null
     private lateinit var lastLocation: Location
     private var lat : Double? = null
     private var long : Double? = null
-    companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
-    }
+    private var foundAddress = false
+    private var fabOpen = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_map, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_map, container, false)
+
+        // Setter språket til norsk
+        val language = "no"
+        val config = Configuration()
+        val locale = Locale(language)
+        Locale.setDefault(locale)
+        config.setLocale(locale)
+        activity!!.createConfigurationContext(config)
+
+        return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,6 +61,44 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map1) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        val showButton = AnimationUtils.loadAnimation(activity!!, R.anim.show_button)
+        val hideButton = AnimationUtils.loadAnimation(activity!!, R.anim.hide_button)
+
+        fab.setOnClickListener {
+            if(fabOpen) {
+                hide(hideButton)
+            }
+            else {
+                show(showButton)
+            }
+        }
+
+        fab_waves.setOnClickListener{hide(hideButton)}
+        fab_wind.setOnClickListener{hide(hideButton)}
+        fab_rain.setOnClickListener{hide(hideButton)}
+    }
+
+    private fun show(showButton : Animation?) {
+        fab.startAnimation(showButton)
+        fab_waves.show()
+        fab_wind.show()
+        fab_rain.show()
+        fab_waves_text.visibility = View.VISIBLE
+        fab_wind_text.visibility = View.VISIBLE
+        fab_rain_text.visibility = View.VISIBLE
+        fabOpen = true
+    }
+
+    private fun hide(hideButton : Animation?) {
+        fab_waves.hide()
+        fab_wind.hide()
+        fab_rain.hide()
+        fab_waves_text.visibility = View.GONE
+        fab_wind_text.visibility = View.GONE
+        fab_rain_text.visibility = View.GONE
+        fab.startAnimation(hideButton)
+        fabOpen = false
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -59,7 +108,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         map.setOnMarkerClickListener(this)
         map.setOnMapClickListener(this)
 
-        getLocationPermission()
         if(checkPermission()) {
             map.isMyLocationEnabled = true
             map.setOnMyLocationButtonClickListener(this)
@@ -80,6 +128,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         // Setter map style
         val style = MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_style)
         map.setMapStyle(style)
+        map.setOnInfoWindowClickListener(this@MapFragment)
     }
 
     override fun onSuccess(location: Location?) {
@@ -107,15 +156,15 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
             return "Fant ikke addressen"
         }
 
-        this.lat = lat
-        this.long = long
-
         if(addresses.isNotEmpty()) {
+            foundAddress = true
             val address = addresses[0]
             // Fetch the address lines using getAddressLine, join them, and send them to the thread.
-            val addressFragments = with(address) { (0..maxAddressLineIndex).map { getAddressLine(it)}}
+            val addressFragments = with(address) {(0..maxAddressLineIndex).map { getAddressLine(it)}}
             return addressFragments.joinToString(separator = "\n")
         }
+
+        foundAddress = false
         return "$lat , $long"
     }
 
@@ -124,50 +173,30 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
             marker!!.remove()
         }
 
-        val locationName = getAddress(p0!!.latitude, p0.longitude)
+        lat = p0!!.latitude
+        long = p0.longitude
+
+        val locationName = getAddress(p0.latitude, p0.longitude)
         marker = map.addMarker(MarkerOptions().position(p0).title(locationName))
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(p0.latitude, p0.longitude), 8f), 2000, null)
+
+        val format = DecimalFormat("#.###")
+        map.setInfoWindowAdapter(CustomInfoWindowAdapter(activity!!, format.format(lat!!), format.format(long!!), foundAddress, locationName))
+        map.setOnInfoWindowClickListener(this)
     }
 
-    override fun onMarkerClick(p0: Marker?) : Boolean {
+    override fun onInfoWindowClick(p0: Marker?) {
         val format = DecimalFormat("#.###")
+
         activity!!.toolbar.title = "${format.format(lat)} , ${format.format(long)}"
         val tab = activity!!.findViewById<TabLayout>(R.id.tabs)
         tab.getTabAt(0)!!.select()
-        return true
     }
 
+    override fun onMarkerClick(p0: Marker?) = false
     override fun onMyLocationButtonClick() = false
-
-    private fun getLocationPermission() {
-        if(checkPermission()) {
-            Log.e("permission", "Permission already granted.")
-        }
-        else {
-            requestPermission()
-        }
-    }
 
     private fun checkPermission(): Boolean {
         return ContextCompat.checkSelfPermission(activity!!, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun requestPermission() {
-        ActivityCompat.requestPermissions(activity!!, arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION),
-            MapFragment.LOCATION_PERMISSION_REQUEST_CODE
-        )
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            MapFragment.LOCATION_PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(activity!!, "Permission accepted", Toast.LENGTH_LONG).show()
-                }
-                else {
-                    Toast.makeText(activity!!, "Permission denied", Toast.LENGTH_LONG).show()
-                }
-            }
-        }
     }
 }

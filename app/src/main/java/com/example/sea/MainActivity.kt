@@ -218,10 +218,8 @@ class MainActivity : AppCompatActivity() {
                     locationUpdateState = false
                     lastLocation = location
                     locationStart = 1
-                    lastLocation.latitude = format.format(lastLocation.latitude).toDouble()
-                    lastLocation.longitude = format.format(lastLocation.longitude).toDouble()
-                    Toast.makeText(this, "Fant last location: " + lastLocation.latitude + ", " + lastLocation.longitude, Toast.LENGTH_LONG).show()
-                    supportActionBar?.title = "${lastLocation.latitude}, ${lastLocation.longitude}"
+                    Toast.makeText(this@MainActivity, "${lastLocation.latitude} ,  ${lastLocation.longitude}", Toast.LENGTH_LONG).show()
+                    supportActionBar?.title = "${format.format(lastLocation.latitude)}, ${format.format(lastLocation.longitude)}"
                 }
                 else {
                     // Hvis enheten ikke finner siste posisjon, så opprettes en ny klient og ber om plasseringsoppdateringer
@@ -231,10 +229,8 @@ class MainActivity : AppCompatActivity() {
                         override fun onLocationResult(p0: LocationResult) {
                             super.onLocationResult(p0)
                             lastLocation = p0.lastLocation
-                            lastLocation.latitude = format.format(lastLocation.latitude).toDouble()
-                            lastLocation.longitude = format.format(lastLocation.longitude).toDouble()
                             Toast.makeText(this@MainActivity, "${lastLocation.latitude} ,  ${lastLocation.longitude}", Toast.LENGTH_LONG).show()
-                            supportActionBar?.title = "${lastLocation.latitude}, ${lastLocation.longitude}"
+                            supportActionBar?.title = "${format.format(lastLocation.latitude)}, ${format.format(lastLocation.longitude)}"
                         }
                     }
                     fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
