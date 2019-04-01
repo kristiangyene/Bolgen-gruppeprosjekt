@@ -17,7 +17,7 @@ class PagerAdapter(fm : FragmentManager) : FragmentStatePagerAdapter(fm) {
     override fun getItem(p0: Int): Fragment {
         return when(p0) {
             0 -> NowFragment()
-            1 -> HourlyFragment1()
+            1 -> HourlyFragment()
             2 -> WeeklyFragment()
             else -> {
                 MapFragment()
