@@ -23,7 +23,9 @@ data class LocationData (
                 val windSpeed : LocationValue,
                 val areaMaxWindSpeed : LocationValue,
                 val dewpointTemperature : LocationValue,
-                val windGust : LocationValue
+                val windGust : LocationValue,
+                val precipitation: LocationValue,
+                val humidity: LocationValue
             ) {
                 data class LocationValue (
                     val value : String,
