@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#145B78</color>
+    <color name="colorPrimaryDark">#145B78</color>
+    <color name="colorAccent">#145B78</color>
 
-    <color name="navigation_items_pressed">#673AB7</color>
+    <color name="navigation_items_pressed">#145B78</color>
     <color name="button_pressed">#ff8a00</color>
     <color name="button_focused">#ff8a00</color>
     <color name="button_default">#1c76bb</color>
