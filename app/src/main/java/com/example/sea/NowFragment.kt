@@ -35,16 +35,16 @@ class NowFragment : Fragment() {
         rootView = inflater.inflate(R.layout.fragment_now, container, false)
         sharedPreferences = activity!!.getSharedPreferences(fileName, Context.MODE_PRIVATE)
         listOfStrings = arrayListOf(
-            resources.getString(R.string.navigation_drawer_temperature2),
-            resources.getString(R.string.navigation_drawer_tide),
-            resources.getString(R.string.navigation_drawer_fog),
-            resources.getString(R.string.navigation_drawer_cloudiness),
-            resources.getString(R.string.navigation_drawer_humidity),
-            resources.getString(R.string.navigation_drawer_pressure),
-            resources.getString(R.string.navigation_drawer_weather))
+            getString(R.string.navigation_drawer_tide),
+            getString(R.string.navigation_drawer_temperature2),
+            getString(R.string.navigation_drawer_weather),
+            getString(R.string.navigation_drawer_fog),
+            getString(R.string.navigation_drawer_humidity),
+            getString(R.string.navigation_drawer_cloudiness),
+            getString(R.string.navigation_drawer_pressure2))
 
         recyclerView = rootView.findViewById(R.id.recycler_view)
-        recyclerView!!.layoutManager = GridLayoutManager(context, 1) as RecyclerView.LayoutManager?
+        recyclerView!!.layoutManager = GridLayoutManager(context, 1)
         adapter = NowAdapter(listOfElements)
         recyclerView!!.adapter = adapter
         fetchLocationData(60.10, 5.0)
@@ -53,10 +53,9 @@ class NowFragment : Fragment() {
         return rootView
     }
 
-
     private fun fetchLocationData(latitude: Double, longitude: Double) {
 
-        val call = RetrofitClient().getClient().getLocationData(latitude, longitude, null)
+        val call = RetrofitClient().getClient("json").getLocationData(latitude, longitude, null)
         call.enqueue(object : retrofit2.Callback<LocationData> {
 
             override fun onResponse(call: Call<LocationData>, response: Response<LocationData>){
@@ -101,7 +100,7 @@ class NowFragment : Fragment() {
 
     private fun fetchOceanData(latitude: Double, longitude: Double) {
 
-        val call = RetrofitClient().getClient().getOceanData(latitude, longitude)
+        val call = RetrofitClient().getClient("json").getOceanData(latitude, longitude)
         call.enqueue(object : retrofit2.Callback<OceanData> {
 
             override fun onResponse(call: Call<OceanData>, response: Response<OceanData>){
