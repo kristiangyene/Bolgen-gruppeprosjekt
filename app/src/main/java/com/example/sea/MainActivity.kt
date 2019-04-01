@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity() {
         // Kobler sammen tab-en med view pageren. Tab-en vil oppdateres når brukeren sveiper, og når den blir klikket på.
         // Tab-ene får også riktig tittel når metoden onPageTitle() kalles
         tabs.setupWithViewPager(viewpager)
-        RetrofitClient().getClient()
 
         //navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
     }

@@ -11,18 +11,19 @@ import java.util.ArrayList
 
 
 
+class NowAdapter(private val listOfElements: ArrayList<Widget>) : RecyclerView.Adapter<NowAdapter.MyViewHolder>() {
 
-class NowAdapter(private val elementList: ArrayList<Widget>) : RecyclerView.Adapter<NowAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.widget, parent, false)
         return MyViewHolder(view)
     }
 
+
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val iconString = elementList[position].image
-        holder.desc.text = elementList[position].text
-        when (iconString) {
+        holder.desc.text = listOfElements[position].text
+        holder.dir.text = listOfElements[position].dir
+        when (listOfElements[position].image) {
             "Synlighet" -> holder.icon.setImageResource(R.drawable.visibility)
             "Vind" -> holder.icon.setImageResource(R.drawable.wind)
             "Bølgehøyde" -> holder.icon.setImageResource(R.drawable.waves)
@@ -32,18 +33,21 @@ class NowAdapter(private val elementList: ArrayList<Widget>) : RecyclerView.Adap
             "Tåke" -> holder.icon.setImageResource(R.drawable.fog)
             "Fuktighet" -> holder.icon.setImageResource(R.drawable.humidity)
             "Skytetthet" -> holder.icon.setImageResource(R.drawable.cloud)
+            "Trykk" -> holder.icon.setImageResource(R.drawable.gauge)
+
         }
 
 
     }
 
     override fun getItemCount(): Int {
-        return elementList.size
+        return listOfElements.size
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         internal var icon: ImageView = itemView.findViewById<View>(R.id.icon_widget) as ImageView
         internal var desc: TextView = itemView.findViewById<View>(R.id.value_widget) as TextView
+        internal var dir: TextView = itemView.findViewById<View>(R.id.direction) as TextView
 
     }
 }
