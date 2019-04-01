@@ -28,8 +28,19 @@ data class OceanForecast (
     @SerializedName("mox:seaCurrentSpeed") val seaCurrentSpeed : OceanValue,
     @SerializedName("mox:seaBottomTopography") val seaBottomTopography : OceanValue,
     @SerializedName("mox:meanTotalWaveDirection") val meanTotalWaveDirection : OceanValue,
-    @SerializedName("mox:seaTemperature") val seaTemperature : OceanValue
+    @SerializedName("mox:seaTemperature") val seaTemperature : OceanValue,
+    @SerializedName("mox:validTime") val validTime : ValidTime
 )
+
+
+data class ValidTime (
+    @SerializedName("gml:TimePeriod") val timePeriod : TimePeriod
+)
+
+data class TimePeriod (
+    @SerializedName("gml:begin") val begin : String
+)
+
 
 data class OceanValue (
     val uom : String,
