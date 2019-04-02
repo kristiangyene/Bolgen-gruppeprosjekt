@@ -27,7 +27,7 @@ class NowAdapter(private val listOfElements: ArrayList<Widget>) : RecyclerView.A
             "Tåke" -> holder.icon.setImageResource(R.drawable.fog_black)
             "Fuktighet" -> holder.icon.setImageResource(R.drawable.humidity_black)
             "Skytetthet" -> holder.icon.setImageResource(R.drawable.cloud_black)
-            "Trykk" -> holder.icon.setImageResource(R.drawable.gauge)
+            "Trykk" -> holder.icon.setImageResource(R.drawable.gauge_black)
         }
     }
 

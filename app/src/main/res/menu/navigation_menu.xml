@@ -14,16 +14,16 @@
                     android:checkableBehavior="single"
                     android:id="@+id/groupOne">
                 <item android:id="@+id/temperature"
-                      android:icon="@drawable/ic_thermometer"
+                      android:icon="@drawable/thermometer_black"
                       android:title="@string/navigation_drawer_temperature"/>
                 <item android:id="@+id/wind"
-                      android:icon="@drawable/ic_wind"
+                      android:icon="@drawable/wind_black"
                       android:title="@string/navigation_drawer_wind"/>
                 <item android:id="@+id/visibility"
-                      android:icon="@drawable/ic_visibility_black_24dp"
+                      android:icon="@drawable/visibility_black"
                       android:title="@string/navigation_drawer_visibility"/>
                 <item android:id="@+id/pressure"
-                      android:icon="@drawable/ic_gauge"
+                      android:icon="@drawable/gauge_black"
                       android:title="@string/navigation_drawer_pressure"/>
             </group>
         </menu>
