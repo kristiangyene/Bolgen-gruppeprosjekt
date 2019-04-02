@@ -3,7 +3,7 @@
 
         <item
                 android:id="@+id/nav_weather"
-                android:icon="@drawable/ic_wind"
+                android:icon="@drawable/wind_black"
                 android:title="Weather"/>
 
         <item
