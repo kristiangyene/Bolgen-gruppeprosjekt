@@ -3,6 +3,8 @@
 package com.example.sea
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -15,8 +17,13 @@ import kotlin.concurrent.thread
 
 class HourlyFragment : Fragment() {
     private val listWithData = ArrayList<HourlyElement>()
+    private lateinit var sharedPreferences: SharedPreferences
+    private val fileName = "com.example.sea"
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_hourly, container, false)
+
+        sharedPreferences = activity!!.getSharedPreferences(fileName, Context.MODE_PRIVATE)
 
         val recyclerView = rootView.findViewById<RecyclerView>(R.id.recyclerview1)
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -27,7 +34,7 @@ class HourlyFragment : Fragment() {
 
     private fun threadCreation(){
         val client = RetrofitClient().getClient("json")
-        val locationCall = client.getLocationData(60.10, 9.58, null )
+        val locationCall = client.getLocationData(sharedPreferences.getFloat("lat", 60F), sharedPreferences.getFloat("long", 11F), null)
         val oceanCall = client.getOceanData(60.10, 5.0)
 
         thread {
