@@ -1,6 +1,7 @@
 package com.example.sea
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
@@ -13,9 +14,12 @@ import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
 import android.widget.TextView
 import android.widget.Toast
+import kotlinx.android.synthetic.main.fragment_hourly.*
+import kotlinx.android.synthetic.main.fragment_weekly.*
 import net.cachapa.expandablelayout.ExpandableLayout
 import java.text.SimpleDateFormat
 import kotlin.concurrent.thread
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,7 +31,7 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 class WeeklyFragment : Fragment() {
-    val listWithData = ArrayList<WeeklyElement>()
+    private val listWithData = ArrayList<WeeklyElement>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_weekly, container, false)
@@ -41,7 +45,7 @@ class WeeklyFragment : Fragment() {
         return rootView
     }
 
-    fun threadcreation(){
+    private fun threadcreation(){
         val client = RetrofitClient().getClient("json")
         val locationCall = client.getLocationData(60.10, 9.58, null )
         val oceanCall = client.getOceanData(60.10, 5.0)
@@ -54,52 +58,58 @@ class WeeklyFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun location(locationData : LocationData?) {
-        val formatter_from = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        val format_to_day = SimpleDateFormat("dd")
-        val format_to_hour = SimpleDateFormat("H")
+        val formatterFrom = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        val formatToDay = SimpleDateFormat("dd")
+        val formatToHour = SimpleDateFormat("H")
+        val formatToMonth = SimpleDateFormat("MM")
         val output = locationData?.product?.time!!
         val checkList = ArrayList<Int>()
+
         if (output != null) {
             for (i in output) {
-                var time = format_to_hour.format(formatter_from.parse(i.to))
+                var time = formatToHour.format(formatterFrom.parse(i.to))
                 if (time == "12") {
-                    val from = formatter_from.parse(i.to)
-                    val toFormatted = format_to_day.format(from)
+                    val from = formatterFrom.parse(i.to)
+                    val toFormatted = formatToDay.format(from)
                     var windspeed = i.location?.windSpeed?.mps
+                    val month = formatToMonth.format((formatterFrom.parse(i.to)))
 
                     if (toFormatted.toInt() !in checkList) {
                         checkList.add(toFormatted.toInt())
-                        listWithData.add(WeeklyElement("Dag$toFormatted", windspeed + "m/s", ""))
+                        listWithData.add(WeeklyElement("$toFormatted.$month", "$toFormatted", windspeed + "m", "-"))
                     }
                 }
             }
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun ocean(oceanData : OceanData?) {
-        val formatter_from = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        val format_to_hour = SimpleDateFormat("H")
+        val formatterFrom = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        val formatToDay = SimpleDateFormat("dd")
+        val formatToHour = SimpleDateFormat("H")
         val output = oceanData?.forecast
-//        Toast.makeText(context, "Den er her", Toast.LENGTH_LONG).show()
 
         if (output != null) {
             for(i in output) {
-                val time = format_to_hour(formatter_from.parse((i.oceanForecast.validTime.timePeriod.begin)))
-                if (time == "12") {
-                    val hour = i.oceanForecast.validTime.timePeriod.begin
-                    val from = formatter_from.parse(hour)
-                    val wavesformat = format_to_hour.format(from)
+                val hour = formatToHour.format(formatterFrom.parse(i.oceanForecast.validTime.timePeriod.begin))
+                    if (hour == "12") {
+                        val hour = i.oceanForecast.validTime.timePeriod.begin
+                        val from = formatterFrom.parse(hour)
+                        val day = formatToDay.format(from)
 
-                    for(x in listWithData) {
-                        if (x.title.equals("Dag$wavesformat")) {
-                            val typo = i.oceanForecast.significantTotalWaveHeight
-                            x.waves = typo.content + typo.uom
+                        for (x in listWithData) {
+                            if (x.day.equals(day)) {
+                                val typo = i.oceanForecast.significantTotalWaveHeight
+                                if(typo != null)
+                                    x.waves = typo.content+typo.uom
 
-                            //recyclerview1.adapter?.notifyDataSetChanged()
+                                recyclerview2.adapter?.notifyDataSetChanged()
+                            }
                         }
                     }
-                }
             }
         }
     }
