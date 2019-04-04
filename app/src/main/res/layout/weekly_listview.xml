@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_margin="4dp"
+              android:orientation="vertical"
+
+>
+    <android.support.v7.widget.CardView
+            android:layout_width="400dp"
+            android:layout_height="84dp"
+            app:cardBackgroundColor="#FFFF"
+            app:cardCornerRadius="40dp">
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <TextView
+                    android:id="@+id/KL"
+                    android:text="Dag"
+                    android:layout_marginTop="50dp"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="14dp"
+                    android:textSize="18sp"
+                    android:textColor="#000000"
+                    android:paddingLeft="0dp"
+                    android:layout_gravity="start|center" android:padding="0dp" android:paddingRight="0dp"/>
+
+            <ImageView
+                    android:id="@+id/hour_vind_bilde"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="17dp"
+                    android:src="@drawable/wind_black"
+                    android:layout_gravity="start|center"
+                    android:baselineAligned="false"/>
+            <TextView
+                    android:id="@+id/hour_vind"
+                    android:text="VIND"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="14dp"
+                    android:textSize="18sp"
+                    android:textColor="#000000"
+                    android:layout_gravity="center"/>
+            <ImageView
+                    android:id="@+id/hour_bølge_bilde"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="17dp"
+                    android:src="@drawable/waves_black"
+
+                    android:layout_gravity="start|center"
+            />
+            <TextView
+                    android:id="@+id/hour_bølge"
+                    android:text="Bølge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="14dp"
+                    android:textSize="18sp"
+                    android:textColor="#000000"
+                    android:layout_gravity="center"/>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
