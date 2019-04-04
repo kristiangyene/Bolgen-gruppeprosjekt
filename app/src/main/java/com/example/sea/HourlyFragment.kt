@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_hourly.*
+import kotlinx.android.synthetic.main.fragment_weekly.*
 import java.text.SimpleDateFormat
 import kotlin.concurrent.thread
 
@@ -74,6 +76,9 @@ class HourlyFragment : Fragment() {
                     if(x.title.equals("KL$wavesFormat")){
                         val typo = i.oceanForecast.seaCurrentSpeed
                         x.waves = typo.content+typo.uom
+
+
+                        //recyclerview1.adapter?.notifyDataSetChanged()
                     }
                 }
             }
