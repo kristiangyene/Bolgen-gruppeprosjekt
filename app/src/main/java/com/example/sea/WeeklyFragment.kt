@@ -1,35 +1,17 @@
 package com.example.sea
 
-
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.OvershootInterpolator
 import android.widget.TextView
-import android.widget.Toast
-import kotlinx.android.synthetic.main.fragment_hourly.*
-import kotlinx.android.synthetic.main.fragment_weekly.*
-import net.cachapa.expandablelayout.ExpandableLayout
 import java.text.SimpleDateFormat
 import kotlin.concurrent.thread
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- *
- */
 class WeeklyFragment : Fragment() {
     private val listWithData = ArrayList<WeeklyElement>()
 
@@ -67,19 +49,18 @@ class WeeklyFragment : Fragment() {
         val output = locationData?.product?.time!!
         val checkList = ArrayList<Int>()
 
-        if (output != null) {
-            for (i in output) {
-                var time = formatToHour.format(formatterFrom.parse(i.to))
-                if (time == "12") {
-                    val from = formatterFrom.parse(i.to)
-                    val toFormatted = formatToDay.format(from)
-                    var windspeed = i.location?.windSpeed?.mps
-                    val month = formatToMonth.format((formatterFrom.parse(i.to)))
 
-                    if (toFormatted.toInt() !in checkList) {
-                        checkList.add(toFormatted.toInt())
-                        listWithData.add(WeeklyElement("$toFormatted.$month", "$toFormatted", windspeed + "m", "-"))
-                    }
+        for (i in output) {
+            var time = formatToHour.format(formatterFrom.parse(i.to))
+            if (time == "12") {
+                val from = formatterFrom.parse(i.to)
+                val toFormatted = formatToDay.format(from)
+                var windspeed = i.location?.windSpeed?.mps
+                val month = formatToMonth.format((formatterFrom.parse(i.to)))
+
+                if (toFormatted.toInt() !in checkList) {
+                    checkList.add(toFormatted.toInt())
+                    listWithData.add(WeeklyElement("$toFormatted.$month", "$toFormatted", "$windspeed m/s", "-"))
                 }
             }
         }
@@ -95,21 +76,19 @@ class WeeklyFragment : Fragment() {
         if (output != null) {
             for(i in output) {
                 val hour = formatToHour.format(formatterFrom.parse(i.oceanForecast.validTime.timePeriod.begin))
-                    if (hour == "12") {
-                        val hour = i.oceanForecast.validTime.timePeriod.begin
-                        val from = formatterFrom.parse(hour)
-                        val day = formatToDay.format(from)
+                if (hour == "12") {
+                    val day = formatToDay.format(formatterFrom.parse(i.oceanForecast.validTime.timePeriod.begin))
+                    for (x in listWithData) {
+                        if (x.day.equals(day)) {
+                            val typo = i.oceanForecast.significantTotalWaveHeight
 
-                        for (x in listWithData) {
-                            if (x.day.equals(day)) {
-                                val typo = i.oceanForecast.significantTotalWaveHeight
-                                if(typo != null)
-                                    x.waves = typo.content+typo.uom
+                            // gir 'warning' men kræsjer om vi fjerner den
+                            if(typo != null) x.waves = typo.content+typo.uom
 
-                                recyclerview2.adapter?.notifyDataSetChanged()
-                            }
+                            //recyclerview2.adapter?.notifyDataSetChanged()
                         }
                     }
+                }
             }
         }
     }
@@ -126,28 +105,24 @@ class WeeklyFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val time: WeeklyElement = list[position]
             holder.bindItems(list[position])
         }
 
-        override fun getItemCount(): Int {
-            return list.size
-        }
+        override fun getItemCount() = list.size
+
 
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-
             fun bindItems(e : WeeklyElement){
-                val textTitle = itemView.findViewById(R.id.KL) as TextView
-                val vind = itemView.findViewById(R.id.hour_vind) as TextView
-                val waves = itemView.findViewById(R.id.hour_bølge) as TextView
+                val textTitle = itemView.findViewById(R.id.titleWeekly) as TextView
+                val wind = itemView.findViewById(R.id.weekly_wind) as TextView
+                val waves = itemView.findViewById(R.id.weekly_wave) as TextView
 
 
                 textTitle.text = e.title
-                vind.text = e.windspeed
+                wind.text = e.windspeed
                 waves.text = e.waves
             }
-
         }
 
         companion object {
