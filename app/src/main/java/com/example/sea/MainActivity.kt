@@ -412,6 +412,11 @@ class MainActivity : AppCompatActivity() {
 
     // lager alert dialoger for alle itemene i navigation draweren
     private fun dialog(menuItem: MenuItem, checkedItems: BooleanArray) {
+        if(menuItem.itemId == R.id.settings) {
+            menuItem.isChecked = false
+            startActivity(Intent(this, SettingsActivity::class.java))
+            return
+        }
         val builder = AlertDialog.Builder(this, R.style.AlertDialogStyle)
         menuItem.isChecked = true
 
