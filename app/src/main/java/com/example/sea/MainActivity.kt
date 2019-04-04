@@ -218,7 +218,7 @@ class MainActivity : AppCompatActivity() {
                     locationUpdateState = false
                     lastLocation = location
                     locationStart = 1
-                    Toast.makeText(this@MainActivity, "${lastLocation.latitude} ,  ${lastLocation.longitude}", Toast.LENGTH_LONG).show()
+                    //Toast.makeText(this@MainActivity, "${lastLocation.latitude} ,  ${lastLocation.longitude}", Toast.LENGTH_LONG).show()
                     supportActionBar?.title = "${format.format(lastLocation.latitude)}, ${format.format(lastLocation.longitude)}"
                 }
                 else {
