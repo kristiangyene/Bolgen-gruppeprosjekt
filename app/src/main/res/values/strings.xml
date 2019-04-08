@@ -58,4 +58,5 @@
     <string name="fog_image">fog image</string>
     <string name="waves_image">waves image</string>
     <string name="wind_image">wind image</string>
+    <string name="fab_map_harbor">Havn</string>
 </resources>
