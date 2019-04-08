@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.*
 import java.util.ArrayList
 
-class NowAdapter(private val listOfElements: ArrayList<Widget>) : RecyclerView.Adapter<NowAdapter.MyViewHolder>() {
+class NowAdapter(private val listOfElements: ArrayList<NowElement>) : RecyclerView.Adapter<NowAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.widget, parent, false)
