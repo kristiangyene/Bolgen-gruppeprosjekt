@@ -25,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.maps.android.data.geojson.GeoJsonLayer
+import com.google.maps.android.data.geojson.GeoJsonPointStyle
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.view_pager.*
 import java.io.IOException
@@ -155,6 +156,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
 
         // setter opp geografiske egenskaper i GeoJSON format
         harborsLayer = GeoJsonLayer(map, R.raw.geo_json_harbors, activity!!)
+        for(feature in harborsLayer.features) {
+            val pointStyle = GeoJsonPointStyle()
+            pointStyle.title = feature.properties.toString().substring(6, feature.properties.toString().length-1)
+            pointStyle.icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
+            feature.pointStyle = pointStyle
+        }
+
     }
 
     override fun onSuccess(location: Location?) {
@@ -207,8 +215,10 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(p0.latitude, p0.longitude), 8f), 2000, null)
 
         val format = DecimalFormat("#.###")
-        map.setInfoWindowAdapter(CustomInfoWindowAdapter(activity!!, format.format(lat!!), format.format(long!!), foundAddress, locationName))
-        map.setOnInfoWindowClickListener(this)
+//        if(!harborsShowing) {
+            map.setInfoWindowAdapter(CustomInfoWindowAdapter(activity!!, format.format(lat!!), format.format(long!!), foundAddress, locationName))
+            map.setOnInfoWindowClickListener(this)
+//        }
     }
 
     override fun onInfoWindowClick(p0: Marker?) {

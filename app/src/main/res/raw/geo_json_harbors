@@ -3,7 +3,7 @@
   "features": [
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Andenes"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -14,7 +14,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Bergen"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -25,7 +25,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Bodø"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -36,7 +36,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Hammerfest"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -47,7 +47,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Harstad"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -58,7 +58,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Heimsjø"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -69,7 +69,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Helgeroa"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -80,7 +80,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Honningsvåg"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -91,7 +91,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Kabelvåg"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -102,7 +102,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Kristiansund"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -113,7 +113,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Måløy"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -124,7 +124,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Narvik"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -135,7 +135,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Oscarsborg"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -146,7 +146,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Oslo"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -157,7 +157,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Rørvik"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -168,7 +168,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Stavanger"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -179,7 +179,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Tregde"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -190,7 +190,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Tromsø"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -201,7 +201,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Trondheim"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -212,7 +212,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Vardø"},
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -223,7 +223,7 @@
     },
     {
       "type": "Feature",
-      "properties": {},
+      "properties": {"name": "Ålesund"},
       "geometry": {
         "type": "Point",
         "coordinates": [
