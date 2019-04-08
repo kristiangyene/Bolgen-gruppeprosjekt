@@ -13,11 +13,14 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.RecyclerView
 import android.telephony.SmsManager
 import android.view.MenuItem
 import android.widget.TextView
@@ -27,6 +30,7 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_now.*
 import kotlinx.android.synthetic.main.navigation_menu_items.*
 import kotlinx.android.synthetic.main.view_pager.*
 import java.text.DecimalFormat
@@ -42,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     private var locationUpdateState = false
     private var locationStart = 0
     private var locationRequest: LocationRequest? = null
+    private lateinit var nowfragment: NowFragment
 
     companion object {
         private const val SMS_PERMISSION = 1
@@ -556,7 +561,9 @@ class MainActivity : AppCompatActivity() {
                 builder.setPositiveButton(R.string.navigation_drawer_ok) { _, _ ->
                     // Legger til widgets for valgte parametre
                     menuItem.isChecked = false
-                    recreate()
+                    val nowfragment = getVisibleFragment() as NowFragment
+                    nowfragment.adapter.notifyDataSetChanged()
+
                 }
             }
         }
@@ -594,6 +601,14 @@ class MainActivity : AppCompatActivity() {
             return false
         }
         return true
+    }
+        fun getVisibleFragment(): Fragment?{
+        val fragments = supportFragmentManager.fragments
+        for(fragment in 0 until fragments.size){
+            if(fragments[fragment] != null && fragments[fragment].id == R.id.now_fragment)
+                return fragments[fragment]
+        }
+        return null
     }
 }
 
