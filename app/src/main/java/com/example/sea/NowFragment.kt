@@ -32,7 +32,6 @@ class NowFragment : Fragment(){
     private lateinit var seekbar: SeekBar
 
 
-
     //TODO: lage metode som finner nåværende koordinasjoner.
 
     @SuppressLint("ClickableViewAccessibility")
