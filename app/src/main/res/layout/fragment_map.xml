@@ -69,6 +69,21 @@
             app:layout_constraintBottom_toTopOf="@+id/fab_wind" android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.0"/>
+
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_harbor"
+            android:layout_width="57dp"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/colorPrimary"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="invisible"
+            android:src="@drawable/rain_black"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/fab_rain" android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.0"/>
+
     <TextView
             android:text="@string/fab_map_waves"
             android:layout_width="wrap_content"
@@ -102,5 +117,17 @@
             android:id="@+id/fab_rain_text" app:layout_constraintStart_toEndOf="@+id/fab_rain"
             android:layout_marginStart="8dp" android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/fab_rain"/>
+
+    <TextView
+            android:text="@string/fab_map_harbor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="4dp"
+            android:id="@+id/fab_harbor_text" app:layout_constraintStart_toEndOf="@+id/fab_harbor"
+            android:layout_marginStart="8dp" android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/fab_harbor"/>
 </android.support.constraint.ConstraintLayout>
 
