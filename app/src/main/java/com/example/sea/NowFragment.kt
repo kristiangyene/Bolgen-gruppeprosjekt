@@ -1,6 +1,5 @@
 package com.example.sea
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -10,15 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.support.v7.widget.GridLayoutManager
-import android.widget.SeekBar
 import android.widget.Toast
 import retrofit2.Call
 import retrofit2.Response
 
 
-@Suppress("NAME_SHADOWING")
-class NowFragment : Fragment(){
 
+class NowFragment : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
     private val fileName = "com.example.sea"
     private var recyclerView: RecyclerView? = null
@@ -32,16 +29,14 @@ class NowFragment : Fragment(){
     private lateinit var seekbar: SeekBar
 
 
+
     //TODO: lage metode som finner nåværende koordinasjoner.
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
 
         rootView = inflater.inflate(R.layout.fragment_now, container, false)
-
         sharedPreferences = activity!!.getSharedPreferences(fileName, Context.MODE_PRIVATE)
-        seekbar = rootView.findViewById<SeekBar>(R.id.seekbar)
         listOfStrings = arrayListOf(
             getString(R.string.navigation_drawer_tide),
             getString(R.string.navigation_drawer_temperature2),
@@ -55,10 +50,8 @@ class NowFragment : Fragment(){
         recyclerView!!.layoutManager = GridLayoutManager(context, 1)
         adapter = NowAdapter(listOfElements)
         recyclerView!!.adapter = adapter
-        fetchLocationData(60.146973929322854, 4.713134765625)
-        fetchOceanData(60.146973929322854, 4.713134765625)
-        seekbar.setOnTouchListener { _, _ -> true }
-
+        fetchLocationData(60.10, 5.0)
+        fetchOceanData(60.10, 5.0)
 
         return rootView
     }
@@ -113,6 +106,7 @@ class NowFragment : Fragment(){
                                 )
                                 listOfStrings[item] == resources.getString(R.string.navigation_drawer_humidity) -> listOfElements.add(
                                     NowElement(data[0].location.humidity.value + "%", listOfStrings[item], "")
+
                                 )
                                 listOfStrings[item] == resources.getString(R.string.navigation_drawer_pressure2) ->{
                                     val measurement: String?
@@ -139,11 +133,6 @@ class NowFragment : Fragment(){
                         }
                     }
                     adapter.notifyDataSetChanged()
-                    wind = value
-                    risiko = calculaterisk().toInt()
-                    seekbar.progress = risiko
-                    seekbar.refreshDrawableState()
-
                 }
             }
 
@@ -166,9 +155,6 @@ class NowFragment : Fragment(){
                     wavehight = data?.significantTotalWaveHeight?.content.toString().toDouble()
                     listOfElements.add(NowElement(data?.significantTotalWaveHeight?.content + "m", resources.getString(R.string.navigation_drawer_wave), ""))
                     adapter.notifyDataSetChanged()
-                    risiko = calculaterisk().toInt()
-                    seekbar.progress = risiko
-                    seekbar.refreshDrawableState()
                 }
             }
 
@@ -177,8 +163,7 @@ class NowFragment : Fragment(){
             }
         })
     }
-
-    private  fun calculaterisk():Double{
+   private  fun calculaterisk():Double{
         val ceMarkText = sharedPreferences.getString(getString(R.string.navigation_drawer_ce_mark), null)
         val max =100.0
         val min =0.0

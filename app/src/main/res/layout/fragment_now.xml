@@ -30,6 +30,7 @@
                 android:id="@+id/progressbar"
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
+
                 android:layout_gravity="bottom|center"
                 android:layout_marginBottom="30dp"
                 android:progressDrawable="@drawable/custom_progress"
