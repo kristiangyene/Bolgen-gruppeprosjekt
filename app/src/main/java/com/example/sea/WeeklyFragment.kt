@@ -14,16 +14,17 @@ import kotlin.concurrent.thread
 
 class WeeklyFragment : Fragment() {
     private val listWithData = ArrayList<WeeklyElement>()
+    private lateinit var adapter: WeeklyAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_weekly, container, false)
 
         val recyclerView = rootView.findViewById<RecyclerView>(R.id.recyclerview2)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = WeeklyFragment.SimpleAdapter(listWithData, recyclerView)
+        adapter = WeeklyAdapter(listWithData)
+        recyclerView!!.adapter = adapter
         threadcreation()
 
-        // Inflate the layout for this fragment
         return rootView
     }
 
@@ -90,43 +91,6 @@ class WeeklyFragment : Fragment() {
                     }
                 }
             }
-        }
-    }
-
-
-    private class SimpleAdapter(private val list: List<WeeklyElement>, private val recyclerView: RecyclerView) :
-        RecyclerView.Adapter<WeeklyFragment.SimpleAdapter.ViewHolder>() {
-        private var selectedItem = UNSELECTED
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.weekly_listview, parent, false)
-            return ViewHolder(itemView)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.bindItems(list[position])
-        }
-
-        override fun getItemCount() = list.size
-
-
-        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-
-            fun bindItems(e : WeeklyElement){
-                val textTitle = itemView.findViewById(R.id.titleWeekly) as TextView
-                val wind = itemView.findViewById(R.id.weekly_wind) as TextView
-                val waves = itemView.findViewById(R.id.weekly_wave) as TextView
-
-
-                textTitle.text = e.title
-                wind.text = e.windspeed
-                waves.text = e.waves
-            }
-        }
-
-        companion object {
-            private val UNSELECTED = -1
         }
     }
 }
