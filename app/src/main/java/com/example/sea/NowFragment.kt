@@ -33,9 +33,6 @@ class NowFragment : Fragment(){
 
 
 
-
-
-
     //TODO: lage metode som finner nåværende koordinasjoner.
 
     @SuppressLint("ClickableViewAccessibility")
