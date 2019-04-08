@@ -15,31 +15,36 @@ import kotlin.concurrent.thread
 
 class HourlyFragment : Fragment() {
     private val listWithData = ArrayList<HourlyElement>()
+    private var startTimeFound = false
+    private var startTime : String? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_hourly, container, false)
 
         val recyclerView = rootView.findViewById<RecyclerView>(R.id.recyclerview1)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = HourlyAdapter(listWithData,recyclerView)
+        recyclerView.adapter = HourlyAdapter(listWithData, recyclerView)
         threadCreation()
         return rootView
     }
 
-    private fun threadCreation(){
+    private fun threadCreation() {
         val client = RetrofitClient().getClient("json")
-        val locationCall = client.getLocationData(60.10, 9.58, null )
+        val locationCall = client.getLocationData(60.10, 9.58, null)
         val oceanCall = client.getOceanData(60.10, 5.0)
+        val tidalCall = RetrofitClient().getClient("string").getTidalWater("bergen")
 
         thread {
-             val bodyLocation = locationCall.execute().body()
-             location(bodyLocation)
-             val bodyOcean = oceanCall.execute().body()
-             ocean(bodyOcean)
+            val bodyLocation = locationCall.execute().body()
+            location(bodyLocation)
+            val bodyOcean = oceanCall.execute().body()
+            ocean(bodyOcean)
+            val bodyTidal = tidalCall.execute().body()
+            tidal(bodyTidal!!)
         }
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun location(locationData : LocationData?) {
+    private fun location(locationData: LocationData?) {
         val formatterFrom = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
         val formatTo = SimpleDateFormat("H")
         val output = locationData?.product?.time!!
@@ -54,28 +59,45 @@ class HourlyFragment : Fragment() {
             val humid = i.location?.humidity?.value
             val rainfall = output[1].location?.precipitation
 
+            if(!startTimeFound) {
+                startTime = toFormatted
+                startTimeFound = true
+            }
+
             if (toFormatted.toInt() !in checkList) {
                 checkList.add(toFormatted.toInt())
-                listWithData.add(HourlyElement("Kl $toFormatted", windSpeed + " m/s", "-", "$fog %", temp+"ºC", "Tide", rainfall.value+rainfall.unit, "Visibility", "$humid %"))
+                listWithData.add(
+                    HourlyElement(
+                        "Kl $toFormatted",
+                        "$windSpeed m/s",
+                        "-",
+                        "$fog %",
+                        temp + "ºC",
+                        "-",
+                        rainfall.value + rainfall.unit,
+                        "Visibility",
+                        "$humid %"
+                    )
+                )
             }
         }
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun ocean(oceanData : OceanData?) {
+    private fun ocean(oceanData: OceanData?) {
         val formatterFrom = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
         val formatTo = SimpleDateFormat("H")
         val output = oceanData?.forecast
 
         if (output != null) {
-            for(i in output) {
+            for (i in output) {
                 val hour = i.oceanForecast.validTime.timePeriod.begin
                 val from = formatterFrom.parse(hour)
                 val wavesFormat = formatTo.format(from)
-                for(x in listWithData){
-                    if(x.title.equals("Kl $wavesFormat")){
+                for (x in listWithData) {
+                    if (x.title.equals("Kl $wavesFormat")) {
                         val typo = i.oceanForecast.significantTotalWaveHeight
-                        if(typo != null) x.waves = typo.content+typo.uom
+                        if (typo != null) x.waves = typo.content + typo.uom
 
 
                         //recyclerview1.adapter?.notifyDataSetChanged()
@@ -83,5 +105,37 @@ class HourlyFragment : Fragment() {
                 }
             }
         }
+    }
+
+    // Viser tidevann for de neste 24 timene
+    private fun tidal(bodyTidal : String) {
+        var foundStart = false
+        var startIndex = 0
+        val line = bodyTidal.split("\n")
+        var counter = 0
+
+        for (i in 8 until line.size - 1) {
+            val number = line[i].split("\\s+".toRegex())
+            if (number[4] != startTime) {
+                continue
+            }
+            else {
+                foundStart = true
+                startIndex = i
+                break
+            }
+        }
+
+        if (foundStart) {
+            for (i in startIndex until startIndex + 24) {
+                if (line[i][line[i].length - 6] == ' ') {
+                    listWithData[counter++].tide = line[i].substring(line[i].length - 5, line[i].length)
+                }
+                else {
+                    listWithData[counter++].tide = line[i].substring(line[i].length - 6, line[i].length)
+                }
+            }
+        }
+
     }
 }
