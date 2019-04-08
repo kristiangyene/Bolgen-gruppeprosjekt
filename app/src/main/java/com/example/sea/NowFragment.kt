@@ -22,8 +22,12 @@ class NowFragment : Fragment(){
     private lateinit var sharedPreferences: SharedPreferences
     private val fileName = "com.example.sea"
     private var recyclerView: RecyclerView? = null
+
     lateinit var adapter: NowAdapter
     private val listOfElements = ArrayList<Widget>()
+
+    private lateinit var adapter: NowAdapter
+    private val listOfElements = ArrayList<NowElement>()
     private lateinit var rootView: View
     private lateinit var listOfStrings: ArrayList<String>
     private var wavehight: Double = 0.0
@@ -76,6 +80,7 @@ class NowFragment : Fragment(){
 
                 if (response.isSuccessful && response.code() == 200){
                     val data = response.body()?.product?.time!!
+
                     val measurement: String
                     var value = data[0].location.windSpeed.mps.toDouble()
                     val windText = sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null)
@@ -106,18 +111,28 @@ class NowFragment : Fragment(){
                                     listOfElements.add(
                                     Widget(String.format("%.1f", value) + measurement, listOfStrings[item], "")
                                 )}
+
+                    listOfElements.add(NowElement(data[0].location.windSpeed.mps + "mph", resources.getString(R.string.navigation_drawer_wind), data[0].location.windDirection.name))
+                    for(item in 0 until listOfStrings.size){
+                        if(sharedPreferences.getBoolean(listOfStrings[item], false)){
+                            when {
+                                listOfStrings[item] == resources.getString(R.string.navigation_drawer_temperature2) ->  listOfElements.add(
+                                    NowElement(data[0].location.temperature.value + "˚C", listOfStrings[item], "")
+                                )
+
                                 listOfStrings[item] == resources.getString(R.string.navigation_drawer_weather) -> listOfElements.add(
-                                    Widget(data[1].location.precipitation.value + "mm", listOfStrings[item], "")
+                                    NowElement(data[1].location.precipitation.value + "mm", listOfStrings[item], "")
                                 )
                                 listOfStrings[item] == resources.getString(R.string.navigation_drawer_fog) -> listOfElements.add(
-                                    Widget(data[0].location.fog.percent + "%", listOfStrings[item], "")
+                                    NowElement(data[0].location.fog.percent + "%", listOfStrings[item], "")
                                 )
                                 listOfStrings[item] == resources.getString(R.string.navigation_drawer_cloudiness) -> listOfElements.add(
-                                    Widget(data[0].location.cloudiness.percent + "%", listOfStrings[item], "")
+                                    NowElement(data[0].location.cloudiness.percent + "%", listOfStrings[item], "")
                                 )
                                 listOfStrings[item] == resources.getString(R.string.navigation_drawer_humidity) -> listOfElements.add(
-                                    Widget(data[0].location.humidity.value + "%", listOfStrings[item], "")
+                                    NowElement(data[0].location.humidity.value + "%", listOfStrings[item], "")
                                 )
+
                                 listOfStrings[item] == resources.getString(R.string.navigation_drawer_pressure2) ->{
                                     val measurement: String?
                                     var value = data[0].location.pressure.value.toDouble()
@@ -139,6 +154,11 @@ class NowFragment : Fragment(){
                                     listOfElements.add(
                                     Widget( String.format("%.1f", value) + measurement, listOfStrings[item], "")
                                 )}
+
+                                listOfStrings[item] == resources.getString(R.string.navigation_drawer_pressure) -> listOfElements.add(
+                                    NowElement(data[0].location.pressure.value + "HPa", listOfStrings[item], "")
+                                )
+
                             }
                         }
                     }
@@ -167,8 +187,12 @@ class NowFragment : Fragment(){
 
                 if (response.isSuccessful && response.code() == 200){
                     val data = response.body()?.forecast?.get(0)?.oceanForecast
+
                     wavehight = data?.significantTotalWaveHeight?.content.toString().toDouble()
                     listOfElements.add(Widget(data?.significantTotalWaveHeight?.content + "m", resources.getString(R.string.navigation_drawer_wave), ""))
+
+                    listOfElements.add(NowElement(data?.significantTotalWaveHeight?.content + "m", resources.getString(R.string.navigation_drawer_wave), ""))
+
                     adapter.notifyDataSetChanged()
                     risiko = calculaterisk().toInt()
                     seekbar.progress = risiko

@@ -36,6 +36,7 @@ import kotlinx.android.synthetic.main.view_pager.*
 import java.text.DecimalFormat
 
 // TODO: appen vil kræsje hvis man bruker andre språk. Endre sharedpreference keysa
+
 class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var sharedPreferences: SharedPreferences
@@ -48,6 +49,9 @@ class MainActivity : AppCompatActivity() {
     private var locationRequest: LocationRequest? = null
     private lateinit var nowfragment: NowFragment
 
+    // Referanse til presenter
+    //private val presenter = MainPresenter(this, MainInteractor())
+
     companion object {
         private const val SMS_PERMISSION = 1
         private const val LOCATION_PERMISSION = 2
@@ -55,13 +59,13 @@ class MainActivity : AppCompatActivity() {
         private const val REQUEST_CHECK_SETTINGS = 4
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         supportActionBar?.title = getString(R.string.app_name)
         sharedPreferences = this.getSharedPreferences(fileName, Context.MODE_PRIVATE)
+
         //sjekker om den har blitt kjørt før
         if (sharedPreferences.getBoolean("firstTime", true)) {
             firstStart()
@@ -223,7 +227,7 @@ class MainActivity : AppCompatActivity() {
                     locationUpdateState = false
                     lastLocation = location
                     locationStart = 1
-                    Toast.makeText(this@MainActivity, "${lastLocation.latitude} ,  ${lastLocation.longitude}", Toast.LENGTH_LONG).show()
+                    //Toast.makeText(this@MainActivity, "${lastLocation.latitude} ,  ${lastLocation.longitude}", Toast.LENGTH_LONG).show()
                     supportActionBar?.title = "${format.format(lastLocation.latitude)}, ${format.format(lastLocation.longitude)}"
                 }
                 else {
