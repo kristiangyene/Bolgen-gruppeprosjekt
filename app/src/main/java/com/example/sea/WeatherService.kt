@@ -38,7 +38,5 @@ interface WeatherService {
 
     @Headers("User-Agent: Gruppe17")
     @GET("weatherapi/tidalwater/1.1/")
-    fun getTidalWater(@Query("harbor") harbor: String,
-                      @Query("content_type") contentType: String,
-                      @Query("datatype") datatype: String) : Call<String>
+    fun getTidalWater(@Query("harbor") harbor: String) : Call<String>
 }
