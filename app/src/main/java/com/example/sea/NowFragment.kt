@@ -104,8 +104,8 @@ class NowFragment : Fragment(){
                                     }
 
                                     listOfElements.add(
-                                    NowElement(String.format("%.1f", value) + measurement, listOfStrings[item], "")
-                                )}
+                                        NowElement(String.format("%.1f", value) + measurement, listOfStrings[item], "")
+                                    )}
                                 listOfStrings[item] == resources.getString(R.string.navigation_drawer_weather) -> listOfElements.add(
                                     NowElement(data[1].location.precipitation.value + "mm", listOfStrings[item], "")
                                 )
@@ -137,8 +137,8 @@ class NowFragment : Fragment(){
                                         measurement = pressureText
                                     }
                                     listOfElements.add(
-                                    NowElement(String.format("%.1f", value) + measurement, listOfStrings[item], "")
-                                )}
+                                        NowElement(String.format("%.1f", value) + measurement, listOfStrings[item], "")
+                                    )}
                             }
                         }
                     }
@@ -221,5 +221,6 @@ class NowFragment : Fragment(){
         return min
     }
 }
+
 
 

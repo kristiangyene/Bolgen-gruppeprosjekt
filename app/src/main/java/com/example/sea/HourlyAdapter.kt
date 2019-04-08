@@ -19,7 +19,7 @@ class HourlyAdapter(private val list: List<HourlyElement>, private val recyclerV
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.hourlylistview, parent, false)
+            .inflate(R.layout.hourly_listview, parent, false)
         return ViewHolder(itemView)
     }
 
@@ -53,7 +53,7 @@ class HourlyAdapter(private val list: List<HourlyElement>, private val recyclerV
         }
 
         fun bindItems(e : HourlyElement){
-            val textTitle = itemView.findViewById(R.id.KL) as TextView
+            val textTitle = itemView.findViewById(R.id.title) as TextView
             val wind = itemView.findViewById(R.id.hour_wind) as TextView
             val waves = itemView.findViewById(R.id.hour_wave) as TextView
             val fog = itemView.findViewById(R.id.hour_fog) as TextView

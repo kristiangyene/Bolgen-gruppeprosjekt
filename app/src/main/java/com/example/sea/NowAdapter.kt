@@ -10,9 +10,11 @@ import java.util.ArrayList
 class NowAdapter(private val listOfElements: ArrayList<NowElement>) : RecyclerView.Adapter<NowAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.widget, parent, false)
-        return MyViewHolder(view)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.now_listview, parent, false)
+        return MyViewHolder(itemView)
     }
+
+    override fun getItemCount() = listOfElements.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.desc.text = listOfElements[position].text
@@ -29,10 +31,6 @@ class NowAdapter(private val listOfElements: ArrayList<NowElement>) : RecyclerVi
             "Skytetthet" -> holder.icon.setImageResource(R.drawable.cloud_black)
             "Trykk" -> holder.icon.setImageResource(R.drawable.gauge_black)
         }
-    }
-
-    override fun getItemCount(): Int {
-        return listOfElements.size
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
