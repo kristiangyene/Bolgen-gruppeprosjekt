@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -42,6 +43,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     private var foundAddress = false
     private var fabOpen = false
     private var harborsShowing = false
+    private lateinit var harborsLayer : GeoJsonLayer
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -86,17 +88,14 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     }
 
     private fun showHarbors() {
-        val layer = GeoJsonLayer(map, R.raw.geo_json_harbors, activity!!)
-
-        layer.addLayerToMap()
-//        if(harborsShowing) {
-//            layer.addLayerToMap()
-//            harborsShowing = true
-//        }
-//        else {
-//            layer.removeLayerFromMap()
-//            harborsShowing = false
-//        }
+        if(!harborsShowing) {
+            harborsLayer.addLayerToMap()
+            harborsShowing = true
+        }
+        else {
+            harborsLayer.removeLayerFromMap()
+            harborsShowing = false
+        }
     }
 
     private fun show(showButton : Animation?) {
@@ -153,6 +152,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         val style = MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_style)
         map.setMapStyle(style)
         map.setOnInfoWindowClickListener(this@MapFragment)
+
+        // setter opp geografiske egenskaper i GeoJSON format
+        harborsLayer = GeoJsonLayer(map, R.raw.geo_json_harbors, activity!!)
     }
 
     override fun onSuccess(location: Location?) {
