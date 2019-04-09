@@ -51,6 +51,7 @@ class HourlyFragment : Fragment() {
         val formatTo = SimpleDateFormat("H")
         val output = locationData?.product?.time!!
         val checkList = ArrayList<Int>()
+
         for (i in output) {
             val from = formatterFrom.parse(i.to)
             val toFormatted = formatTo.format(from)
@@ -62,7 +63,7 @@ class HourlyFragment : Fragment() {
 
             if (toFormatted.toInt() !in checkList) {
                 checkList.add(toFormatted.toInt())
-                listWithData.add(HourlyElement("KL$toFormatted", windSpeed + "m/s", "", "$fog%", temp+"ºC", "Tide", rainfall.value+rainfall.unit, "Visibility", "$humid%"))
+                listWithData.add(HourlyElement("Kl $toFormatted", windSpeed + " m/s", "-", "$fog %", temp+"ºC", "Tide", rainfall.value+rainfall.unit, "Visibility", "$humid %"))
             }
         }
     }
@@ -72,15 +73,19 @@ class HourlyFragment : Fragment() {
         val formatterFrom = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
         val formatTo = SimpleDateFormat("H")
         val output = oceanData?.forecast
+
         if (output != null) {
             for(i in output) {
                 val hour = i.oceanForecast.validTime.timePeriod.begin
                 val from = formatterFrom.parse(hour)
                 val wavesFormat = formatTo.format(from)
                 for(x in listWithData){
-                    if(x.title.equals("KL$wavesFormat")){
-                        val typo = i.oceanForecast.seaCurrentSpeed
-                        x.waves = typo.content+typo.uom
+                    if(x.title.equals("Kl $wavesFormat")){
+                        val typo = i.oceanForecast.significantTotalWaveHeight
+                        if(typo != null) x.waves = typo.content+typo.uom
+
+
+                        //recyclerview1.adapter?.notifyDataSetChanged()
                     }
                 }
             }

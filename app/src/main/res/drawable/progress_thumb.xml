@@ -4,8 +4,8 @@
         android:shape="rectangle"
         android:thickness="4dp"
         android:useLevel="false"
-        android:tint="#fff">
+        android:tint="#000">
     <size
-            android:width="32dp"
-            android:height="32dp" />
+            android:width="12dp"
+            android:height="12dp" />
 </shape>
