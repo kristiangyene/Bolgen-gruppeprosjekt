@@ -38,11 +38,11 @@
                       android:icon="@drawable/ic_preferences"
                       android:title="@string/navigation_drawer_weatherpreferences"/>
 
-                <!--<item-->
-                <!--android:id="@+id/settings"-->
-                <!--android:title="Setting"-->
-                <!--android:icon="@drawable/ic_settings_black_24dp"-->
-                <!--/>-->
+                <item
+                android:id="@+id/settings"
+                android:title="@string/title_activity_settings"
+                android:icon="@drawable/ic_settings_black_24dp"
+                />
             </group>
         </menu>
     </item>
