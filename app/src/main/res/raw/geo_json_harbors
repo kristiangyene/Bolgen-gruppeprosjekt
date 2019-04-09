@@ -1,0 +1,236 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {"name": "Andenes"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.139759,
+          69.326233
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Bergen"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.312078,
+          60.392353
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Bodø"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.396987,
+          67.289953
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Hammerfest"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.683317,
+          70.664762
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Harstad"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.548197,
+          68.801332,
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Heimsjø"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.095695,
+          63.425898
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Helgeroa"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.856801,
+          58.994180
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Honningsvåg"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.968195,
+          70.981345
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Kabelvåg"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.566273,
+          68.230406
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Kristiansund"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.736651,
+          63.114018
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Måløy"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.113401,
+          61.933380
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Narvik"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          17.426371,
+          68.427514
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Oscarsborg"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.625639,
+          59.681414
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Oslo"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.738040,
+          59.904023
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Rørvik"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.237081,
+          64.859678
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Stavanger"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.727195,
+          58.972168
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Tregde"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.545120,
+          58.009595
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Tromsø"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.960921,
+          69.647098
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Trondheim"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.417503,
+          63.440268
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Vardø"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          31.103911,
+          70.374517
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Ålesund"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.150923,
+          62.475094
+        ]
+      }
+    }
+  ]
+}

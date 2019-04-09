@@ -30,11 +30,22 @@
                 android:id="@+id/progressbar"
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
-                android:layout_gravity="bottom"
+
+                android:layout_gravity="bottom|center"
+                android:layout_marginBottom="30dp"
+                android:progressDrawable="@drawable/custom_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+
+        />
+        <SeekBar
+                android:id="@+id/seekbar"
+                android:layout_width="431dp"
+                android:layout_height="8dp"
+                android:layout_gravity="bottom|center"
                 android:layout_marginBottom="30dp"
                 android:max="100"
-                android:progress="100"
-                android:progressDrawable="@drawable/custom_progress"
+                android:progressTint="@android:color/transparent"
+                android:thumb="@drawable/progress_thumb"
                 style="?android:attr/progressBarStyleHorizontal"
 
         />
