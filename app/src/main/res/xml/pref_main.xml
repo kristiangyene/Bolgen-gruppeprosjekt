@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/settings_title_general">
+        <ListPreference
+                android:defaultValue="0"
+                android:dialogTitle="@string/title_theme_mode"
+                android:entries="@array/settings_theme_mode_entries"
+                android:entryValues="@array/settings_theme_mode_values"
+                android:key="@string/key_theme_mode"
+                android:summary="@string/summary_selected_theme_mode"
+                android:icon="@drawable/ic_brightness_3_black_24dp"
+                android:title="@string/title_theme_mode" />
+
+        <ListPreference
+                android:defaultValue="0"
+                android:dialogTitle="@string/title_language"
+                android:entries="@array/settings_language_entries"
+                android:entryValues="@array/settings_language_values"
+                android:key="@string/key_language"
+                android:summary="@string/summary_selected_language_mode"
+                android:icon="@drawable/ic_language_black_24dp"
+                android:title="@string/title_language" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/settings_title_permissions">
+        <SwitchPreference
+                android:defaultValue="true"
+                android:icon="@drawable/ic_place_black_24dp"
+                android:key="@string/settings_permissions_position"
+                android:title="@string/title_settings_permissions_position" />
+
+        <SwitchPreference
+                android:defaultValue="true"
+                android:icon="@drawable/ic_phone_black_24dp"
+                android:key="@string/settings_permissions_mail"
+                android:title="@string/title_settings_permissions_mail" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_title_notifications">
+
+        <SwitchPreference
+                android:defaultValue="true"
+                android:key="@string/notifications_new_message"
+                android:title="@string/title_new_notification_sound" />
+
+        <RingtonePreference
+                android:defaultValue="content://settings/system/notification_sound"
+                android:dependency="notifications_new_message"
+                android:key="@string/key_notifications_new_message_ringtone"
+                android:ringtoneType="notification"
+                android:summary="@string/summary_choose_ringtone"
+                android:title="@string/settings_title_ringtone" />
+
+        <SwitchPreference
+                android:defaultValue="true"
+                android:key="@string/key_vibrate"
+                android:summary="@string/summary_vibrate"
+                android:title="@string/title_vibrate" />
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/settings_header_about">
+
+        <Preference
+                android:selectable="false"
+                android:summary="@string/summary_about" />
+
+        <Preference
+                android:summary="@string/app_version"
+                android:title="@string/title_version" />
+
+        <Preference
+                android:key="@string/key_send_feedback"
+                android:summary="@string/summary_support"
+                android:title="@string/title_send_feedback" />
+
+        <!-- preference opens url in browser -->
+        <Preference
+                android:summary="@string/summary_faq"
+                android:title="@string/title_faq">
+            <intent
+                    android:action="android.intent.action.VIEW"
+                    android:data="@string/url_faq" />
+        </Preference>
+
+        <Preference android:title="@string/privacy_policy">
+            <intent
+                    android:action="android.intent.action.VIEW"
+                    android:data="@string/url_privacy" />
+        </Preference>
+
+        <Preference android:title="@string/title_terms">
+            <intent
+                    android:action="android.intent.action.VIEW"
+                    android:data="@string/url_terms" />
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>

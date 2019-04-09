@@ -15,9 +15,9 @@ interface WeatherService {
 
     @Headers("User-Agent: Gruppe17")
     @GET("weatherapi/locationforecast/1.9/.json")
-    fun getLocationData(@Query("lat") lat: Double,
-                        @Query("lon") lon: Double,
-                        @Query("msl") msl: Double?) : Call<LocationData> // msl parameteret er valgfri, send inn null hvis du ikke vil sende inn msl verdi
+    fun getLocationData(@Query("lat") lat: Float,
+                        @Query("lon") lon: Float,
+                        @Query("msl") msl: Float?) : Call<LocationData> // msl parameteret er valgfri, send inn null hvis du ikke vil sende inn msl verdi
 
     @Headers("User-Agent: Gruppe17")
     @GET("weatherapi/spotwind/1.0/.json")
@@ -38,7 +38,5 @@ interface WeatherService {
 
     @Headers("User-Agent: Gruppe17")
     @GET("weatherapi/tidalwater/1.1/")
-    fun getTidalWater(@Query("harbor") harbor: String,
-                      @Query("content_type") contentType: String,
-                      @Query("datatype") datatype: String) : Call<String>
+    fun getTidalWater(@Query("harbor") harbor: String) : Call<String>
 }

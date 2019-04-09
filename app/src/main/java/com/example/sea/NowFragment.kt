@@ -28,13 +28,8 @@ class NowFragment : Fragment() {
     private var risiko: Int = 0
     private lateinit var seekbar: SeekBar
 
-
-
-    //TODO: lage metode som finner nåværende koordinasjoner.
-
+    //TODO: Bruke nåværende koordinater for OceanData og håndtere hvis man ikke er i sjøen.
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-
         rootView = inflater.inflate(R.layout.fragment_now, container, false)
         sharedPreferences = activity!!.getSharedPreferences(fileName, Context.MODE_PRIVATE)
         listOfStrings = arrayListOf(
@@ -50,19 +45,18 @@ class NowFragment : Fragment() {
         recyclerView!!.layoutManager = GridLayoutManager(context, 1)
         adapter = NowAdapter(listOfElements)
         recyclerView!!.adapter = adapter
-        fetchLocationData(60.10, 5.0)
+        fetchLocationData(sharedPreferences.getFloat("lat", 60.0F), sharedPreferences.getFloat("long", 11F))
         fetchOceanData(60.10, 5.0)
 
         return rootView
     }
 
-    private fun fetchLocationData(latitude: Double, longitude: Double) {
+    private fun fetchLocationData(latitude: Float, longitude: Float) {
 
         val call = RetrofitClient().getClient("json").getLocationData(latitude, longitude, null)
         call.enqueue(object : retrofit2.Callback<LocationData> {
 
             override fun onResponse(call: Call<LocationData>, response: Response<LocationData>){
-
                 if (response.isSuccessful && response.code() == 200){
                     val data = response.body()?.product?.time!!
                     val measurement: String
@@ -149,7 +143,6 @@ class NowFragment : Fragment() {
         call.enqueue(object : retrofit2.Callback<OceanData> {
 
             override fun onResponse(call: Call<OceanData>, response: Response<OceanData>){
-
                 if (response.isSuccessful && response.code() == 200){
                     val data = response.body()?.forecast?.get(0)?.oceanForecast
                     wavehight = data?.significantTotalWaveHeight?.content.toString().toDouble()
