@@ -224,6 +224,8 @@ class MainActivity : AppCompatActivity() {
                     locationStart = 1
                     //Toast.makeText(this@MainActivity, "${lastLocation.latitude} ,  ${lastLocation.longitude}", Toast.LENGTH_LONG).show()
                     supportActionBar?.title = "${format.format(lastLocation.latitude)}, ${format.format(lastLocation.longitude)}"
+                    sharedPreferences.edit().putFloat("lat", lastLocation.latitude.toFloat()).apply()
+                    sharedPreferences.edit().putFloat("long", lastLocation.longitude.toFloat()).apply()
                 }
                 else {
                     // Hvis enheten ikke finner siste posisjon, så opprettes en ny klient og ber om plasseringsoppdateringer
@@ -235,6 +237,8 @@ class MainActivity : AppCompatActivity() {
                             lastLocation = p0.lastLocation
                             Toast.makeText(this@MainActivity, "${lastLocation.latitude} ,  ${lastLocation.longitude}", Toast.LENGTH_LONG).show()
                             supportActionBar?.title = "${format.format(lastLocation.latitude)}, ${format.format(lastLocation.longitude)}"
+                            sharedPreferences.edit().putFloat("lat", lastLocation.latitude.toFloat()).apply()
+                            sharedPreferences.edit().putFloat("long", lastLocation.longitude.toFloat()).apply()
                         }
                     }
                     fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
@@ -412,6 +416,11 @@ class MainActivity : AppCompatActivity() {
 
     // lager alert dialoger for alle itemene i navigation draweren
     private fun dialog(menuItem: MenuItem, checkedItems: BooleanArray) {
+        if(menuItem.itemId == R.id.settings) {
+            menuItem.isChecked = false
+            startActivity(Intent(this, SettingsActivity::class.java))
+            return
+        }
         val builder = AlertDialog.Builder(this, R.style.AlertDialogStyle)
         menuItem.isChecked = true
 
