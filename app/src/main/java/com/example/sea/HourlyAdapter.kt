@@ -17,20 +17,26 @@ class HourlyAdapter(private val list: List<HourlyElement>, private val recyclerV
     }
     private var selectedItem = UNSELECTED
 
+    // Oppretter nye visninger (påkalt av layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.hourly_listview, parent, false)
+
+        // Lager en ny visning
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.hourly_listview, parent, false)
         return ViewHolder(itemView)
     }
 
+    // Erstatter innholdet i en visning (påkalt av layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+        // Henter elementer fra datasettet i denne posisjonen
+        // Erstatter innholdet til visningen med dette elementet
         holder.bind()
         holder.bindItems(list[position])
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+    // Retunerer størrelsen på datasettet (påkalt av layout manager)
+    override fun getItemCount() = list.size
+
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener,
         ExpandableLayout.OnExpansionUpdateListener {

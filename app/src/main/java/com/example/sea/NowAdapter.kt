@@ -9,14 +9,20 @@ import java.util.ArrayList
 
 class NowAdapter(private val listOfElements: ArrayList<NowElement>) : RecyclerView.Adapter<NowAdapter.MyViewHolder>() {
 
+    // Oppretter nye visninger (påkalt av layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.now_listview, parent, false)
         return MyViewHolder(itemView)
     }
 
+    // Retunerer størrelsen på datasettet (påkalt av layout manager)
     override fun getItemCount() = listOfElements.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+
+        // Henter elementer fra datasettet i denne posisjonen
+        // Erstatter innholdet til visningen med dette elementet
         holder.desc.text = listOfElements[position].text
         holder.dir.text = listOfElements[position].dir
         when (listOfElements[position].image) {
