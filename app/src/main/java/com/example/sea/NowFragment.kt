@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.support.v7.widget.GridLayoutManager
+import android.widget.SeekBar
 import android.widget.Toast
 import retrofit2.Call
 import retrofit2.Response
@@ -59,7 +60,7 @@ class NowFragment : Fragment() {
             override fun onResponse(call: Call<LocationData>, response: Response<LocationData>){
                 if (response.isSuccessful && response.code() == 200){
                     val data = response.body()?.product?.time!!
-                    val measurement: String
+                    var measurement: String
                     var value = data[0].location.windSpeed.mps.toDouble()
                     val windText = sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null)
                     if (windText == null || windText == "Km/h") {
@@ -75,8 +76,7 @@ class NowFragment : Fragment() {
                         if(sharedPreferences.getBoolean(listOfStrings[item], false)){
                             when {
                                 listOfStrings[item] == resources.getString(R.string.navigation_drawer_temperature2) ->{
-                                    val measurement: String
-                                    var value = data[0].location.temperature.value.toDouble()
+                                    value = data[0].location.temperature.value.toDouble()
                                     val temperatureText = sharedPreferences.getString(getString(R.string.navigation_drawer_temperature), null)
                                     if (temperatureText == null || temperatureText == "˚C") {
                                         measurement = "˚C"
@@ -103,8 +103,7 @@ class NowFragment : Fragment() {
 
                                 )
                                 listOfStrings[item] == resources.getString(R.string.navigation_drawer_pressure2) ->{
-                                    val measurement: String?
-                                    var value = data[0].location.pressure.value.toDouble()
+                                    value = data[0].location.pressure.value.toDouble()
                                     val pressureText = sharedPreferences.getString(getString(R.string.navigation_drawer_pressure), null)
                                     if (pressureText == null || pressureText == "HPa") {
                                         measurement =  "HPa"

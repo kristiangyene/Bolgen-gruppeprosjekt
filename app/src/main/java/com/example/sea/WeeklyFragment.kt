@@ -30,7 +30,7 @@ class WeeklyFragment : Fragment() {
 
     private fun threadcreation(){
         val client = RetrofitClient().getClient("json")
-        val locationCall = client.getLocationData(60.10, 9.58, null )
+        val locationCall = client.getLocationData(60.1F, 9.58F, null )
         val oceanCall = client.getOceanData(60.10, 5.0)
         thread {
             val bodyLocation = locationCall.execute().body()
