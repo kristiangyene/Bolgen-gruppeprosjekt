@@ -45,9 +45,11 @@ class WeeklyFragment : Fragment() {
     @SuppressLint("SimpleDateFormat")
     private fun location(locationData : LocationData?) {
         val formatterFrom = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+
         val formatToDay = SimpleDateFormat("dd")
         val formatToHour = SimpleDateFormat("H")
-        val formatToMonth = SimpleDateFormat("MM")
+        val formatToDayText = SimpleDateFormat("EEE")
+
         val locationForecast = locationData?.product?.time!!
         val checkList = ArrayList<Int>()
 
@@ -58,13 +60,14 @@ class WeeklyFragment : Fragment() {
             var hour = formatToHour.format(date)
             if (hour == "12") {
                 val day = formatToDay.format(date)
-                val month = formatToMonth.format(date)
-                var windspeed = time.location?.windSpeed?.mps
+                val dayText = formatToDayText.format(date).capitalize()
+
+                val windspeed = time.location?.windSpeed?.mps
 
                 // Sjekker om data for samme tidspunkt ikke er allerede lagt til.
                 if (day.toInt() !in checkList) {
                     checkList.add(day.toInt())
-                    listWithData.add(WeeklyElement("$day.$month", "$day", "$windspeed m/s", "-"))
+                    listWithData.add(WeeklyElement(dayText, day, "$windspeed m/s", "-"))
                 }
             }
         }
