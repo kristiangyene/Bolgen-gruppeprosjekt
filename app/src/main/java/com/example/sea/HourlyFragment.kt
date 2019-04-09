@@ -129,6 +129,7 @@ class HourlyFragment : Fragment() {
 
             if (toFormatted.toInt() !in checkList) {
                 checkList.add(toFormatted.toInt())
+
                 listWithData.add(
                     HourlyElement(
                         "Kl $toFormatted",
@@ -142,6 +143,7 @@ class HourlyFragment : Fragment() {
                         "$humid %"
                     )
                 )
+
             }
         }
     }
@@ -157,10 +159,12 @@ class HourlyFragment : Fragment() {
                 val hour = i.oceanForecast.validTime.timePeriod.begin
                 val from = formatterFrom.parse(hour)
                 val wavesFormat = formatTo.format(from)
+
                 for (x in listWithData) {
                     if (x.title.equals("Kl $wavesFormat")) {
                         val typo = i.oceanForecast.significantTotalWaveHeight
                         if (typo != null) x.waves = typo.content + typo.uom
+
 
 
                         //recyclerview1.adapter?.notifyDataSetChanged()

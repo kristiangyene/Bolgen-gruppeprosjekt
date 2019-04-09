@@ -23,6 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.maps.android.data.geojson.GeoJsonLayer
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.view_pager.*
 import java.io.IOException
@@ -40,6 +41,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     private var long : Double? = null
     private var foundAddress = false
     private var fabOpen = false
+    private var harborsShowing = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -77,6 +79,24 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         fab_waves.setOnClickListener{hide(hideButton)}
         fab_wind.setOnClickListener{hide(hideButton)}
         fab_rain.setOnClickListener{hide(hideButton)}
+        fab_harbor.setOnClickListener{
+            hide(hideButton)
+            showHarbors()
+        }
+    }
+
+    private fun showHarbors() {
+        val layer = GeoJsonLayer(map, R.raw.geo_json_harbors, activity!!)
+
+        layer.addLayerToMap()
+//        if(harborsShowing) {
+//            layer.addLayerToMap()
+//            harborsShowing = true
+//        }
+//        else {
+//            layer.removeLayerFromMap()
+//            harborsShowing = false
+//        }
     }
 
     private fun show(showButton : Animation?) {
@@ -84,9 +104,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         fab_waves.show()
         fab_wind.show()
         fab_rain.show()
+        fab_harbor.show()
         fab_waves_text.visibility = View.VISIBLE
         fab_wind_text.visibility = View.VISIBLE
         fab_rain_text.visibility = View.VISIBLE
+        fab_harbor_text.visibility = View.VISIBLE
         fabOpen = true
     }
 
@@ -94,9 +116,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         fab_waves.hide()
         fab_wind.hide()
         fab_rain.hide()
+        fab_harbor.hide()
         fab_waves_text.visibility = View.GONE
         fab_wind_text.visibility = View.GONE
         fab_rain_text.visibility = View.GONE
+        fab_harbor_text.visibility = View.GONE
         fab.startAnimation(hideButton)
         fabOpen = false
     }
