@@ -121,15 +121,16 @@ class HourlyFragment : Fragment() {
             val temp = i.location?.temperature?.value
             val humid = i.location?.humidity?.value
             val rainfall = output[1].location?.precipitation
-
+            var visibility =  "God sikt"
             if(!startTimeFound) {
                 startTime = toFormatted
                 startTimeFound = true
             }
 
+
             if (toFormatted.toInt() !in checkList) {
                 checkList.add(toFormatted.toInt())
-
+                if(fog.toDouble() > 25.0) visibility = "Dårlig sikt"
                 listWithData.add(
                     HourlyElement(
                         "Kl $toFormatted",
@@ -139,7 +140,7 @@ class HourlyFragment : Fragment() {
                         temp + "ºC",
                         "-",
                         rainfall.value + rainfall.unit,
-                        "Visibility",
+                        visibility,
                         "$humid %"
                     )
                 )
