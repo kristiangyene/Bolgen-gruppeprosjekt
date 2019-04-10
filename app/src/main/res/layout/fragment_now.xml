@@ -10,22 +10,14 @@
         android:id="@+id/now_fragment"
         tools:context=".NowFragment">
 
-    <android.support.v7.widget.CardView
-            android:id="@+id/card_background"
-            android:layout_width="match_parent"
-            android:layout_height="110dp"
-            app:cardBackgroundColor="#fff"
-            android:layout_alignParentBottom="true"
-            app:cardElevation="3dp"
-            tools:ignore="MissingConstraints">
 
 
         <android.support.v7.widget.CardView
                 android:id="@+id/card"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
-                app:cardBackgroundColor="#65000000"
-                app:cardElevation="3dp"
+                app:cardBackgroundColor="#AADAFF"
+                app:cardElevation="1dp"
                 tools:ignore="MissingConstraints">
             <ProgressBar
                     android:id="@+id/progressbar"
@@ -52,6 +44,7 @@
             <TextView android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:text = "\t0\t\t\t10\t\t\t20\t\t\t30\t\t\t40\t\t\t50\t\t\t60\t\t\t70\t\t\t80\t\t\t90\t\t\t100"
+                      android:textColor="#000000"
                       android:textSize="15sp"
                       android:layout_gravity="bottom"
                       android:layout_marginBottom="44dp"
@@ -60,6 +53,7 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:text = "Trygt"
+                      android:textColor="#000000"
                       android:textSize="20sp"
                       android:textStyle="bold"
                       android:layout_gravity="bottom"
@@ -69,6 +63,7 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:text = "Farlig"
+                      android:textColor="#000000"
                       android:textSize="20sp"
                       android:textStyle="bold"
                       android:layout_gravity="bottom|end"
@@ -78,6 +73,7 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:text = "Trygghetsskala"
+                      android:textColor="#000000"
                       android:textSize="20sp"
                       android:textStyle="bold"
                       android:layout_gravity="center|top"
@@ -86,7 +82,6 @@
                       tools:ignore="HardcodedText"/>
 
         </android.support.v7.widget.CardView>
-    </android.support.v7.widget.CardView>
 
 
     <android.support.v7.widget.RecyclerView
