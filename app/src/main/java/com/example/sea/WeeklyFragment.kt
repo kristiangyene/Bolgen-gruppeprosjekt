@@ -8,7 +8,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import com.example.sea.service.model.OceanData
+import com.example.sea.service.RetrofitClient
 import java.text.SimpleDateFormat
 import kotlin.concurrent.thread
 

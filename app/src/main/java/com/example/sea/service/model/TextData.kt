@@ -1,4 +1,4 @@
-package com.example.sea
+package com.example.sea.service.model
 
 import org.simpleframework.xml.Attribute
 import org.simpleframework.xml.ElementList
