@@ -8,20 +8,27 @@ import android.widget.TextView
 
 
 class WeeklyAdapter(private val list: ArrayList<WeeklyElement>) : RecyclerView.Adapter<WeeklyAdapter.MyViewHolder>() {
-    private var selectedItem = UNSELECTED
 
+    // Oppretter nye visninger (påkalt av layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+
+        // Lager en ny visning
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.weekly_listview, parent, false)
         return MyViewHolder(itemView)
     }
 
+    // Erstatter innholdet i en visning (påkalt av layout manager)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        // Henter elementer fra datasettet i denne posisjonen
+        // Erstatter innholdet til visningen med dette elementet
         holder.bindItems(list[position])
     }
 
+    // Retunerer størrelsen på datasettet (påkalt av layout manager)
     override fun getItemCount() = list.size
 
 
+    // Gi en referanse til visningene for hvert element.
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
         fun bindItems(element : WeeklyElement){
@@ -33,9 +40,5 @@ class WeeklyAdapter(private val list: ArrayList<WeeklyElement>) : RecyclerView.A
             wind.text = element.windspeed
             waves.text = element.waves
         }
-    }
-
-    companion object {
-        private val UNSELECTED = -1
     }
 }

@@ -58,5 +58,87 @@
     <string name="fog_image">fog image</string>
     <string name="waves_image">waves image</string>
     <string name="wind_image">wind image</string>
+
+    <!-- Strings related to Settings -->
+    <string name="title_activity_settings">Instilinger</string>
+
+    <!-- After General -->
+    <string name="settings_title_general">Generell</string>
+    <string name="title_theme_mode">Nattmodus</string>
+    <string name="summary_selected_theme_mode">Av</string>
+    <string name="key_theme_mode">key_theme_mode</string>
+
+    <string name="title_language">Språk</string>
+    <string name="key_language">key_language</string>
+    <string name="summary_selected_language_mode">Norsk</string>
+
+
+    <!-- After Notifications -->
+    <string name="title_new_notification_sound">New message notification</string>
+    <string name="notifications_new_message">notifications_new_message</string>
+    <string name="key_notifications_new_message_ringtone">key_notifications_new_message_ringtone</string>
+
+    <string name="title_vibrate">Vibrere</string>
+    <string name="summary_vibrate">Mobilen vibrerer på nytt varsel</string>
+    <string name="key_vibrate">key_vibrate</string>
+
+    <string name="settings_title_notifications">Varslinger</string>
+    <string name="summary_choose_ringtone">Choose notification sound</string>
+    <string name="settings_title_vibrate">Vibrere</string>
+    <string name="settings_title_ringtone">Ringetone</string>
+    <string name="settings_ringtone_silent">Stille</string>
+    <string name="settings_header_notifications">Varslinger</string>
+    <string name="pref_title_new_message_notifications">Vær varsling</string>
+
+
+    <!-- After Permissions -->
+    <string name="settings_title_permissions">Tillatelser</string>
+    <string name="title_settings_permissions_position">Posisjon</string>
+    <string name="settings_permissions_position">title_settings_permissions_position</string>
+
+    <string name="title_settings_permissions_mail">Telefon</string>
+    <string name="settings_permissions_mail">title_settings_permissions_mail</string>
+
+
+    <!-- After About -->
+    <string name="settings_header_about">Om Bølgen</string>
+    <string name="summary_about">Vi er ..........</string>
+    <string name="app_version">1.0</string>
+    <string name="summary_support">Send oss tilbakemelding slik at vi kan forbedre appen</string>
+    <string name="title_send_feedback">Send oss tilbakmelding</string>
+    <string name="title_faq">FAQ</string>
+    <string name="summary_faq">Se vanlige spørsmål</string>
+    <string name="url_faq">https://www.androidhive.info/privacy-policy/</string>
+    <string name="privacy_policy">Personvern</string>
+    <string name="url_privacy">https://www.androidhive.info/privacy-policy/</string>
+    <string name="title_terms">Vilkår &amp; Betingelser</string>
+    <string name="url_terms">https://www.androidhive.info/terms-of-service/</string>
+    <string name="title_version">Version</string>
+    <string name="choose_email_client">Choose email client</string>
+    <string name="key_send_feedback">key_send_feedback</string>
+
+
+    <!-- String arrays related to Settings -->
+    <string-array name="settings_theme_mode_entries">
+        <item>Av</item>
+        <item>På</item>
+        <item>Automatisk ved solnedgang</item>
+    </string-array>
+    <string-array name="settings_theme_mode_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="settings_language_entries">
+        <item>Norsk</item>
+        <item>Engelsk</item>
+    </string-array>
+    <string-array name="settings_language_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
     <string name="fab_map_harbor">Havn</string>
+
 </resources>
