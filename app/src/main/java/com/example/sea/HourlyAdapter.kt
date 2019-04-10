@@ -98,20 +98,6 @@ class HourlyAdapter(private val list: List<HourlyElement>, private val recyclerV
             }
         }
 
-        /*override fun onClick(view: View) {
-            val holder = recyclerView.findViewHolderForAdapterPosition(selectedItem) as ViewHolder?
-            if(holder != null) {
-                holder.expandableLayout!!.expand()
-
-                /*if (holder.expandableLayout!!.isExpanded) {
-                    holder.expandableLayout!!.collapse()
-                } else {
-                    holder.expandableLayout!!.expand()
-                }*/
-            }
-        }*/
-
-
         override fun onExpansionUpdate(expansionFraction: Float, state: Int) {
             Log.d("ExpandableLayout", "State: $state")
             if (state == ExpandableLayout.State.EXPANDING) {
