@@ -13,53 +13,91 @@
     <android.support.v7.widget.CardView
             android:id="@+id/card_background"
             android:layout_width="match_parent"
-            android:layout_height="85dp"
+            android:layout_height="110dp"
             app:cardBackgroundColor="#fff"
+            android:layout_alignParentBottom="true"
             app:cardElevation="3dp"
             tools:ignore="MissingConstraints">
-    </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-            android:id="@+id/card"
-            android:layout_width="match_parent"
-            android:layout_height="85dp"
-            app:cardBackgroundColor="#65000000"
-            app:cardElevation="3dp"
-            tools:ignore="MissingConstraints">
-        <ProgressBar
-                android:id="@+id/progressbar"
+
+        <android.support.v7.widget.CardView
+                android:id="@+id/card"
                 android:layout_width="match_parent"
-                android:layout_height="8dp"
+                android:layout_height="110dp"
+                app:cardBackgroundColor="#65000000"
+                app:cardElevation="3dp"
+                tools:ignore="MissingConstraints">
+            <ProgressBar
+                    android:id="@+id/progressbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:layout_gravity="bottom|center"
+                    android:layout_marginBottom="32dp"
+                    android:progressDrawable="@drawable/custom_progress"
+                    style="?android:attr/progressBarStyleHorizontal"
 
-                android:layout_gravity="bottom|center"
-                android:layout_marginBottom="30dp"
-                android:progressDrawable="@drawable/custom_progress"
-                style="?android:attr/progressBarStyleHorizontal"
+            />
+            <SeekBar
+                    android:id="@+id/seekbar"
+                    android:layout_width="431dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="bottom|center"
+                    android:layout_marginBottom="23dp"
+                    android:max="100"
+                    android:progressTint="@android:color/transparent"
+                    android:thumb="@drawable/progress_thumb"
+                    style="?android:attr/progressBarStyleHorizontal"
 
-        />
-        <SeekBar
-                android:id="@+id/seekbar"
-                android:layout_width="431dp"
-                android:layout_height="8dp"
-                android:layout_gravity="bottom|center"
-                android:layout_marginBottom="30dp"
-                android:max="100"
-                android:progressTint="@android:color/transparent"
-                android:thumb="@drawable/progress_thumb"
-                style="?android:attr/progressBarStyleHorizontal"
+            />
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:text = "\t0\t\t\t10\t\t\t20\t\t\t30\t\t\t40\t\t\t50\t\t\t60\t\t\t70\t\t\t80\t\t\t90\t\t\t100"
+                      android:textSize="15sp"
+                      android:layout_gravity="bottom"
+                      android:layout_marginBottom="44dp"
+                      android:layout_marginEnd="4dp"
+                      tools:ignore="HardcodedText"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text = "Trygt"
+                      android:textSize="20sp"
+                      android:textStyle="bold"
+                      android:layout_gravity="bottom"
+                      android:layout_marginBottom="4dp"
+                      android:layout_marginStart="4dp"
+                      tools:ignore="HardcodedText"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text = "Farlig"
+                      android:textSize="20sp"
+                      android:textStyle="bold"
+                      android:layout_gravity="bottom|end"
+                      android:layout_marginBottom="4dp"
+                      android:layout_marginEnd="4dp"
+                      tools:ignore="HardcodedText"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text = "Trygghetsskala"
+                      android:textSize="20sp"
+                      android:textStyle="bold"
+                      android:layout_gravity="center|top"
+                      android:layout_marginTop="4dp"
+                      android:layout_marginEnd="4dp"
+                      tools:ignore="HardcodedText"/>
 
-        />
+        </android.support.v7.widget.CardView>
     </android.support.v7.widget.CardView>
 
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
+            android:layout_width="406dp"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:paddingTop="150dp"
             android:clipToPadding="false"
-            android:background="#AADAFF"/>
+            android:background="#AADAFF"
+            tools:ignore="MissingConstraints"/>
 
 
 

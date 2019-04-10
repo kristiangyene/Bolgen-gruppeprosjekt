@@ -1,5 +1,6 @@
 package com.example.sea
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -30,8 +31,10 @@ class NowFragment : Fragment() {
     private lateinit var seekbar: SeekBar
 
     //TODO: Bruke nåværende koordinater for OceanData og håndtere hvis man ikke er i sjøen.
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_now, container, false)
+        seekbar = rootView.findViewById(R.id.seekbar)
         sharedPreferences = activity!!.getSharedPreferences(fileName, Context.MODE_PRIVATE)
         listOfStrings = arrayListOf(
             getString(R.string.navigation_drawer_tide),
@@ -48,6 +51,7 @@ class NowFragment : Fragment() {
         recyclerView!!.adapter = adapter
         fetchLocationData(sharedPreferences.getFloat("lat", 60.0F), sharedPreferences.getFloat("long", 11F))
         fetchOceanData(60.10, 5.0)
+        seekbar.setOnTouchListener { _, _ -> true }
 
         return rootView
     }
@@ -58,6 +62,7 @@ class NowFragment : Fragment() {
         call.enqueue(object : retrofit2.Callback<LocationData> {
 
             override fun onResponse(call: Call<LocationData>, response: Response<LocationData>){
+
                 if (response.isSuccessful && response.code() == 200){
                     val data = response.body()?.product?.time!!
                     var measurement: String
@@ -126,6 +131,9 @@ class NowFragment : Fragment() {
                         }
                     }
                     adapter.notifyDataSetChanged()
+                    risiko = calculaterisk().toInt()
+                    seekbar.progress = risiko
+                    seekbar.refreshDrawableState()
                 }
             }
 
@@ -147,6 +155,9 @@ class NowFragment : Fragment() {
                     wavehight = data?.significantTotalWaveHeight?.content.toString().toDouble()
                     listOfElements.add(NowElement(data?.significantTotalWaveHeight?.content + "m", resources.getString(R.string.navigation_drawer_wave), ""))
                     adapter.notifyDataSetChanged()
+                    risiko = calculaterisk().toInt()
+                    seekbar.progress = risiko
+                    seekbar.refreshDrawableState()
                 }
             }
 
