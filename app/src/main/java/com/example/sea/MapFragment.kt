@@ -215,10 +215,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(p0.latitude, p0.longitude), 8f), 2000, null)
 
         val format = DecimalFormat("#.###")
-//        if(!harborsShowing) {
-            map.setInfoWindowAdapter(CustomInfoWindowAdapter(activity!!, format.format(lat!!), format.format(long!!), foundAddress, locationName))
-            map.setOnInfoWindowClickListener(this)
-//        }
+        map.setInfoWindowAdapter(CustomInfoWindowAdapter(activity!!, format.format(lat!!), format.format(long!!), foundAddress, locationName))
+        map.setOnInfoWindowClickListener(this)
     }
 
     override fun onInfoWindowClick(p0: Marker?) {

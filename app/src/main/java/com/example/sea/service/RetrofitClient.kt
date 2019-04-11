@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package com.example.sea
+package com.example.sea.service
 
 import retrofit2.Converter
 import retrofit2.Retrofit
