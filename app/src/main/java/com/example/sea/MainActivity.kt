@@ -64,7 +64,11 @@ class MainActivity : AppCompatActivity() {
         //sjekker om appen startes for første gang
         if (sharedPreferences.getBoolean("firstTime", true)) {
             firstStart()
+            createLocationRequest()
             sharedPreferences.edit().putBoolean("firstTime", false).apply()
+        }
+        else {
+            createLocationRequest()
         }
 
         drawerLayout = findViewById(R.id.drawer)
@@ -95,21 +99,21 @@ class MainActivity : AppCompatActivity() {
         // Tab-ene får også riktig tittel når metoden onPageTitle() kalles
         tabs.setupWithViewPager(viewpager)
 
-        createLocationRequest()
 
         val sosButton = findViewById<SwipeButton>(R.id.swipe_btn)
         sosButton.setOnActiveListener {
             if (checkPermission("sms")) {
                 val smsManager = SmsManager.getDefault()
                 val phoneNumber = "46954940"
-                smsManager.sendTextMessage(phoneNumber, null, "test", null, null)
+                smsManager.sendTextMessage(phoneNumber, null, "${lastLocation.latitude} , ${lastLocation.longitude}", null, null)
                 Toast.makeText(this@MainActivity, "Tekstmelding sendt til 46954940", Toast.LENGTH_SHORT).show()
-            } else {
+            }
+            else {
                 Toast.makeText(this@MainActivity, "Har ikke tilatelse til å sende melding!", Toast.LENGTH_LONG).show()
 
                 val intent = Intent(Intent.ACTION_SENDTO).apply {
                     data = Uri.parse("smsto: 46954940")
-                    putExtra("sms_body", "test")
+                    putExtra("sms_body", "${lastLocation.latitude} , ${lastLocation.longitude}")
                 }
 
                 if (intent.resolveActivity(packageManager) != null) {
@@ -127,7 +131,7 @@ class MainActivity : AppCompatActivity() {
                 ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
             }
             "location" -> {
-                ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
             }
             else -> {
                 (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
@@ -182,8 +186,11 @@ class MainActivity : AppCompatActivity() {
 
     // Lager en request for å hente enhetens posisjon hvis appen ikke klarer å hente siste registrerte posisjon
     private fun createLocationRequest() {
-        // lager en request, hvor den gir nøyaktig plassering, men samtidig ved å ikke bruke veldig mye strøm
+        // lager en request, hvor den gir nøyaktig plassering, men samtidig ved å ikke bruke veldig mye strøm, og bruker som regel 300 ms på å motta posisjonoppdateringer
+        // interval angir hastigheten i millisekunder der appen foretrekker å motta posisjonsoppdateringer
         locationRequest = LocationRequest.create()?.apply {
+            interval = 300
+            fastestInterval = 200
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             numUpdates = 1
         }
@@ -192,30 +199,31 @@ class MainActivity : AppCompatActivity() {
         val client: SettingsClient = LocationServices.getSettingsClient(this)
         val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
 
-        // Kaller på Location API og henter enhetens posisjon bare hvis vi har både tillatelse til å hente enhetens posisjon og at lokasjon instillingen er på
+        // Kalle på API og hente brukerens posisjon bare hvis vi har både tillatelse til å hente enhetens posisjon og at lokasjon instillingen er på,
+        // Lokasjon instillingen er på og appen har tillatelse til å hente enhetens posisjon
         task.addOnSuccessListener {
             getLocation(locationRequest!!)
         }
 
-        // Hvis lokasjon instillingen er ikke på
         task.addOnFailureListener { exception ->
             if (exception is ResolvableApiException) {
                 // Lokasjon innstillingene er ikke tilfredsstilt
                 try {
                     // viser en dialog som ber brukeren å skru på lokasjon innstillingen
                     exception.startResolutionForResult(this@MainActivity, REQUEST_CHECK_SETTINGS)
-                } catch (sendEx: IntentSender.SendIntentException) {}
+                }
+                catch (sendEx: IntentSender.SendIntentException) {}
             }
         }
     }
 
     // Henter enhetens posisjon enten ved å hente siste registrerte posisjon i enheten eller ved å requeste en location update
     private fun getLocation(locationRequest: LocationRequest) {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         val format = DecimalFormat("#.###")
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         if (checkPermission("location")) {
-            // henter siste registrerte posisjon i enheten, posisjonen kan være null, når bruker skrur av posisjon innstillingen
-            // sletter cache, eller at enheten aldri registrerte en posisjon
+            // henter siste registrerte posisjon i enheten, posisjonen kan være null for ulike grunner, når bruker skrur av posisjon innstillingen
+            // sletter cache, eller at enheten aldri registrerte en posisjon. Retunerer null ganske sjeldent
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     locationUpdateState = false
