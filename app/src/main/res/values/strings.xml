@@ -1,127 +1,124 @@
 <resources>
     <string name="app_name" translatable="false">Bølgen</string>
-    <string name="background_image">backgrunnsbilde</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="start_maps_button">start maps</string>
+    <string name="background_image" translatable="false">backgrunnsbilde</string>
+    <string name="title_activity_maps" translatable="false">Map</string>
+    <string name="start_maps_button" translatable="false">start maps</string>
 
     <!-- Strings for description of CE marks -->
-    <string name="ce_mark_a">A - Vindstyrke: &gt; 20,8sm Bølgehøyde: &gt; 4m</string>
-    <string name="ce_mark_b">B - Vindstyrke: 20,7sm Bølgehøyde: 4m</string>
-    <string name="ce_mark_c">C - Vindstyrke: 13,8sm Bølgehøyde: 2m</string>
-    <string name="ce_mark_d">D - Vindstyrke: > 7,7sm Bølgehøyde: 0,3m</string>
+    <string name="ce_mark_a" translatable="false">A - Vindstyrke: &gt; 20,8sm Bølgehøyde: &gt; 4m</string>
+    <string name="ce_mark_b" translatable="false">B - Vindstyrke: 20,7sm Bølgehøyde: 4m</string>
+    <string name="ce_mark_c" translatable="false">C - Vindstyrke: 13,8sm Bølgehøyde: 2m</string>
+    <string name="ce_mark_d" translatable="false">D - Vindstyrke: > 7,7sm Bølgehøyde: 0,3m</string>
 
     <!-- Strings for the navigation_drawer -->
-    <string name="navigation_drawer_open">Open Navigation Drawer</string>
-    <string name="navigation_drawer_close">Close Navigation Drawer</string>
-    <string name="navigation_drawer_settings">Instillinger</string>
-    <string name="navigation_drawer_measurments">Måleenheter</string>
-    <string name="navigation_drawer_ce_mark">CE merking</string>
-    <string name="navigation_drawer_temperature">Temperatur</string>
-    <string name="navigation_drawer_temperature2">Grader</string>
-    <string name="navigation_drawer_wind">Vind</string>
-    <string name="navigation_drawer_wind_speed">Vindstyrke</string>
-    <string name="navigation_drawer_visibility">Synlighet</string>
-    <string name="navigation_drawer_pressure">Trykkmåling</string>
-    <string name="navigation_drawer_tide">Tidevann</string>
-    <string name="navigation_drawer_rain">Regn</string>
-    <string name="navigation_drawer_weather">Nedbør</string>
-    <string name="navigation_drawer_fog">Tåke</string>
-    <string name="navigation_drawer_wave">Bølgehøyde</string>
-    <string name="navigation_drawer_humidity">Fuktighet</string>
-    <string name="navigation_drawer_cloudiness">Skytetthet</string>
-    <string name="navigation_drawer_weatherpreferences">Værpreferanser</string>
-    <string name="navigation_drawer_cancel">Avbryt</string>
-    <string name="navigation_drawer_ok">OK</string>
-    <string name="navigation_drawer_wind_base">Km/h</string>
-    <string name="navigation_drawer_visibility_base">Km</string>
-    <string name="navigation_drawer_pressure_base">HPa</string>
-    <string name="navigation_drawer_now">Nå</string>
-    <string name="navigation_drawer_pressure2">Trykk</string>
+    <string name="navigation_drawer_open" translatable="false">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close Navigation Drawer</string>
+    <string name="navigation_drawer_settings" translatable="false">Instillinger</string>
+    <string name="navigation_drawer_measurments" translatable="false">Måleenheter</string>
+    <string name="navigation_drawer_ce_mark" translatable="false">CE merking</string>
+    <string name="navigation_drawer_temperature" translatable="false">Temperatur</string>
+    <string name="navigation_drawer_temperature2" translatable="false">Grader</string>
+    <string name="navigation_drawer_wind" translatable="false">Vind</string>
+    <string name="navigation_drawer_wind_speed" translatable="false">Vindstyrke</string>
+    <string name="navigation_drawer_visibility" translatable="false">Synlighet</string>
+    <string name="navigation_drawer_pressure" translatable="false">Trykkmåling</string>
+    <string name="navigation_drawer_tide" translatable="false">Tidevann</string>
+    <string name="navigation_drawer_rain" translatable="false">Regn</string>
+    <string name="navigation_drawer_weather" translatable="false">Nedbør</string>
+    <string name="navigation_drawer_fog" translatable="false">Tåke</string>
+    <string name="navigation_drawer_wave" translatable="false">Bølgehøyde</string>
+    <string name="navigation_drawer_humidity" translatable="false">Fuktighet</string>
+    <string name="navigation_drawer_cloudiness" translatable="false">Skytetthet</string>
+    <string name="navigation_drawer_weatherpreferences" translatable="false">Værpreferanser</string>
+    <string name="navigation_drawer_cancel" translatable="false">Avbryt</string>
+    <string name="navigation_drawer_ok" translatable="false">OK</string>
+    <string name="navigation_drawer_wind_base" translatable="false">Km/h</string>
+    <string name="navigation_drawer_visibility_base" translatable="false">Km</string>
+    <string name="navigation_drawer_pressure_base" translatable="false">HPa</string>
+    <string name="navigation_drawer_now" translatable="false">Nå</string>
+    <string name="navigation_drawer_pressure2" translatable="false">Trykk</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 
     <!-- Strings for the tab -->
-    <string name="tabs_now">Nå</string>
-    <string name="tabs_time">Time</string>
-    <string name="tabs_day">Uke</string>
-    <string name="tabs_maps">Kart</string>
+    <string name="tabs_now" translatable="false">Nå</string>
+    <string name="tabs_time" translatable="false">Time</string>
+    <string name="tabs_day" translatable="false">Uke</string>
+    <string name="tabs_maps" translatable="false">Kart</string>
 
     <!-- Strings for the marker i map -->
-    <string name="marker_position">Posisjon</string>
-    <string name="marker_latitude">Latitude:</string>
-    <string name="marker_longitude">Longitude:</string>
-    <string name="marker_button_text">Trykk for å se værmelding</string>
+    <string name="marker_position" translatable="false">Posisjon</string>
+    <string name="marker_latitude" translatable="false">Latitude:</string>
+    <string name="marker_longitude" translatable="false">Longitude:</string>
+    <string name="marker_button_text" translatable="false">Trykk for å se værmelding</string>
 
     <!-- Strings for the fab in map -->
-    <string name="fab_map_rain">Regn</string>
-    <string name="fab_map_wind">Vind</string>
-    <string name="fab_map_waves">Bølger</string>
-    <string name="humidity_image">humidity image</string>
-    <string name="visibility_image">visibility image</string>
-    <string name="water_image">water image</string>
-    <string name="tide_image">tide image</string>
-    <string name="thermometer_image">thermometer image</string>
-    <string name="fog_image">fog image</string>
-    <string name="waves_image">waves image</string>
-    <string name="wind_image">wind image</string>
+    <string name="fab_map_rain" translatable="false">Regn</string>
+    <string name="fab_map_wind" translatable="false">Vind</string>
+    <string name="fab_map_waves" translatable="false">Bølger</string>
+    <string name="humidity_image" translatable="false">humidity image</string>
+    <string name="visibility_image" translatable="false">visibility image</string>
+    <string name="water_image" translatable="false">water image</string>
+    <string name="tide_image" translatable="false">tide image</string>
+    <string name="thermometer_image" translatable="false">thermometer image</string>
+    <string name="fog_image" translatable="false">fog image</string>
+    <string name="waves_image" translatable="false">waves image</string>
+    <string name="wind_image" translatable="false">wind image</string>
 
     <!-- Strings related to Settings -->
-    <string name="title_activity_settings">Instilinger</string>
+    <string name="title_activity_settings" translatable="false">Instilinger</string>
 
     <!-- After General -->
-    <string name="settings_title_general">Generell</string>
+    <string name="settings_title_general" translatable="false">Generell</string>
     <string name="title_theme_mode">Nattmodus</string>
-    <string name="summary_selected_theme_mode">Av</string>
-    <string name="key_theme_mode">key_theme_mode</string>
-
-    <string name="title_language">Språk</string>
-    <string name="key_language">key_language</string>
-    <string name="summary_selected_language_mode">Norsk</string>
-
+    <string name="summary_selected_theme_mode" translatable="false">Av</string>
+    <string name="key_theme_mode" translatable="false">key_theme_mode</string>
 
     <!-- After Notifications -->
-    <string name="title_new_notification_sound">New message notification</string>
-    <string name="notifications_new_message">notifications_new_message</string>
-    <string name="key_notifications_new_message_ringtone">key_notifications_new_message_ringtone</string>
+    <string name="title_new_notification_sound" translatable="false">New message notification</string>
+    <string name="notifications_new_message" translatable="false">notifications_new_message</string>
+    <string name="key_notifications_new_message_ringtone" translatable="false">key_notifications_new_message_ringtone</string>
 
     <string name="title_vibrate">Vibrere</string>
-    <string name="summary_vibrate">Mobilen vibrerer på nytt varsel</string>
-    <string name="key_vibrate">key_vibrate</string>
+    <string name="summary_vibrate" translatable="false">Mobilen vibrerer på nytt varsel</string>
+    <string name="key_vibrate" translatable="false">key_vibrate</string>
 
-    <string name="settings_title_notifications">Varslinger</string>
-    <string name="summary_choose_ringtone">Choose notification sound</string>
-    <string name="settings_title_vibrate">Vibrere</string>
-    <string name="settings_title_ringtone">Ringetone</string>
-    <string name="settings_ringtone_silent">Stille</string>
-    <string name="settings_header_notifications">Varslinger</string>
-    <string name="pref_title_new_message_notifications">Vær varsling</string>
+    <string name="settings_title_notifications" translatable="false">Varslinger</string>
+    <string name="summary_choose_ringtone" translatable="false">Choose notification sound</string>
+    <string name="settings_title_vibrate" translatable="false">Vibrere</string>
+    <string name="settings_title_ringtone" translatable="false">Ringetone</string>
+    <string name="settings_ringtone_silent" translatable="false">Stille</string>
+    <string name="settings_header_notifications" translatable="false">Varslinger</string>
+    <string name="pref_title_new_message_notifications" translatable="false">Vær varsling</string>
 
 
     <!-- After Permissions -->
-    <string name="settings_title_permissions">Tillatelser</string>
+    <string name="settings_title_permissions" translatable="false">Tillatelser</string>
     <string name="title_settings_permissions_position">Posisjon</string>
-    <string name="settings_permissions_position">title_settings_permissions_position</string>
+    <string name="key_settings_permissions_position" translatable="false">key_settings_permissions_position</string>
+    <string name="summary_position" translatable="false">Av</string>
+    <string name="key_position" translatable="false">key_position</string>
 
-    <string name="title_settings_permissions_mail">Telefon</string>
-    <string name="settings_permissions_mail">title_settings_permissions_mail</string>
+    <string name="title_settings_permissions_sms">Telefon</string>
+    <string name="key_settings_permissions_sms" translatable="false">key_title_settings_permissions_sms</string>
 
 
     <!-- After About -->
-    <string name="settings_header_about">Om Bølgen</string>
-    <string name="summary_about">Vi er ..........</string>
-    <string name="app_version">1.0</string>
-    <string name="summary_support">Send oss tilbakemelding slik at vi kan forbedre appen</string>
-    <string name="title_send_feedback">Send oss tilbakmelding</string>
-    <string name="title_faq">FAQ</string>
-    <string name="summary_faq">Se vanlige spørsmål</string>
-    <string name="url_faq">https://www.androidhive.info/privacy-policy/</string>
-    <string name="privacy_policy">Personvern</string>
-    <string name="url_privacy">https://www.androidhive.info/privacy-policy/</string>
-    <string name="title_terms">Vilkår &amp; Betingelser</string>
-    <string name="url_terms">https://www.androidhive.info/terms-of-service/</string>
-    <string name="title_version">Version</string>
-    <string name="choose_email_client">Choose email client</string>
-    <string name="key_send_feedback">key_send_feedback</string>
+    <string name="settings_header_about" translatable="false">Om Bølgen</string>
+    <string name="summary_about" translatable="false">Vi er ..........</string>
+    <string name="app_version" translatable="false">1.0</string>
+    <string name="summary_support" translatable="false">Send oss tilbakemelding slik at vi kan forbedre appen</string>
+    <string name="title_send_feedback" translatable="false">Send oss tilbakmelding</string>
+    <string name="title_faq" translatable="false">FAQ</string>
+    <string name="summary_faq" translatable="false">Se vanlige spørsmål</string>
+    <string name="url_faq" translatable="false">https://www.androidhive.info/privacy-policy/</string>
+    <string name="privacy_policy" translatable="false">Personvern</string>
+    <string name="url_privacy" translatable="false">https://www.androidhive.info/privacy-policy/</string>
+    <string name="title_terms" translatable="false">Vilkår &amp; Betingelser</string>
+    <string name="url_terms" translatable="false">https://www.androidhive.info/terms-of-service/</string>
+    <string name="title_version" translatable="false">Version</string>
+    <string name="choose_email_client" translatable="false">Choose email client</string>
+    <string name="key_send_feedback" translatable="false">key_send_feedback</string>
 
 
     <!-- String arrays related to Settings -->
@@ -136,15 +133,6 @@
         <item>2</item>
     </string-array>
 
-    <string-array name="settings_language_entries">
-        <item>Norsk</item>
-        <item>Engelsk</item>
-    </string-array>
-    <string-array name="settings_language_values">
-        <item>0</item>
-        <item>1</item>
-    </string-array>
-
-    <string name="fab_map_harbor">Havn</string>
+    <string name="fab_map_harbor" translatable="false">Havn</string>
 
 </resources>
