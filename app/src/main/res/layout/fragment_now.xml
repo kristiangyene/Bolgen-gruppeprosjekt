@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.constraint.ConstraintLayout
+<ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,36 +10,42 @@
         android:id="@+id/now_fragment"
         tools:context=".NowFragment">
 
+    <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="1">
 
 
         <android.support.v7.widget.CardView
                 android:id="@+id/card"
                 android:layout_width="match_parent"
-                android:layout_height="110dp"
+                android:layout_height="120dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
                 app:cardBackgroundColor="#AADAFF"
-                app:cardElevation="1dp"
+                app:cardElevation="0.01dp"
+                app:cardPreventCornerOverlap="true"
+                app:layout_behavior="your.package.address.FixedBottomViewBehavior"
                 tools:ignore="MissingConstraints">
             <ProgressBar
                     android:id="@+id/progressbar"
                     android:layout_width="match_parent"
                     android:layout_height="8dp"
                     android:layout_gravity="bottom|center"
-                    android:layout_marginBottom="32dp"
+                    android:layout_marginBottom="37dp"
                     android:progressDrawable="@drawable/custom_progress"
                     style="?android:attr/progressBarStyleHorizontal"
-
             />
             <SeekBar
                     android:id="@+id/seekbar"
                     android:layout_width="431dp"
                     android:layout_height="25dp"
                     android:layout_gravity="bottom|center"
-                    android:layout_marginBottom="23dp"
+                    android:layout_marginBottom="28dp"
                     android:max="100"
                     android:progressTint="@android:color/transparent"
                     android:thumb="@drawable/progress_thumb"
                     style="?android:attr/progressBarStyleHorizontal"
-
             />
             <TextView android:layout_width="match_parent"
                       android:layout_height="wrap_content"
@@ -47,7 +53,7 @@
                       android:textColor="#000000"
                       android:textSize="15sp"
                       android:layout_gravity="bottom"
-                      android:layout_marginBottom="44dp"
+                      android:layout_marginBottom="50dp"
                       android:layout_marginEnd="4dp"
                       tools:ignore="HardcodedText"/>
             <TextView android:layout_width="wrap_content"
@@ -80,20 +86,27 @@
                       android:layout_marginTop="4dp"
                       android:layout_marginEnd="4dp"
                       tools:ignore="HardcodedText"/>
-
         </android.support.v7.widget.CardView>
 
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:clipToPadding="false"
+                android:background="#AADAFF"
+                android:nestedScrollingEnabled="false"
+                tools:ignore="MissingConstraints"/>
 
-    <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="406dp"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:paddingTop="150dp"
-            android:clipToPadding="false"
-            android:background="#AADAFF"
-            tools:ignore="MissingConstraints"/>
-
-
-
-</android.support.constraint.ConstraintLayout>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_gravity="center"
+                android:id="@+id/Radar"
+                android:contentDescription="Weather radar"
+                tools:ignore="HardcodedText"/>
+    </TableLayout>
+</ScrollView>
