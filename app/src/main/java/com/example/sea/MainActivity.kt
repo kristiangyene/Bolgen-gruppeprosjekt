@@ -450,7 +450,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.wind -> {
                 builder.setTitle(R.string.navigation_drawer_wind_speed)
-                val measurements = arrayOf("Km/h", "Mph", "Mps")
+                val measurements = arrayOf("Mps", "Km/h", "Mph")
                 val position: Int
 
                 position = if (sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null) == null) {
