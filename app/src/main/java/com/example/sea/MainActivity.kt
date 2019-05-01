@@ -61,10 +61,14 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.title = getString(R.string.app_name)
         sharedPreferences = this.getSharedPreferences(fileName, Context.MODE_PRIVATE)
 
-        //sjekker om den har blitt kjørt før
+        //sjekker om appen startes for første gang
         if (sharedPreferences.getBoolean("firstTime", true)) {
             firstStart()
+            createLocationRequest()
             sharedPreferences.edit().putBoolean("firstTime", false).apply()
+        }
+        else {
+            createLocationRequest()
         }
 
         drawerLayout = findViewById(R.id.drawer)
@@ -95,23 +99,21 @@ class MainActivity : AppCompatActivity() {
         // Tab-ene får også riktig tittel når metoden onPageTitle() kalles
         tabs.setupWithViewPager(viewpager)
 
-        //navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-
-        createLocationRequest()
 
         val sosButton = findViewById<SwipeButton>(R.id.swipe_btn)
         sosButton.setOnActiveListener {
             if (checkPermission("sms")) {
                 val smsManager = SmsManager.getDefault()
                 val phoneNumber = "46954940"
-                smsManager.sendTextMessage(phoneNumber, null, "test", null, null)
+                smsManager.sendTextMessage(phoneNumber, null, "${lastLocation.latitude} , ${lastLocation.longitude}", null, null)
                 Toast.makeText(this@MainActivity, "Tekstmelding sendt til 46954940", Toast.LENGTH_SHORT).show()
-            } else {
+            }
+            else {
                 Toast.makeText(this@MainActivity, "Har ikke tilatelse til å sende melding!", Toast.LENGTH_LONG).show()
 
                 val intent = Intent(Intent.ACTION_SENDTO).apply {
                     data = Uri.parse("smsto: 46954940")
-                    putExtra("sms_body", "test")
+                    putExtra("sms_body", "${lastLocation.latitude} , ${lastLocation.longitude}")
                 }
 
                 if (intent.resolveActivity(packageManager) != null) {
@@ -122,13 +124,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Sjekker om appen har tillatelse til å sende sms og finne enhetens lokasjon
     private fun checkPermission(permissionOption: String): Boolean {
         return when (permissionOption) {
             "sms" -> {
                 ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
             }
             "location" -> {
-                ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
             }
             else -> {
                 (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
@@ -137,6 +140,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Viser en pop-up dialog som ber brukeren om å gi appen tillatelse til å sende sms og hente enhetens lokasjon
     private fun requestPermission(permissionOption: String) {
         when (permissionOption) {
             "sms" -> {
@@ -153,6 +157,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Viser en toast melding hvis brukeren velger ikke å gi appen tillatelse
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
             LOCATION_PERMISSION -> {
@@ -174,12 +179,12 @@ class MainActivity : AppCompatActivity() {
             SMS_PERMISSION -> {
                 if (!(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     Toast.makeText(this@MainActivity, "Du kan endre tillatelsene i innstillinger", Toast.LENGTH_LONG).show()
-                    Toast.makeText(this@MainActivity, "har ikke lov å sende melding", Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
 
+    // Lager en request for å hente enhetens posisjon hvis appen ikke klarer å hente siste registrerte posisjon
     private fun createLocationRequest() {
         // lager en request, hvor den gir nøyaktig plassering, men samtidig ved å ikke bruke veldig mye strøm, og bruker som regel 300 ms på å motta posisjonoppdateringer
         // interval angir hastigheten i millisekunder der appen foretrekker å motta posisjonsoppdateringer
@@ -206,14 +211,16 @@ class MainActivity : AppCompatActivity() {
                 try {
                     // viser en dialog som ber brukeren å skru på lokasjon innstillingen
                     exception.startResolutionForResult(this@MainActivity, REQUEST_CHECK_SETTINGS)
-                } catch (sendEx: IntentSender.SendIntentException) {}
+                }
+                catch (sendEx: IntentSender.SendIntentException) {}
             }
         }
     }
 
+    // Henter enhetens posisjon enten ved å hente siste registrerte posisjon i enheten eller ved å requeste en location update
     private fun getLocation(locationRequest: LocationRequest) {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         val format = DecimalFormat("#.###")
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         if (checkPermission("location")) {
             // henter siste registrerte posisjon i enheten, posisjonen kan være null for ulike grunner, når bruker skrur av posisjon innstillingen
             // sletter cache, eller at enheten aldri registrerte en posisjon. Retunerer null ganske sjeldent
@@ -222,7 +229,6 @@ class MainActivity : AppCompatActivity() {
                     locationUpdateState = false
                     lastLocation = location
                     locationStart = 1
-                    //Toast.makeText(this@MainActivity, "${lastLocation.latitude} ,  ${lastLocation.longitude}", Toast.LENGTH_LONG).show()
                     supportActionBar?.title = "${format.format(lastLocation.latitude)}, ${format.format(lastLocation.longitude)}"
                     sharedPreferences.edit().putFloat("lat", lastLocation.latitude.toFloat()).apply()
                     sharedPreferences.edit().putFloat("long", lastLocation.longitude.toFloat()).apply()
@@ -235,7 +241,6 @@ class MainActivity : AppCompatActivity() {
                         override fun onLocationResult(p0: LocationResult) {
                             super.onLocationResult(p0)
                             lastLocation = p0.lastLocation
-                            Toast.makeText(this@MainActivity, "${lastLocation.latitude} ,  ${lastLocation.longitude}", Toast.LENGTH_LONG).show()
                             supportActionBar?.title = "${format.format(lastLocation.latitude)}, ${format.format(lastLocation.longitude)}"
                             sharedPreferences.edit().putFloat("lat", lastLocation.latitude.toFloat()).apply()
                             sharedPreferences.edit().putFloat("long", lastLocation.longitude.toFloat()).apply()
@@ -270,6 +275,7 @@ class MainActivity : AppCompatActivity() {
         stopUpdate()
     }
 
+    // Oppdaterer posisjon
     override fun onResume() {
         super.onResume()
         if (locationStart != 0) {
@@ -277,33 +283,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-//        when (item.itemId) {
-//            R.id.nav_weather -> {
-//                supportFragmentManager.beginTransaction().replace(R.id.container, NowFragment(), NowFragment().javaClass.simpleName)
-//                    .commit()
-//                //tabs!!.visibility = View.VISIBLE
-//
-//                return@OnNavigationItemSelectedListener true
-//            }
-//            R.id.nav_search -> {
-//                //supportFragmentManager.beginTransaction().replace(R.id.container, HourlyFragment(), HourlyFragment().javaClass.simpleName)
-//                    //.commit()
-//                //tabs!!.visibility = View.GONE
-//                return@OnNavigationItemSelectedListener true
-//            }
-//            R.id.nav_map -> {
-//                supportFragmentManager.beginTransaction().replace(R.id.container, MapFragment(), MapFragment().javaClass.simpleName)
-//                    .commit()
-//                //tabs!!.visibility = View.GONE
-//                return@OnNavigationItemSelectedListener true
-//            }
-//        }
-//        false
-//    }
-
-
-    // oppdaterer previewen i navigation draweren først man starter appen
+    // Oppdaterer previewen i navigation draweren når appen åpnes for første gang eller når all storagen i appen har blitt slettet
     private fun updateTextViewStart(position: Int) {
         val inflaterLayout = layoutInflater.inflate(R.layout.navigation_menu_items, root_nav_preview, false)
 
@@ -366,7 +346,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // oppdaterer previewen i navigation draweren når man endrer måleenhet
+    // Oppdaterer previewen i navigation draweren når man endrer måleenhet
     private fun updateTextView(position: Int) {
         val inflaterLayout = layoutInflater.inflate(R.layout.navigation_menu_items, root_nav_preview, false)
 
@@ -404,7 +384,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // lukker navigation draweren hvis den er åpen og man trykker på back knappen, ellers funker back knappen som vanlig.
+    // Lukker navigation draweren hvis den er åpen og man trykker på back knappen, ellers funker back knappen som vanlig.
     override fun onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
@@ -414,25 +394,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // lager alert dialoger for alle itemene i navigation draweren
+    // viser en alert dialog når brukeren trykker på en av itemene i navigation draweren
     private fun dialog(menuItem: MenuItem, checkedItems: BooleanArray) {
+        // Viser SettingsActivity hvis brukeren trykker på settings i navigation draweren
         if(menuItem.itemId == R.id.settings) {
             menuItem.isChecked = false
             startActivity(Intent(this, SettingsActivity::class.java))
             return
         }
+
         val builder = AlertDialog.Builder(this, R.style.AlertDialogStyle)
         menuItem.isChecked = true
 
         when (menuItem.itemId) {
             R.id.ce -> {
                 builder.setTitle(R.string.navigation_drawer_ce_mark)
-                // Midlertidlig løsning på beskrivelse av CE - merking
-                val A = "A - Vindstyrke: < 20,8sm Bølgehøyde: < 4m"
-                val B = "B - Vindstyrke: 20,7sm Bølgehøyde: 4m"
-                val C = "C - Vindstyrke: 13,8sm Bølgehøyde: 2m"
-                val D = "D - Vindstyrke: > 7,7sm Bølgehøyde: 0,3m"
-                val measurements = arrayOf(A, B, C, D)
+                val measurements = arrayOf(getString(R.string.ce_mark_a), getString(R.string.ce_mark_b), getString(R.string.ce_mark_c), getString(R.string.ce_mark_d))
                 val position: Int?
 
                 position = measurements.indexOf(sharedPreferences.getString(getString(R.string.navigation_drawer_ce_mark), null))
@@ -577,36 +554,31 @@ class MainActivity : AppCompatActivity() {
         builder.show()
     }
 
-    fun firstStart(): Boolean {
-        //velger CE merke
+    // Ber brukeren å velge ce merke når appen startes for første gang
+    private fun firstStart(): Boolean {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.navigation_drawer_ce_mark)
 
-        val A = "A - Vindstyrke: < 20,8sm Bølgehøyde: < 4m"
-        val B = "B - Vindstyrke: 20,7sm Bølgehøyde: 4m"
-        val C = "C - Vindstyrke: 13,8sm Bølgehøyde: 2m"
-        val D = "D - Vindstyrke: > 7,7sm Bølgehøyde: 0,3m"
-        var sjekk: Int? = null
-        val measurements = arrayOf(A, B, C, D)
+        var itemChecked: Int? = null
+        val measurements = arrayOf(getString(R.string.ce_mark_a), getString(R.string.ce_mark_b), getString(R.string.ce_mark_c), getString(R.string.ce_mark_d))
 
         builder.setSingleChoiceItems(measurements, 0) { dialog, _ ->
             sharedPreferences.edit().putString(getString(R.string.navigation_drawer_ce_mark), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
             updateTextViewStart(0)
             dialog.dismiss()
-            sjekk = (dialog).listView.checkedItemPosition
+            itemChecked = (dialog).listView.checkedItemPosition
         }
+
         val mDialog = builder.create()
         mDialog.setCancelable(false)
         mDialog.show()
 
+        // sjekker om appen har tillatelse til både lokasjon og sms
         if (!checkPermission("both")) {
             requestPermission("both")
         }
 
-        if (sjekk == null) {
-            return false
-        }
-        return true
+        return itemChecked != null
     }
 }
 

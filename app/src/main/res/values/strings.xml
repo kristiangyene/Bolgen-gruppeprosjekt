@@ -4,6 +4,12 @@
     <string name="title_activity_maps">Map</string>
     <string name="start_maps_button">start maps</string>
 
+    <!-- Strings for description of CE marks -->
+    <string name="ce_mark_a">A - Vindstyrke: &gt; 20,8sm Bølgehøyde: &gt; 4m</string>
+    <string name="ce_mark_b">B - Vindstyrke: 20,7sm Bølgehøyde: 4m</string>
+    <string name="ce_mark_c">C - Vindstyrke: 13,8sm Bølgehøyde: 2m</string>
+    <string name="ce_mark_d">D - Vindstyrke: > 7,7sm Bølgehøyde: 0,3m</string>
+
     <!-- Strings for the navigation_drawer -->
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
