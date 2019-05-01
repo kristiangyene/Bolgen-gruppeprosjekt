@@ -1,6 +1,11 @@
-package com.example.sea
+package com.example.sea.service
 
 
+import com.example.sea.LocationData
+import com.example.sea.service.model.OceanData
+import com.example.sea.service.model.SunData
+import com.example.sea.service.model.TextData
+import com.example.sea.service.model.WindData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers

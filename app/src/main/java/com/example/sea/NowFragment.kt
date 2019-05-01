@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.support.v7.widget.GridLayoutManager
 import android.widget.SeekBar
 import android.widget.Toast
+import com.example.sea.service.RetrofitClient
+import com.example.sea.service.model.OceanData
 import retrofit2.Call
 import retrofit2.Response
 

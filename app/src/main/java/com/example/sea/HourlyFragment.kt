@@ -14,6 +14,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.sea.service.model.OceanData
+import com.example.sea.service.RetrofitClient
 import com.google.android.gms.maps.model.LatLng
 import retrofit2.Call
 import java.text.SimpleDateFormat

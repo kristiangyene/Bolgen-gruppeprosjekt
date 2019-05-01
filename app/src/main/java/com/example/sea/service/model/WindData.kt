@@ -1,4 +1,4 @@
-package com.example.sea
+package com.example.sea.service.model
 
 data class WindData (
     val product : Product
