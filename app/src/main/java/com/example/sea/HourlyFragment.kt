@@ -29,6 +29,9 @@ class HourlyFragment : Fragment() {
     private var closestHarbor : String? = null
     private var closestHarborValue = Double.MAX_VALUE
 
+
+    //TODO: Bruke nåværende koordinater for OceanData og håndtere hvis man ikke er i sjøen.
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_hourly, container, false)
 
@@ -116,9 +119,9 @@ class HourlyFragment : Fragment() {
         for (i in output) {
             val from = formatterFrom.parse(i.to)
             val toFormatted = formatTo.format(from)
-            val windSpeed = i.location?.windSpeed?.mps
+            var windSpeed = i.location?.windSpeed?.mps
             val fog = i.location?.fog?.percent
-            val temp = i.location?.temperature?.value
+            var temp = i.location?.temperature?.value
             val humid = i.location?.humidity?.value
             val rainfall = output[1].location?.precipitation
             var visibility =  "God sikt"
@@ -131,17 +134,36 @@ class HourlyFragment : Fragment() {
             if (toFormatted.toInt() !in checkList) {
                 checkList.add(toFormatted.toInt())
                 if(fog.toDouble() > 25.0) visibility = "Dårlig sikt"
+                var windMeasurement: String
+                val windText = sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null)
+                if (windText == null || windText == "mps") windMeasurement =  "mps"
+                else if(windText == "mph"){
+                    windMeasurement = windText
+                    windSpeed = (windSpeed.toDouble() * 2.236936).toString()
+                }else{
+                    windMeasurement = windText
+                    windSpeed = (windSpeed.toDouble() * 3.6).toString()
+                }
+                var tempMeasurement: String
+                val temperatureText = sharedPreferences.getString(getString(R.string.navigation_drawer_temperature), null)
+                if (temperatureText == null || temperatureText == "˚C") {
+                    tempMeasurement = "˚C"
+                }
+                else {
+                    tempMeasurement = temperatureText
+                    temp = ((temp.toDouble() * 1.8) + 32).toString()
+                }
                 listWithData.add(
                     HourlyElement(
                         "Kl $toFormatted",
-                        "$windSpeed m/s",
+                        "${"%.1f".format(windSpeed.toDouble())} $windMeasurement",
                         "-",
-                        "$fog %",
-                        temp + "ºC",
+                        "$fog%",
+                        "${"%.1f".format(temp.toDouble())} $tempMeasurement",
                         "-",
-                        rainfall.value + rainfall.unit,
+                        rainfall.value + " " + rainfall.unit,
                         visibility,
-                        "$humid %"
+                        "$humid%"
                     )
                 )
 
@@ -164,7 +186,7 @@ class HourlyFragment : Fragment() {
                 for (x in listWithData) {
                     if (x.title.equals("Kl $wavesFormat")) {
                         val typo = i.oceanForecast.significantTotalWaveHeight
-                        if (typo != null) x.waves = typo.content + typo.uom
+                        if (typo != null) x.waves = typo.content + " " + typo.uom
 
 
 

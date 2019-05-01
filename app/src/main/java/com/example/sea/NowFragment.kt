@@ -54,8 +54,8 @@ class NowFragment : Fragment() {
 
 
     private fun fetchData(){
-        fetchLocationData(sharedPreferences.getFloat("lat", 60.0F), sharedPreferences.getFloat("long", 11F))
         fetchOceanData(60.10, 5.0)
+        fetchLocationData(sharedPreferences.getFloat("lat", 60.0F), sharedPreferences.getFloat("long", 11F))
     }
 
 
@@ -74,8 +74,8 @@ class NowFragment : Fragment() {
                     var measurement: String
                     var value = data[0].location.windSpeed.mps.toDouble()
                     val windText = sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null)
-                    if (windText == null || windText == "Mps") measurement =  "Mps"
-                    else if(windText == "Mph"){
+                    if (windText == null || windText == "mps") measurement =  "mps"
+                    else if(windText == "mph"){
                         measurement = windText
                         value *= 2.236936
                     }else{
@@ -87,6 +87,9 @@ class NowFragment : Fragment() {
                     windDirection = windDirection.replace("E", "Ø")
                     windDirection = windDirection.replace("W", "V")
                     listOfElements.add(NowElement(String.format("%.1f", value) + " " + measurement, resources.getString(R.string.navigation_drawer_wind), windDirection))
+                    var visibility =  "God sikt"
+                    if(data[0].location.fog.percent.toDouble() > 25.0) visibility = "Dårlig sikt"
+                    listOfElements.add(NowElement(visibility, getString(R.string.navigation_drawer_visibility),null))
                     listOfStrings = arrayListOf(
                         getString(R.string.navigation_drawer_tide),
                         getString(R.string.navigation_drawer_temperature2),
@@ -106,7 +109,7 @@ class NowFragment : Fragment() {
                                     }
                                     else {
                                         measurement = temperatureText
-                                        value *= 33.8
+                                        value = (value * 1.8) + 32
                                     }
 
                                     listOfElements.add(
@@ -128,8 +131,8 @@ class NowFragment : Fragment() {
                                 listOfStrings[item] == resources.getString(R.string.navigation_drawer_pressure2) ->{
                                     value = data[0].location.pressure.value.toDouble()
                                     val pressureText = sharedPreferences.getString(getString(R.string.navigation_drawer_pressure), null)
-                                    if (pressureText == null || pressureText == "HPa") {
-                                        measurement =  "HPa"
+                                    if (pressureText == null || pressureText == "hPa") {
+                                        measurement =  "hPa"
                                     }
                                     else if(pressureText == "bar") {
                                         measurement = pressureText
@@ -187,6 +190,8 @@ class NowFragment : Fragment() {
             }
         })
     }
+
+
 
     /*
     Metode som kalkurerer om det er trygt eller ikke på nåværende/valgt posisjon for trygghetsskalaen. Trygghetsskalaen
