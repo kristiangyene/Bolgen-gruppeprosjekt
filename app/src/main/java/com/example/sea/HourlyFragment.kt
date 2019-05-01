@@ -30,8 +30,6 @@ class HourlyFragment : Fragment() {
     private var closestHarborValue = Double.MAX_VALUE
 
 
-    //TODO: Bruke nåværende koordinater for OceanData og håndtere hvis man ikke er i sjøen.
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_hourly, container, false)
 
@@ -90,7 +88,7 @@ class HourlyFragment : Fragment() {
     private fun threadCreation(){
         val client = RetrofitClient().getClient("json")
         val locationCall = client.getLocationData(sharedPreferences.getFloat("lat", 60F), sharedPreferences.getFloat("long", 11F), null)
-        val oceanCall = client.getOceanData(60.10, 5.0)
+        val oceanCall = client.getOceanData(sharedPreferences.getFloat("lat", 60F), sharedPreferences.getFloat("long", 11F))
         var tidalCall : Call<String>? = null
         if(closestHarbor != null) {
             tidalCall = RetrofitClient().getClient("string").getTidalWater(closestHarbor!!)

@@ -20,8 +20,6 @@ class WeeklyFragment : Fragment() {
     private val fileName = "com.example.sea"
 
 
-    //TODO: Bruke nåværende koordinater for OceanData og håndtere hvis man ikke er i sjøen.
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_weekly, container, false)
         sharedPreferences = activity!!.getSharedPreferences(fileName, Context.MODE_PRIVATE)
@@ -37,7 +35,7 @@ class WeeklyFragment : Fragment() {
     private fun threadcreation(){
         val client = RetrofitClient().getClient("json")
         val locationCall = client.getLocationData(60.1F, 9.58F, null )
-        val oceanCall = client.getOceanData(60.10, 5.0)
+        val oceanCall = client.getOceanData(sharedPreferences.getFloat("lat", 60F), sharedPreferences.getFloat("long", 11F))
         thread {
             val bodyLocation = locationCall.execute().body()
             location(bodyLocation)

@@ -24,13 +24,11 @@ class NowFragment : Fragment() {
     private val listOfElements = ArrayList<NowElement>()
     private lateinit var rootView: View
     private lateinit var listOfStrings: ArrayList<String>
-    private var wavehight: Double = 0.0
+    private var waveheight: Double = 0.0
     private var wind: Double = 0.0
     private var risiko: Int = 0
     private lateinit var seekbar: SeekBar
 
-
-    //TODO: Bruke nåværende koordinater for OceanData og håndtere hvis man ikke er i sjøen.
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_now, container, false)
@@ -54,7 +52,7 @@ class NowFragment : Fragment() {
 
 
     private fun fetchData(){
-        fetchOceanData(60.10, 5.0)
+        fetchOceanData(sharedPreferences.getFloat("lat", 60.0F), sharedPreferences.getFloat("long", 11F))
         fetchLocationData(sharedPreferences.getFloat("lat", 60.0F), sharedPreferences.getFloat("long", 11F))
     }
 
@@ -167,7 +165,7 @@ class NowFragment : Fragment() {
 
 
     //Henter ut data fra OceanForecast api.
-    private fun fetchOceanData(latitude: Double, longitude: Double) {
+    private fun fetchOceanData(latitude: Float, longitude: Float) {
 
         val call = RetrofitClient().getClient("json").getOceanData(latitude, longitude)
         call.enqueue(object : retrofit2.Callback<OceanData> {
@@ -175,8 +173,14 @@ class NowFragment : Fragment() {
             override fun onResponse(call: Call<OceanData>, response: Response<OceanData>){
                 if (response.isSuccessful && response.code() == 200){
                     val data = response.body()?.forecast?.get(0)?.oceanForecast
-                    wavehight = data?.significantTotalWaveHeight?.content.toString().toDouble()
-                    listOfElements.add(NowElement(data?.significantTotalWaveHeight?.content + " " + "m", resources.getString(R.string.navigation_drawer_wave), ""))
+                    if(data?.significantTotalWaveHeight?.content != null){
+                        waveheight = data?.significantTotalWaveHeight?.content.toString().toDouble()
+                        listOfElements.add(NowElement("$waveheight m", resources.getString(R.string.navigation_drawer_wave), ""))
+                    }
+                    else{
+                        waveheight = 0.0
+                        listOfElements.add(NowElement("-", resources.getString(R.string.navigation_drawer_wave), ""))
+                    }
                     //Oppdaterer adapter og trygghetsskala.
                     adapter.notifyDataSetChanged()
                     risiko = calculaterisk().toInt()
@@ -205,21 +209,21 @@ class NowFragment : Fragment() {
             "A - Vindstyrke: < 20,8sm Bølgehøyde: < 4m"-> {
                 //valgte disse verdiene for CE-merke A fra Beauforts skala hvor de skal tåle opp mot orkan.
                 val dangerWind: Double = (wind/32.6)*100 //m/s
-                val dangerWave: Double =(wavehight/16)*100 //m
+                val dangerWave: Double =(waveheight/16)*100 //m
                 return if(dangerWind >=100 || dangerWave >= 100) max
                 else if(dangerWave > dangerWind) dangerWave
                 else dangerWind
             }
             "B - Vindstyrke: 20,7sm Bølgehøyde: 4m"-> {
                 val dangerWind: Double = (wind/20.7)*100 //m/s
-                val dangerWave: Double  = (wavehight/4)*100 //m
+                val dangerWave: Double  = (waveheight/4)*100 //m
                 return if(dangerWind >=100 || dangerWave >= 100) max
                 else if(dangerWave > dangerWind) dangerWave
                 else dangerWind
             }
             "C - Vindstyrke: 13,8sm Bølgehøyde: 2m"-> {
                 val dangerWind: Double = (wind/13.8)*100 //m/s
-                val dangerWave: Double  = (wavehight/2)*100 //m
+                val dangerWave: Double  = (waveheight/2)*100 //m
                 return if(dangerWind >=100 || dangerWave >= 100) max
                 else if(dangerWave > dangerWind) dangerWave
                 else dangerWind
@@ -227,7 +231,7 @@ class NowFragment : Fragment() {
             }
             "D - Vindstyrke: > 7,7sm Bølgehøyde: 0,3m"-> {
                 val dangerWind: Double = (wind/7.7)*100 //m/s
-                val dangerWave: Double  = (wavehight/0.3)*100 //m
+                val dangerWave: Double  = (waveheight/0.3)*100 //m
                 return if(dangerWind >=100 || dangerWave >= 100) max
                 else if(dangerWave > dangerWind)
                     dangerWave

@@ -10,8 +10,8 @@ import retrofit2.http.Query
 interface WeatherService {
     @Headers("User-Agent: Gruppe17")
     @GET("weatherapi/oceanforecast/0.9/.json")
-    fun getOceanData(@Query("lat") lat: Double,
-                   @Query("lon") lon: Double) : Call<OceanData>
+    fun getOceanData(@Query("lat") lat: Float,
+                   @Query("lon") lon: Float) : Call<OceanData>
 
     @Headers("User-Agent: Gruppe17")
     @GET("weatherapi/locationforecast/1.9/.json")
