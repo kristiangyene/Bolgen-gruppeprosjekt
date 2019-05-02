@@ -1,6 +1,8 @@
 package com.example.sea
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -16,11 +18,14 @@ import kotlin.concurrent.thread
 class WeeklyFragment : Fragment() {
     private val listWithData = ArrayList<WeeklyElement>()
     private lateinit var adapter: WeeklyAdapter
+    private lateinit var sharedPreferences: SharedPreferences
+    private val fileName = "com.example.sea"
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_weekly, container, false)
+        sharedPreferences = activity!!.getSharedPreferences(fileName, Context.MODE_PRIVATE)
         val recyclerView = rootView.findViewById<RecyclerView>(R.id.recyclerview2)
-
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = WeeklyAdapter(listWithData)
         recyclerView!!.adapter = adapter
@@ -32,7 +37,7 @@ class WeeklyFragment : Fragment() {
     private fun threadcreation(){
         val client = RetrofitClient().getClient("json")
         val locationCall = client.getLocationData(60.1F, 9.58F, null )
-        val oceanCall = client.getOceanData(60.10, 5.0)
+        val oceanCall = client.getOceanData(sharedPreferences.getFloat("lat", 60F), sharedPreferences.getFloat("long", 11F))
         thread {
             val bodyLocation = locationCall.execute().body()
             location(bodyLocation)
@@ -63,12 +68,22 @@ class WeeklyFragment : Fragment() {
                 val day = formatToDay.format(date)
                 val dayText = formatToDayText.format(date).capitalize()
 
-                val windspeed = time.location?.windSpeed?.mps
+                var windSpeed = time.location?.windSpeed?.mps
 
                 // Sjekker om data for samme tidspunkt ikke er allerede lagt til.
                 if (day.toInt() !in checkList) {
                     checkList.add(day.toInt())
-                    listWithData.add(WeeklyElement(dayText, day, "$windspeed m/s", "-"))
+                    var windMeasurement: String
+                    val windText = sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null)
+                    if (windText == null || windText == "mps") windMeasurement =  "mps"
+                    else if(windText == "mph"){
+                        windMeasurement = windText
+                        windSpeed = (windSpeed.toDouble() * 2.236936).toString()
+                    }else{
+                        windMeasurement = windText
+                        windSpeed = (windSpeed.toDouble() * 3.6).toString()
+                    }
+                    listWithData.add(WeeklyElement(dayText, day, "${"%.1f".format(windSpeed.toDouble())} $windMeasurement", "-"))
                 }
             }
         }
@@ -93,7 +108,7 @@ class WeeklyFragment : Fragment() {
                         if (x.day.equals(day)) {
                             val waveValue = time.oceanForecast.significantTotalWaveHeight
                             // gir 'warning' men kræsjer om vi fjerner den
-                            if(waveValue != null) x.waves = waveValue.content + " m"
+                            if(waveValue != null) x.waves = waveValue.content + " " + waveValue.uom
 
                             //recyclerview2.adapter?.notifyDataSetChanged()
                         }

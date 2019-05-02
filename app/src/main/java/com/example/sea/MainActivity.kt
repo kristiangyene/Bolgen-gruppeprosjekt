@@ -433,7 +433,9 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.wind -> {
                 builder.setTitle(R.string.navigation_drawer_wind_speed)
+
                 val measurements = arrayOf("mps", "km/t")
+
                 val position: Int
 
                 position = if (sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null) == null) {
@@ -454,9 +456,10 @@ class MainActivity : AppCompatActivity() {
                     menuItem.isChecked = false
                 }
             }
+
             R.id.pressure -> {
                 builder.setTitle(R.string.navigation_drawer_pressure)
-                val measurements = arrayOf("HPa", "Mb", "bar", "mmHg")
+                val measurements = arrayOf("hPa", "mb", "bar", "mmHg")
                 val position: Int?
 
                 position = if (sharedPreferences.getString(getString(R.string.navigation_drawer_pressure), null) == null) {
