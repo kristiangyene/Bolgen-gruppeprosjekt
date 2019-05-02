@@ -22,7 +22,7 @@
                 android:layout_height="120dp"
                 android:layout_marginBottom="15dp"
                 android:layout_marginTop="15dp"
-                app:cardBackgroundColor="#AADAFF"
+                app:cardBackgroundColor="@color/colorPrimary"
                 app:cardElevation="0.01dp"
                 app:cardPreventCornerOverlap="true"
                 app:layout_behavior="your.package.address.FixedBottomViewBehavior"

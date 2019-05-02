@@ -93,7 +93,7 @@ class WeeklyFragment : Fragment() {
                         if (x.day.equals(day)) {
                             val waveValue = time.oceanForecast.significantTotalWaveHeight
                             // gir 'warning' men kræsjer om vi fjerner den
-                            if(waveValue != null) x.waves = waveValue.content+waveValue.uom
+                            if(waveValue != null) x.waves = waveValue.content + " m"
 
                             //recyclerview2.adapter?.notifyDataSetChanged()
                         }

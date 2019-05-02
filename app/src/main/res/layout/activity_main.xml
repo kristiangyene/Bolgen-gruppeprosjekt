@@ -38,7 +38,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     app:inner_text="SOS"
-                    app:inner_text_color="@android:color/holo_red_dark"
+                    app:inner_text_color="@android:color/black"
                     app:inner_text_size="16sp"
                     app:inner_text_top_padding="18dp"
                     app:inner_text_bottom_padding="18dp"

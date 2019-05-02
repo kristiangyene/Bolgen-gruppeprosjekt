@@ -166,7 +166,7 @@ class HourlyFragment : Fragment() {
                 for (x in listWithData) {
                     if (x.title.equals("Kl $wavesFormat")) {
                         val typo = i.oceanForecast.significantTotalWaveHeight
-                        if (typo != null) x.waves = typo.content + typo.uom
+                        if (typo != null) x.waves = typo.content + " m"
 
 
 

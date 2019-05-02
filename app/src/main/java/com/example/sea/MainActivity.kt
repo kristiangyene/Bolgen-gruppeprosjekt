@@ -321,17 +321,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 nav_view.menu.findItem(R.id.wind).actionView = inflaterLayout
             }
-            3 -> {
-                val visibilityTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
-                val visibilityText = sharedPreferences.getString(getString(R.string.navigation_drawer_visibility), null)
-                if (visibilityText == null) {
-                    visibilityTextView.text = getString(R.string.navigation_drawer_visibility_base)
-                }
-                else {
-                    visibilityTextView.text = visibilityText
-                }
-                nav_view.menu.findItem(R.id.visibility).actionView = inflaterLayout
-            }
             else -> {
                 val pressureTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
                 val pressureText = sharedPreferences.getString(getString(R.string.navigation_drawer_pressure), null)
@@ -368,12 +357,6 @@ class MainActivity : AppCompatActivity() {
                 val windText = sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null)
                 windTextView.text = windText
                 nav_view.menu.findItem(R.id.wind).actionView = inflaterLayout
-            }
-            R.id.visibility -> {
-                val visibilityTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
-                val visibilityText = sharedPreferences.getString(getString(R.string.navigation_drawer_visibility), null)
-                visibilityTextView.text = visibilityText
-                nav_view.menu.findItem(R.id.visibility).actionView = inflaterLayout
             }
             R.id.pressure -> {
                 val pressureTextView = inflaterLayout.findViewById<TextView>(R.id.navigation_drawer_preview)
@@ -450,7 +433,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.wind -> {
                 builder.setTitle(R.string.navigation_drawer_wind_speed)
-                val measurements = arrayOf("Mps", "Km/h", "Mph")
+                val measurements = arrayOf("mps", "km/t")
                 val position: Int
 
                 position = if (sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null) == null) {
@@ -462,29 +445,6 @@ class MainActivity : AppCompatActivity() {
 
                 builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
                     sharedPreferences.edit().putString(getString(R.string.navigation_drawer_wind_speed), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
-                    menuItem.isChecked = false
-                    updateTextView(menuItem.itemId)
-                    dialog.dismiss()
-                }
-
-                builder.setNegativeButton(R.string.navigation_drawer_cancel) { _, _ ->
-                    menuItem.isChecked = false
-                }
-            }
-            R.id.visibility -> {
-                builder.setTitle(R.string.navigation_drawer_visibility)
-                val measurements = arrayOf("Km", "Miles")
-                val position: Int
-
-                position = if (sharedPreferences.getString(getString(R.string.navigation_drawer_visibility), null) == null) {
-                    0
-                }
-                else {
-                    measurements.indexOf(sharedPreferences.getString(getString(R.string.navigation_drawer_visibility), null))
-                }
-
-                builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
-                    sharedPreferences.edit().putString(getString(R.string.navigation_drawer_visibility), measurements[(dialog as AlertDialog).listView.checkedItemPosition]).apply()
                     menuItem.isChecked = false
                     updateTextView(menuItem.itemId)
                     dialog.dismiss()
