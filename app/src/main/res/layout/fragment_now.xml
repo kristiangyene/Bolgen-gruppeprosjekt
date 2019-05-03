@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:background="#AADAFF"
         android:id="@+id/now_fragment"
-        tools:context=".NowFragment">
+        tools:context=".now.NowFragment">
 
 
 
@@ -19,6 +19,7 @@
                 app:cardBackgroundColor="#AADAFF"
                 app:cardElevation="1dp"
                 tools:ignore="MissingConstraints">
+
             <ProgressBar
                     android:id="@+id/progressbar"
                     android:layout_width="match_parent"
@@ -26,9 +27,8 @@
                     android:layout_gravity="bottom|center"
                     android:layout_marginBottom="32dp"
                     android:progressDrawable="@drawable/custom_progress"
-                    style="?android:attr/progressBarStyleHorizontal"
+                    style="?android:attr/progressBarStyleHorizontal"/>
 
-            />
             <SeekBar
                     android:id="@+id/seekbar"
                     android:layout_width="431dp"
@@ -38,9 +38,8 @@
                     android:max="100"
                     android:progressTint="@android:color/transparent"
                     android:thumb="@drawable/progress_thumb"
-                    style="?android:attr/progressBarStyleHorizontal"
+                    style="?android:attr/progressBarStyleHorizontal"/>
 
-            />
             <TextView android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:text = "\t0\t\t\t10\t\t\t20\t\t\t30\t\t\t40\t\t\t50\t\t\t60\t\t\t70\t\t\t80\t\t\t90\t\t\t100"
@@ -50,6 +49,7 @@
                       android:layout_marginBottom="44dp"
                       android:layout_marginEnd="4dp"
                       tools:ignore="HardcodedText"/>
+
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:text = "Trygt"

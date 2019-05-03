@@ -1,10 +1,11 @@
-package com.example.sea
+package com.example.sea.now
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.sea.R
 import java.util.ArrayList
 
 class NowAdapter(private val listOfElements: ArrayList<NowElement>) : RecyclerView.Adapter<NowAdapter.MyViewHolder>() {
@@ -43,6 +44,5 @@ class NowAdapter(private val listOfElements: ArrayList<NowElement>) : RecyclerVi
         internal var icon: ImageView = itemView.findViewById<View>(R.id.icon_widget) as ImageView
         internal var desc: TextView = itemView.findViewById<View>(R.id.value_widget) as TextView
         internal var dir: TextView = itemView.findViewById<View>(R.id.direction) as TextView
-
     }
 }
