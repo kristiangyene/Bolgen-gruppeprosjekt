@@ -18,7 +18,6 @@ import retrofit2.Call
 import retrofit2.Response
 
 
-
 class NowFragment : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
     private val fileName = "com.example.sea"
@@ -27,58 +26,78 @@ class NowFragment : Fragment() {
     private val listOfElements = ArrayList<NowElement>()
     private lateinit var rootView: View
     private lateinit var listOfStrings: ArrayList<String>
-    private var wavehight: Double = 0.0
+    private var waveheight: Double = 0.0
     private var wind: Double = 0.0
     private var risiko: Int = 0
     private lateinit var seekbar: SeekBar
 
-    //TODO: Bruke nåværende koordinater for OceanData og håndtere hvis man ikke er i sjøen.
-    @SuppressLint("ClickableViewAccessibility")
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_now, container, false)
-        seekbar = rootView.findViewById(R.id.seekbar)
         sharedPreferences = activity!!.getSharedPreferences(fileName, Context.MODE_PRIVATE)
-        listOfStrings = arrayListOf(
-            getString(R.string.navigation_drawer_tide),
-            getString(R.string.navigation_drawer_temperature2),
-            getString(R.string.navigation_drawer_weather),
-            getString(R.string.navigation_drawer_fog),
-            getString(R.string.navigation_drawer_humidity),
-            getString(R.string.navigation_drawer_cloudiness),
-            getString(R.string.navigation_drawer_pressure2))
-
-        recyclerView = rootView.findViewById(R.id.recycler_view)
+        setViews(rootView)
         recyclerView!!.layoutManager = GridLayoutManager(context, 1)
         adapter = NowAdapter(listOfElements)
         recyclerView!!.adapter = adapter
-        fetchLocationData(sharedPreferences.getFloat("lat", 60.0F), sharedPreferences.getFloat("long", 11F))
-        fetchOceanData(60.10, 5.0)
-        seekbar.setOnTouchListener { _, _ -> true }
-
+        fetchData()
         return rootView
     }
 
-    private fun fetchLocationData(latitude: Float, longitude: Float) {
 
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setViews(rootView: View){
+        recyclerView = rootView.findViewById(R.id.recycler_view)
+        seekbar = rootView.findViewById(R.id.seekbar)
+        //Fryser trygghetsskalaen.
+        seekbar.setOnTouchListener { _, _ -> true }
+    }
+
+
+    private fun fetchData(){
+        fetchOceanData(sharedPreferences.getFloat("lat", 60.0F), sharedPreferences.getFloat("long", 11F))
+        fetchLocationData(sharedPreferences.getFloat("lat", 60.0F), sharedPreferences.getFloat("long", 11F))
+    }
+
+
+    //Henter ut data fra LocationForecast api.
+    private fun fetchLocationData(latitude: Float, longitude: Float) {
         val call = RetrofitClient().getClient("json").getLocationData(latitude, longitude, null)
+        /*Enqueue() sender asynkront forespørselen og gir beskjed om appen din med tilbakekalling når et svar kommer
+        tilbake: onresponse dersom man får respons, og onfailure om ikke. Siden denne forespørselen er asynkron,
+        håndterer Retrofit den på en bakgrunnstråd.*/
         call.enqueue(object : retrofit2.Callback<LocationData> {
 
             override fun onResponse(call: Call<LocationData>, response: Response<LocationData>){
-
                 if (response.isSuccessful && response.code() == 200){
+                    //Henter ut data kun én gang.
                     val data = response.body()?.product?.time!!
                     var measurement: String
                     var value = data[0].location.windSpeed.mps.toDouble()
                     val windText = sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null)
-                    if (windText == null || windText == "Km/h") {
-                        measurement =  "Km/h"
-                        value *= 3.6
-                    }
-                    else if(windText == "Mph"){
+                    if (windText == null || windText == "mps") measurement =  "mps"
+                    else if(windText == "mph"){
                         measurement = windText
                         value *= 2.236936
-                    }else measurement = windText
-                    listOfElements.add(NowElement(String.format("%.1f", value) + measurement, resources.getString(R.string.navigation_drawer_wind), data[0].location.windDirection.name))
+                    }else{
+                        measurement = windText
+                        value *= 3.6
+                    }
+                    var windDirection = data[0].location.windDirection.name
+                    //Endrer retningen til norsk.
+                    windDirection = windDirection.replace("E", "Ø")
+                    windDirection = windDirection.replace("W", "V")
+                    listOfElements.add(NowElement(String.format("%.1f", value) + " " + measurement, resources.getString(R.string.navigation_drawer_wind), windDirection))
+                    var visibility =  "God sikt"
+                    if(data[0].location.fog.percent.toDouble() > 25.0) visibility = "Dårlig sikt"
+                    listOfElements.add(NowElement(visibility, getString(R.string.navigation_drawer_visibility),null))
+                    listOfStrings = arrayListOf(
+                        getString(R.string.navigation_drawer_tide),
+                        getString(R.string.navigation_drawer_temperature2),
+                        getString(R.string.navigation_drawer_weather),
+                        getString(R.string.navigation_drawer_fog),
+                        getString(R.string.navigation_drawer_humidity),
+                        getString(R.string.navigation_drawer_cloudiness),
+                        getString(R.string.navigation_drawer_pressure2))
                     for(item in 0 until listOfStrings.size){
                         if(sharedPreferences.getBoolean(listOfStrings[item], false)){
                             when {
@@ -90,14 +109,14 @@ class NowFragment : Fragment() {
                                     }
                                     else {
                                         measurement = temperatureText
-                                        value *= 33.8
+                                        value = (value * 1.8) + 32
                                     }
 
                                     listOfElements.add(
-                                        NowElement(String.format("%.1f", value) + measurement, listOfStrings[item], "")
+                                        NowElement(String.format("%.1f", value) + " " + measurement, listOfStrings[item], "")
                                     )}
                                 listOfStrings[item] == resources.getString(R.string.navigation_drawer_weather) -> listOfElements.add(
-                                    NowElement(data[1].location.precipitation.value + "mm", listOfStrings[item], "")
+                                    NowElement(data[1].location.precipitation.value + " " + "mm", listOfStrings[item], "")
                                 )
                                 listOfStrings[item] == resources.getString(R.string.navigation_drawer_fog) -> listOfElements.add(
                                     NowElement(data[0].location.fog.percent + "%", listOfStrings[item], "")
@@ -112,8 +131,8 @@ class NowFragment : Fragment() {
                                 listOfStrings[item] == resources.getString(R.string.navigation_drawer_pressure2) ->{
                                     value = data[0].location.pressure.value.toDouble()
                                     val pressureText = sharedPreferences.getString(getString(R.string.navigation_drawer_pressure), null)
-                                    if (pressureText == null || pressureText == "HPa") {
-                                        measurement =  "HPa"
+                                    if (pressureText == null || pressureText == "hPa") {
+                                        measurement =  "hPa"
                                     }
                                     else if(pressureText == "bar") {
                                         measurement = pressureText
@@ -127,11 +146,12 @@ class NowFragment : Fragment() {
                                         measurement = pressureText
                                     }
                                     listOfElements.add(
-                                        NowElement(String.format("%.1f", value) + measurement, listOfStrings[item], "")
+                                        NowElement(String.format("%.1f", value) + " " + measurement, listOfStrings[item], "")
                                     )}
                             }
                         }
                     }
+                    //Oppdaterer adapter og trygghetsskala.
                     adapter.notifyDataSetChanged()
                     risiko = calculaterisk().toInt()
                     seekbar.progress = risiko
@@ -146,7 +166,8 @@ class NowFragment : Fragment() {
     }
 
 
-    private fun fetchOceanData(latitude: Double, longitude: Double) {
+    //Henter ut data fra OceanForecast api.
+    private fun fetchOceanData(latitude: Float, longitude: Float) {
 
         val call = RetrofitClient().getClient("json").getOceanData(latitude, longitude)
         call.enqueue(object : retrofit2.Callback<OceanData> {
@@ -154,8 +175,15 @@ class NowFragment : Fragment() {
             override fun onResponse(call: Call<OceanData>, response: Response<OceanData>){
                 if (response.isSuccessful && response.code() == 200){
                     val data = response.body()?.forecast?.get(0)?.oceanForecast
-                    wavehight = data?.significantTotalWaveHeight?.content.toString().toDouble()
-                    listOfElements.add(NowElement(data?.significantTotalWaveHeight?.content + "m", resources.getString(R.string.navigation_drawer_wave), ""))
+                    if(data?.significantTotalWaveHeight?.content != null){
+                        waveheight = data?.significantTotalWaveHeight?.content.toString().toDouble()
+                        listOfElements.add(NowElement("$waveheight m", resources.getString(R.string.navigation_drawer_wave), ""))
+                    }
+                    else{
+                        waveheight = 0.0
+                        listOfElements.add(NowElement("-", resources.getString(R.string.navigation_drawer_wave), ""))
+                    }
+                    //Oppdaterer adapter og trygghetsskala.
                     adapter.notifyDataSetChanged()
                     risiko = calculaterisk().toInt()
                     seekbar.progress = risiko
@@ -168,40 +196,48 @@ class NowFragment : Fragment() {
             }
         })
     }
+
+
+
+    /*
+    Metode som kalkurerer om det er trygt eller ikke på nåværende/valgt posisjon for trygghetsskalaen. Trygghetsskalaen
+    regnes ut fra vind og bølgehøyde, og den prioriterer den av de som har høyest måleverdi.
+     */
    private  fun calculaterisk():Double{
         val ceMarkText = sharedPreferences.getString(getString(R.string.navigation_drawer_ce_mark), null)
         val max =100.0
         val min =0.0
         when(ceMarkText){
             "A - Vindstyrke: < 20,8sm Bølgehøyde: < 4m"-> {
-                val farevind: Double = (wind/32.6)*100 //m/s valgte disse verdiene Beauforts skala hvor de skal tåle opp mot orkan
-                val farebolge: Double =(wavehight/16)*100   //m
-                if(farevind >=100 || farebolge >= 100) return max
-                else if(farebolge > farevind) return farebolge
-                else return farevind
+                //valgte disse verdiene for CE-merke A fra Beauforts skala hvor de skal tåle opp mot orkan.
+                val dangerWind: Double = (wind/32.6)*100 //m/s
+                val dangerWave: Double =(waveheight/16)*100 //m
+                return if(dangerWind >=100 || dangerWave >= 100) max
+                else if(dangerWave > dangerWind) dangerWave
+                else dangerWind
             }
             "B - Vindstyrke: 20,7sm Bølgehøyde: 4m"-> {
-                val farevind: Double = (wind/20.7)*100 //m/s
-                val farebolge: Double  = (wavehight/4)*100 //m
-                if(farevind >=100 || farebolge >= 100) return max
-                else if(farebolge > farevind) return farebolge
-                else return farevind
+                val dangerWind: Double = (wind/20.7)*100 //m/s
+                val dangerWave: Double  = (waveheight/4)*100 //m
+                return if(dangerWind >=100 || dangerWave >= 100) max
+                else if(dangerWave > dangerWind) dangerWave
+                else dangerWind
             }
             "C - Vindstyrke: 13,8sm Bølgehøyde: 2m"-> {
-                val farevind: Double = (wind/13.8)*100 //m/s
-                val farebolge: Double  = (wavehight/2)*100 //m
-                if(farevind >=100 || farebolge >= 100) return max
-                else if(farebolge > farevind) return farebolge
-                else return farevind
+                val dangerWind: Double = (wind/13.8)*100 //m/s
+                val dangerWave: Double  = (waveheight/2)*100 //m
+                return if(dangerWind >=100 || dangerWave >= 100) max
+                else if(dangerWave > dangerWind) dangerWave
+                else dangerWind
 
             }
             "D - Vindstyrke: > 7,7sm Bølgehøyde: 0,3m"-> {
-                val farevind: Double = (wind/7.7)*100 //m/s
-                val farebolge: Double  = (wavehight/0.3)*100 //m
-                if(farevind >=100 || farebolge >= 100) return max
-                else if(farebolge > farevind)
-                    return farebolge
-                else return farevind
+                val dangerWind: Double = (wind/7.7)*100 //m/s
+                val dangerWave: Double  = (waveheight/0.3)*100 //m
+                return if(dangerWind >=100 || dangerWave >= 100) max
+                else if(dangerWave > dangerWind)
+                    dangerWave
+                else dangerWind
             }
         }
         return min
