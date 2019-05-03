@@ -1,9 +1,14 @@
-package com.example.sea
+package com.example.sea.main
 
 import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import com.example.sea.R
+import com.example.sea.hourly.HourlyFragment
+import com.example.sea.map.MapFragment
+import com.example.sea.now.NowFragment
+import com.example.sea.weekly.WeeklyFragment
 
 class PagerAdapter(fm : FragmentManager) : FragmentStatePagerAdapter(fm) {
 

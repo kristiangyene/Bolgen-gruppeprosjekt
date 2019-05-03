@@ -9,7 +9,7 @@
         android:background="@android:color/white"
         android:fitsSystemWindows="true"
         tools:openDrawer="start"
-        tools:context=".MainActivity">
+        tools:context=".main.MainActivity">
 
 
     <include layout="@layout/view_pager"/>
