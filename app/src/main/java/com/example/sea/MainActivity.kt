@@ -18,6 +18,7 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatDelegate
 import android.telephony.SmsManager
 import android.view.MenuItem
 import android.widget.TextView
@@ -48,8 +49,8 @@ class MainActivity : AppCompatActivity() {
     //private val presenter = MainPresenter(this, MainInteractor())
 
     companion object {
-        private const val SMS_PERMISSION = 1
-        private const val LOCATION_PERMISSION = 2
+        const val SMS_PERMISSION = 1
+        const val LOCATION_PERMISSION = 2
         private const val BOTH_PERMISSION = 3
         private const val REQUEST_CHECK_SETTINGS = 4
     }
@@ -105,7 +106,12 @@ class MainActivity : AppCompatActivity() {
             if (checkPermission("sms")) {
                 val smsManager = SmsManager.getDefault()
                 val phoneNumber = "46954940"
-                smsManager.sendTextMessage(phoneNumber, null, "${lastLocation.latitude} , ${lastLocation.longitude}", null, null)
+                if(checkPermission("sms")) {
+                    smsManager.sendTextMessage(phoneNumber, null, "${lastLocation.latitude} , ${lastLocation.longitude}", null, null)
+                }
+                else {
+                    smsManager.sendTextMessage(phoneNumber, null, "Koordinater: ", null, null)
+                }
                 Toast.makeText(this@MainActivity, "Tekstmelding sendt til 46954940", Toast.LENGTH_SHORT).show()
             }
             else {
@@ -113,7 +119,9 @@ class MainActivity : AppCompatActivity() {
 
                 val intent = Intent(Intent.ACTION_SENDTO).apply {
                     data = Uri.parse("smsto: 46954940")
-                    putExtra("sms_body", "${lastLocation.latitude} , ${lastLocation.longitude}")
+                    if(checkPermission("location")) {
+                        putExtra("sms_body", "${lastLocation.latitude} , ${lastLocation.longitude}")
+                    }
                 }
 
                 if (intent.resolveActivity(packageManager) != null) {
@@ -131,11 +139,11 @@ class MainActivity : AppCompatActivity() {
                 ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
             }
             "location" -> {
-                ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
             }
             else -> {
                 (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
-                        && ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                        && ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
             }
         }
     }
@@ -147,12 +155,10 @@ class MainActivity : AppCompatActivity() {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), SMS_PERMISSION)
             }
             "location" -> {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_PERMISSION
-                )
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_PERMISSION)
             }
             else -> {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_COARSE_LOCATION), BOTH_PERMISSION
-                )
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_COARSE_LOCATION), BOTH_PERMISSION)
             }
         }
     }

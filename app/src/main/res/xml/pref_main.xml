@@ -11,31 +11,20 @@
                 android:icon="@drawable/ic_brightness_3_black_24dp"
                 android:title="@string/title_theme_mode" />
 
-        <ListPreference
-                android:defaultValue="0"
-                android:dialogTitle="@string/title_language"
-                android:entries="@array/settings_language_entries"
-                android:entryValues="@array/settings_language_values"
-                android:key="@string/key_language"
-                android:summary="@string/summary_selected_language_mode"
-                android:icon="@drawable/ic_language_black_24dp"
-                android:title="@string/title_language" />
-
     </PreferenceCategory>
-
 
     <PreferenceCategory android:title="@string/settings_title_permissions">
         <SwitchPreference
                 android:defaultValue="true"
                 android:icon="@drawable/ic_place_black_24dp"
-                android:key="@string/settings_permissions_position"
+                android:key="@string/key_settings_permissions_position"
                 android:title="@string/title_settings_permissions_position" />
 
         <SwitchPreference
                 android:defaultValue="true"
                 android:icon="@drawable/ic_phone_black_24dp"
-                android:key="@string/settings_permissions_mail"
-                android:title="@string/title_settings_permissions_mail" />
+                android:key="@string/key_settings_permissions_sms"
+                android:title="@string/title_settings_permissions_sms" />
 
     </PreferenceCategory>
 
