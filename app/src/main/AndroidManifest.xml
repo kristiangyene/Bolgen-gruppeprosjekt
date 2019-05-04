@@ -21,13 +21,13 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-                android:name=".settings.SettingsActivity"
+                android:name=".ui.settings.SettingsActivity"
                 android:label="@string/title_activity_settings"
                 android:theme="@style/SettingsAppTheme"
-                android:parentActivityName=".main.MainActivity">
+                android:parentActivityName="com.example.sea.ui.main.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.example.sea.main.MainActivity"/>
+                    android:value="com.example.sea.ui.main.MainActivity"/>
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -42,11 +42,11 @@
                 android:value="@string/google_maps_key"/>
 
         <activity
-                android:name=".map.MapsActivity"
+                android:name="com.example.sea.ui.map.MapsActivity"
                 android:label="@string/title_activity_maps">
         </activity>
         <activity
-                android:name=".main.MainActivity"
+                android:name="com.example.sea.ui.main.MainActivity"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
