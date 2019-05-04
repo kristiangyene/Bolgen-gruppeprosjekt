@@ -68,17 +68,12 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
         return interactor.getFirstStart()
     }
 
-    override fun sendSMS(location: Location?) {
-        if (checkPermission("sms")) {
+    override fun sendSMS() {
+        if (checkPermission("both")) {
             val smsManager = SmsManager.getDefault()
             val phoneNumber = "47327997"
 
-            if(checkPermission("location")) {
-                smsManager.sendTextMessage(phoneNumber, null, "${location!!.latitude} , ${location.longitude}", null, null)
-            }
-            else {
-                smsManager.sendTextMessage(phoneNumber, null, "Koordinater: ", null, null)
-            }
+            smsManager.sendTextMessage(phoneNumber, null, "${interactor.getLatitude()} , ${interactor.getLongitude()}", null, null)
 
             view!!.showMessage("Tekstmelding sendt til 47327997", Toast.LENGTH_LONG)
         }
@@ -87,7 +82,7 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
                 data = Uri.parse("smsto: 47327997")
 
                 if(checkPermission("location")) {
-                    putExtra("sms_body", "${location!!.latitude} , ${location.longitude}")
+                    putExtra("sms_body", "${interactor.getLatitude()} , ${interactor.getLongitude()}")
                 }
             }
 
@@ -356,7 +351,6 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
                 // Lokasjon innstillingene er ikke tilfredsstilt
                 try {
                     // viser en dialog som ber brukeren å skru på lokasjon innstillingen
-                    exception.startResolutionForResult(view!!.getActivity(), REQUEST_CHECK_SETTINGS)
                     view!!.showLocationSettingsMessage(exception, REQUEST_CHECK_SETTINGS)
                 }
                 catch (sendEx: IntentSender.SendIntentException) {}

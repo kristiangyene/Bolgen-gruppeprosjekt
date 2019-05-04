@@ -23,7 +23,6 @@ import kotlinx.android.synthetic.main.view_pager.*
 class MainActivity : AppCompatActivity(), MainContract.View {
     private lateinit var drawerLayout: DrawerLayout
     private val fileName = "com.example.sea"
-    private var lastLocation: Location? = null
     private lateinit var presenter: MainPresenter
     private lateinit var adapter: PagerAdapter
 
@@ -47,7 +46,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
         val sosButton = findViewById<SwipeButton>(R.id.swipe_btn)
         sosButton.setOnActiveListener {
-            presenter.sendSMS(lastLocation)
+            presenter.sendSMS()
             sosButton.toggleState()
         }
     }

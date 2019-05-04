@@ -24,7 +24,7 @@ interface MainContract {
     interface Presenter {
         fun firstStart()
         fun checkFirstStart() : Boolean
-        fun sendSMS(location : Location?)
+        fun sendSMS()
         fun onDrawerCeClick(menuItem: MenuItem)
         fun onDrawerTemperatureClick(menuItem: MenuItem)
         fun onDrawerWindClick(menuItem: MenuItem)
