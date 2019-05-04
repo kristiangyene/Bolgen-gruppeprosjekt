@@ -1,8 +1,7 @@
 @file:Suppress("DEPRECATION")
 
-package com.example.sea
+package com.example.sea.ui.settings
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
@@ -12,14 +11,9 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.MenuItem
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.preference.*
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
-import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-import android.widget.Toast
-import org.jetbrains.anko.act
-import java.util.*
+import com.example.sea.R
+import com.example.sea.ui.main.MainPresenter
 
 /**
  * A [PreferenceActivity] that presents a set of application settings. On
@@ -37,77 +31,17 @@ class SettingsActivity : AppCompatPreferenceActivity() {
         super.onCreate(savedInstanceState)
 
         // load settings fragment
-        fragmentManager.beginTransaction().replace(android.R.id.content, MainPreferenceFragment()).commit()
-    }
-
-    class MainPreferenceFragment : PreferenceFragment() {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            addPreferencesFromResource(R.xml.pref_main)
-
-            // notification preference change listener
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.key_notifications_new_message_ringtone)))
-
-            // theme change listener
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.key_theme_mode)))
-
-            // feedback preference click listener
-            val myPref = findPreference(getString(R.string.key_send_feedback))
-            myPref.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                sendFeedback(activity)
-                true
-            }
-
-            locationPreference = findPreference(resources.getString(R.string.key_settings_permissions_position)) as SwitchPreference
-            locationPreference.isChecked = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            locationPreference.setOnPreferenceChangeListener { _, _ ->
-                if(locationPreference.isChecked) {
-                    val intent = Intent()
-                    intent.action = ACTION_APPLICATION_DETAILS_SETTINGS
-                    val uri = Uri.fromParts("package", activity.packageName, null)
-                    intent.data = uri
-                    context.startActivity(intent)
-                    locationPreference.isChecked = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                }
-                else {
-                    ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), MainActivity.LOCATION_PERMISSION)
-                }
-                true
-            }
-
-            smsPreference = findPreference(resources.getString(R.string.key_settings_permissions_sms)) as SwitchPreference
-            smsPreference.isChecked = ContextCompat.checkSelfPermission(activity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
-            smsPreference.setOnPreferenceChangeListener { _, _ ->
-                if(smsPreference.isChecked) {
-                    val intent = Intent()
-                    intent.action = ACTION_APPLICATION_DETAILS_SETTINGS
-                    val uri = Uri.fromParts("package", activity.packageName, null)
-                    intent.data = uri
-                    context.startActivity(intent)
-                    smsPreference.isChecked = ContextCompat.checkSelfPermission(activity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
-                }
-                else {
-                    ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.SEND_SMS), MainActivity.SMS_PERMISSION)
-                }
-                true
-            }
-        }
-
-
-        override fun onResume() {
-            smsPreference.isChecked = ContextCompat.checkSelfPermission(activity, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
-            locationPreference.isChecked = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-
-            super.onResume()
-        }
+        fragmentManager.beginTransaction().replace(android.R.id.content,
+            MainPreferenceFragment()
+        ).commit()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
-            MainActivity.LOCATION_PERMISSION -> {
+            MainPresenter.LOCATION_PERMISSION -> {
                 locationPreference.isChecked = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
             }
-            MainActivity.SMS_PERMISSION -> {
+            MainPresenter.SMS_PERMISSION -> {
                 smsPreference.isChecked = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
             }
         }
@@ -122,12 +56,12 @@ class SettingsActivity : AppCompatPreferenceActivity() {
     }
 
     companion object {
-        private val TAG = SettingsActivity::class.java.simpleName
-        private lateinit var smsPreference : SwitchPreference
-        private lateinit var locationPreference: SwitchPreference
+        lateinit var smsPreference : SwitchPreference
+        lateinit var locationPreference: SwitchPreference
 
-        private fun bindPreferenceSummaryToValue(preference: Preference) {
-            preference.onPreferenceChangeListener = sBindPreferenceSummaryToValueListener
+        fun bindPreferenceSummaryToValue(preference: Preference) {
+            preference.onPreferenceChangeListener =
+                sBindPreferenceSummaryToValueListener
 
             sBindPreferenceSummaryToValueListener.onPreferenceChange(
                 preference,

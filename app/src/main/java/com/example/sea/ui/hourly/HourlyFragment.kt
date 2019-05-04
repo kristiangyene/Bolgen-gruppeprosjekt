@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package com.example.sea
+package com.example.sea.ui.hourly
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -14,8 +14,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.sea.service.model.OceanData
-import com.example.sea.service.RetrofitClient
+import com.example.sea.R
+import com.example.sea.data.remote.RetrofitClient
+import com.example.sea.data.remote.model.LocationData
+import com.example.sea.data.remote.model.OceanData
 import com.google.android.gms.maps.model.LatLng
 import retrofit2.Call
 import java.text.SimpleDateFormat
@@ -38,7 +40,7 @@ class HourlyFragment : Fragment() {
 
         val recyclerView = rootView.findViewById<RecyclerView>(R.id.recyclerview1)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = HourlyAdapter(listWithData,recyclerView)
+        recyclerView.adapter = HourlyAdapter(listWithData, recyclerView)
 
         val currentLocation = Location("")
         currentLocation.latitude = sharedPreferences.getFloat("lat", 60F).toDouble()

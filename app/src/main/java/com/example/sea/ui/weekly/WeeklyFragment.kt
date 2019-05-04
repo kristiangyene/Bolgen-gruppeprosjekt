@@ -1,4 +1,4 @@
-package com.example.sea
+package com.example.sea.ui.weekly
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -8,8 +8,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.sea.service.model.OceanData
-import com.example.sea.service.RetrofitClient
+import com.example.sea.R
+import com.example.sea.data.remote.RetrofitClient
+import com.example.sea.data.remote.model.LocationData
+import com.example.sea.data.remote.model.OceanData
 import java.text.SimpleDateFormat
 import kotlin.concurrent.thread
 

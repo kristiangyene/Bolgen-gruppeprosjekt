@@ -1,4 +1,4 @@
-package com.example.sea
+package com.example.sea.ui.hourly
 
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
 import android.widget.TextView
+import com.example.sea.R
 import net.cachapa.expandablelayout.ExpandableLayout
 
 class HourlyAdapter(private val list: List<HourlyElement>, private val recyclerView: RecyclerView) : RecyclerView.Adapter<HourlyAdapter.ViewHolder>() {

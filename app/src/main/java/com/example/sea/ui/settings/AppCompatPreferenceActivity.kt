@@ -1,4 +1,4 @@
-package com.example.sea
+package com.example.sea.ui.settings
 
 import android.content.res.Configuration
 import android.os.Bundle

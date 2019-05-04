@@ -1,10 +1,11 @@
-package com.example.sea
+package com.example.sea.ui.weekly
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.sea.R
 
 
 class WeeklyAdapter(private val list: ArrayList<WeeklyElement>) : RecyclerView.Adapter<WeeklyAdapter.MyViewHolder>() {
