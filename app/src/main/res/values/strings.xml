@@ -65,6 +65,10 @@
     <string name="waves_image" translatable="false">waves image</string>
     <string name="wind_image" translatable="false">wind image</string>
 
+
+    <string name="rain" translatable="false">Nedbør</string>
+    <string name="wind" translatable="false">Vind</string>
+
     <!-- Strings related to Settings -->
     <string name="title_activity_settings" translatable="false">Instilinger</string>
 

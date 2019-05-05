@@ -29,19 +29,6 @@
             android:layout_marginStart="8dp"/>
 
     <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_waves"
-            android:layout_width="56dp"
-            android:layout_height="163dp"
-            app:backgroundTint="@color/colorPrimary"
-            android:visibility="invisible"
-            android:focusable="true"
-            android:clickable="true"
-            app:srcCompat="@drawable/waves_black"
-            app:layout_constraintBottom_toTopOf="@+id/fab"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:layout_marginBottom="8dp"/>
-
-    <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_wind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,9 +37,9 @@
             android:clickable="true"
             android:focusable="true"
             app:srcCompat="@drawable/wind_black"
+            app:layout_constraintBottom_toTopOf="@+id/fab"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/fab_waves"/>
+            android:layout_marginStart="8dp" android:layout_marginBottom="8dp"/>
 
 
     <android.support.design.widget.FloatingActionButton
@@ -83,17 +70,6 @@
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.0"/>
 
-    <TextView
-            android:text="@string/fab_map_waves"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:padding="4dp"
-            android:id="@+id/fab_waves_text" app:layout_constraintStart_toEndOf="@+id/fab_waves"
-            android:layout_marginStart="8dp" app:layout_constraintBottom_toBottomOf="@+id/fab_waves"
-            android:layout_marginBottom="16dp"/>
     <TextView
             android:text="@string/fab_map_wind"
             android:layout_width="wrap_content"
