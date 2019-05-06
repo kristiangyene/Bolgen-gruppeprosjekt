@@ -33,7 +33,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     private lateinit var presenter: MapPresenter
     private val fileName = "com.example.sea"
     private var markers = mutableListOf<Marker>()
-    private val colorPrimary = 0xFFbbdaa4
+    private val colorPrimary = 0xFFEEEEEE
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
         val rootView = inflater.inflate(R.layout.fragment_map, container, false)
