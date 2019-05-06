@@ -9,6 +9,7 @@ import retrofit2.Call
 import retrofit2.Response
 
 class NowInteractor(context: Context, fileName: String) : NowContract.Interactor, BaseInteractor(context, fileName) {
+    //Henter ut data fra OceanForecast api.
     override fun getOceanData(finished : NowContract.Interactor.OnFinished, latitude : Double, longitude : Double) {
         val call = RetrofitClient().getClient("json").getOceanData(latitude, longitude)
         call.enqueue(object : retrofit2.Callback<OceanData> {
@@ -25,6 +26,11 @@ class NowInteractor(context: Context, fileName: String) : NowContract.Interactor
         })
     }
 
+    /*
+     Enqueue() sender asynkront forespørselen og gir beskjed om appen din med tilbakekalling når et svar kommer
+     tilbake: onresponse dersom man får respons, og onfailure om ikke. Siden denne forespørselen er asynkron,
+     håndterer Retrofit den på en bakgrunnstråd.
+     */
     override fun getLocationData(finished : NowContract.Interactor.OnFinished, latitude : Float, longitude : Float) {
         val call = RetrofitClient().getClient("json").getLocationData(latitude, longitude, null)
         call.enqueue(object : retrofit2.Callback<LocationData> {

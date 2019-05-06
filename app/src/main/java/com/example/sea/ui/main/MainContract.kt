@@ -28,7 +28,6 @@ interface MainContract {
         fun onDrawerCeClick(menuItem: MenuItem)
         fun onDrawerTemperatureClick(menuItem: MenuItem)
         fun onDrawerWindClick(menuItem: MenuItem)
-        fun onDrawerVisibilityClick(menuItem: MenuItem)
         fun onDrawerPressureClick(menuItem: MenuItem)
         fun onDrawerPreferencesClick(menuItem: MenuItem)
         fun onDrawerSettingsClick()

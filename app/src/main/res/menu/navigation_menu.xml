@@ -19,9 +19,6 @@
                 <item android:id="@+id/wind"
                       android:icon="@drawable/wind_black"
                       android:title="@string/navigation_drawer_wind"/>
-                <item android:id="@+id/visibility"
-                      android:icon="@drawable/visibility_black"
-                      android:title="@string/navigation_drawer_visibility"/>
                 <item android:id="@+id/pressure"
                       android:icon="@drawable/gauge_black"
                       android:title="@string/navigation_drawer_pressure"/>

@@ -40,7 +40,7 @@ class NowFragment : Fragment(), NowContract.View {
     }
 
     override fun setSeekbarProgress(progress: Int) {
-        if(seekbar.progress < progress) {
+        if(seekbar.progress < progress || progress == 0) {
             seekbar.progress = progress
             seekbar.refreshDrawableState()
         }

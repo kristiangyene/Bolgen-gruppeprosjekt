@@ -21,8 +21,13 @@
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 android:elevation="4dp">
-        </android.support.v7.widget.Toolbar>
 
+            <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp" app:srcCompat="@drawable/location_icon"
+                    android:id="@+id/imageView3" android:scaleType="fitStart"/>
+
+        </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"

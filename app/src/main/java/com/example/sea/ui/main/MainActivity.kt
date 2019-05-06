@@ -2,7 +2,6 @@ package com.example.sea.ui.main
 
 import android.app.Activity
 import android.content.Intent
-import android.location.Location
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -83,9 +82,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 }
                 R.id.wind ->  {
                     presenter.onDrawerWindClick(menuItem)
-                }
-                R.id.visibility -> {
-                    presenter.onDrawerVisibilityClick(menuItem)
                 }
                 R.id.pressure -> {
                     presenter.onDrawerPressureClick(menuItem)

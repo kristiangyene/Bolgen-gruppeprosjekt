@@ -145,7 +145,7 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
 
     override fun onDrawerWindClick(menuItem: MenuItem) {
         val builder = AlertDialog.Builder(context, R.style.AlertDialogStyle)
-        val measurements = arrayOf("Km/h", "Mph", "Mps")
+        val measurements = arrayOf("mps", "km/t")
 
         builder.setTitle(R.string.navigation_drawer_wind_speed)
 
@@ -172,38 +172,9 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
         builder.show()
     }
 
-    override fun onDrawerVisibilityClick(menuItem: MenuItem) {
-        val builder = AlertDialog.Builder(context, R.style.AlertDialogStyle)
-        val measurements = arrayOf("Km", "Miles")
-
-        builder.setTitle(R.string.navigation_drawer_visibility)
-
-        val position = if (interactor.getVisibilityUnit() == null) {
-            0
-        }
-        else {
-            measurements.indexOf(interactor.getVisibilityUnit())
-        }
-
-        menuItem.isChecked = true
-        builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
-            interactor.setVisibilityUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
-            view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
-            menuItem.isChecked = false
-            dialog.dismiss()
-        }
-
-        builder.setNegativeButton(R.string.navigation_drawer_cancel) { _, _ ->
-            menuItem.isChecked = false
-        }
-
-        builder.setCancelable(false)
-        builder.show()
-    }
-
     override fun onDrawerPressureClick(menuItem: MenuItem) {
         val builder = AlertDialog.Builder(context, R.style.AlertDialogStyle)
-        val measurements = arrayOf("HPa", "Mb", "bar", "mmHg")
+        val measurements = arrayOf("hPa", "mb", "bar", "mmHg")
 
         builder.setTitle(R.string.navigation_drawer_pressure)
 
@@ -275,8 +246,8 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
 
     override fun setupPreviewText() {
         val units = arrayOf(interactor.getCeMark(), interactor.getTemperaturUnit(), interactor.getWindUnit(), interactor.getVisibilityUnit(), interactor.getPressureUnit())
-        val startUnits = arrayOf("A", "C", context.getString(R.string.navigation_drawer_wind_base), context.getString(R.string.navigation_drawer_visibility_base), context.getString(R.string.navigation_drawer_pressure_base))
-        val startId = arrayOf(R.id.ce, R.id.temperature, R.id.wind, R.id.visibility, R.id.pressure)
+        val startUnits = arrayOf("A", "C", context.getString(R.string.navigation_drawer_wind_base), context.getString(R.string.navigation_drawer_pressure_base))
+        val startId = arrayOf(R.id.ce, R.id.temperature, R.id.wind, R.id.pressure)
 
         for(i in 0 until startUnits.size) {
             if(i == 0) {
