@@ -47,5 +47,4 @@ dependencies {
     implementation "org.jetbrains.anko:anko-design:0.10.5"
     implementation 'co.metalab.asyncawait:asyncawait:1.0.0'
     implementation 'com.google.maps.android:android-maps-utils:0.5'
-
 }
