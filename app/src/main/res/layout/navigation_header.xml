@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="vertical"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
               android:theme="@style/ThemeOverlay.AppCompat.Dark"
               android:gravity="bottom"
               android:background="#F1F1F1"
               android:layout_width="match_parent"
               android:layout_height="100dp">
-
 
     <ImageView
             android:layout_width="70dp"
@@ -14,4 +14,5 @@
             android:scaleType="fitStart" android:cropToPadding="false"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="2dp"/>
+
 </LinearLayout>

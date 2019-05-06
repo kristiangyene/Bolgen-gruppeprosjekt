@@ -32,9 +32,9 @@
     <string name="navigation_drawer_weatherpreferences" translatable="false">Værpreferanser</string>
     <string name="navigation_drawer_cancel" translatable="false">Avbryt</string>
     <string name="navigation_drawer_ok" translatable="false">OK</string>
-    <string name="navigation_drawer_wind_base" translatable="false">Km/h</string>
-    <string name="navigation_drawer_visibility_base" translatable="false">Km</string>
-    <string name="navigation_drawer_pressure_base" translatable="false">HPa</string>
+    <string name="navigation_drawer_wind_base" translatable="false">mps</string>
+    <string name="navigation_drawer_visibility_base" translatable="false">mm</string>
+    <string name="navigation_drawer_pressure_base" translatable="false">hPa</string>
     <string name="navigation_drawer_now" translatable="false">Nå</string>
     <string name="navigation_drawer_pressure2" translatable="false">Trykk</string>
 
@@ -64,6 +64,10 @@
     <string name="fog_image" translatable="false">fog image</string>
     <string name="waves_image" translatable="false">waves image</string>
     <string name="wind_image" translatable="false">wind image</string>
+
+
+    <string name="rain" translatable="false">Nedbør</string>
+    <string name="wind" translatable="false">Vind</string>
 
     <!-- Strings related to Settings -->
     <string name="title_activity_settings" translatable="false">Instilinger</string>
