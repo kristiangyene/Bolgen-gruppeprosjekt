@@ -70,7 +70,7 @@
     <string name="wind">Vind</string>
 
     <!-- Strings related to Settings -->
-    <string name="title_activity_settings">Instilinger</string>
+    <string name="title_activity_settings">Innstillinger</string>
 
     <!-- After General -->
     <string name="settings_title_general">Generell</string>
