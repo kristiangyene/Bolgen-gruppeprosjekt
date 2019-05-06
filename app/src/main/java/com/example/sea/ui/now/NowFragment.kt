@@ -61,7 +61,7 @@ class NowFragment : Fragment(), NowContract.View {
 
         recyclerView = rootView.findViewById(R.id.recycler_view)
         recyclerView!!.layoutManager = GridLayoutManager(context, 1)
-        adapter = NowAdapter(listOfElements)
+        adapter = NowAdapter(listOfElements, activity!!)
         recyclerView!!.adapter = adapter
     }
 }
