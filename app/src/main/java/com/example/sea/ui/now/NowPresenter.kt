@@ -41,14 +41,14 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
 
         var windDirection = nowData[0].location.windDirection.name
         //Endrer retningen til norsk.
-        windDirection = windDirection.replace("E", "Ø")
-        windDirection = windDirection.replace("W", "V")
+        windDirection = windDirection.replace("E", context!!.getString(R.string.east))
+        windDirection = windDirection.replace("W", context!!.getString(R.string.west))
 
         view!!.setDataInRecyclerView(NowElement(String.format("%.1f", value) + " " + measurement, context!!.resources.getString(R.string.navigation_drawer_wind), windDirection))
 
-        var visibility =  "God sikt"
+        var visibility =  context!!.getString(R.string.good_visibility)
         if(nowData[0].location.fog.percent.toDouble() > 25.0) {
-            visibility = "Dårlig sikt"
+            visibility = context!!.getString(R.string.bad_visibility)
         }
         view!!.setDataInRecyclerView(NowElement(visibility, context!!.resources.getString(R.string.navigation_drawer_visibility),null))
 

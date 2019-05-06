@@ -32,9 +32,6 @@ class HourlyFragment : Fragment() {
     private var closestHarbor : String? = null
     private var closestHarborValue = Double.MAX_VALUE
 
-
-    //TODO: Bruke nåværende koordinater for OceanData og håndtere hvis man ikke er i sjøen.
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_hourly, container, false)
 
@@ -127,7 +124,7 @@ class HourlyFragment : Fragment() {
             var temp = i.location?.temperature?.value
             val humid = i.location?.humidity?.value
             val rainfall = output[1].location?.precipitation
-            var visibility =  "God sikt"
+            var visibility =  getString(R.string.good_visibility)
             if(!startTimeFound) {
                 startTime = toFormatted
                 startTimeFound = true
@@ -136,7 +133,7 @@ class HourlyFragment : Fragment() {
 
             if (toFormatted.toInt() !in checkList) {
                 checkList.add(toFormatted.toInt())
-                if(fog.toDouble() > 25.0) visibility = "Dårlig sikt"
+                if(fog.toDouble() > 25.0) visibility = getString(R.string.bad_visibility)
                 var windMeasurement: String
                 val windText = sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null)
                 if (windText == null || windText == "mps") windMeasurement =  "mps"
