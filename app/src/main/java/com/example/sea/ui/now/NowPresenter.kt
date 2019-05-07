@@ -4,6 +4,8 @@ import android.content.Context
 import com.example.sea.data.remote.model.LocationData
 import com.example.sea.R
 import com.example.sea.data.remote.model.OceanData
+import java.util.*
+import kotlin.collections.ArrayList
 
 class NowPresenter(view: NowContract.View, context: Context, private var interactor: NowContract.Interactor) : NowContract.Presenter, NowContract.Interactor.OnFinished {
     private var view: NowContract.View? = view
@@ -14,6 +16,7 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         //Henter ut data fra LocationForecast api.
         requestLocationData(interactor.getLatitude(), interactor.getLongitude())
         requestOceanData(interactor.getLatitude().toDouble(), interactor.getLongitude().toDouble())
+        requestTidalData(interactor.getLatitude(), interactor.getLongitude())
     }
 
     override fun onFinished(data: LocationData?) {
@@ -126,6 +129,35 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         }
     }
 
+    // Viser tidevann for nåtid.
+    override fun onFinished(data : String?) {
+        val currentTime = Calendar.getInstance()
+        val currentHour = currentTime.get(Calendar.HOUR_OF_DAY).toString()
+        var foundStart = false
+        var startIndex = 0
+        val line = data!!.split("\n")
+
+        for (i in 8 until line.size - 1) {
+            val number = line[i].split("\\s+".toRegex())
+            if (number[4] != currentHour) {
+                continue
+            }
+            else {
+                foundStart = true
+                startIndex = i
+                break
+            }
+        }
+        if (foundStart) {
+            if (line[startIndex][line[startIndex].length - 6] == ' ') {
+                view!!.setDataInRecyclerView(NowElement(line[startIndex].substring(line[startIndex].length - 5, line[startIndex].length), context!!.getString(R.string.navigation_drawer_tide), ""))
+            }
+            else {
+                view!!.setDataInRecyclerView(NowElement(line[startIndex].substring(line[startIndex].length - 6, line[startIndex].length), context!!.getString(R.string.navigation_drawer_tide), ""))
+            }
+        }
+    }
+
     override fun onFailure(t: Throwable) {
         view!!.onFailure(t)
     }
@@ -140,6 +172,10 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
 
     override fun requestLocationData(latitude : Float, longitude : Float) {
         interactor.getLocationData(this, latitude , longitude)
+    }
+
+    override fun requestTidalData(latitude: Float, longitude: Float) {
+        interactor.getTidalData(this, latitude , longitude)
     }
 
     override fun calculateWindRisk(value: Double?) {
