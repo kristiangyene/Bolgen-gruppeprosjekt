@@ -10,6 +10,8 @@ interface NowContract {
         fun setSeekbarProgress(progress : Int)
         fun setDataInRecyclerView(element : NowElement)
         fun updateRecyclerView()
+        fun showProgress()
+        fun hideProgress()
     }
 
     interface Presenter {

@@ -32,6 +32,7 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
     private val latitudeData = mutableListOf<Double>()
     private val longitudeData = mutableListOf<Double>()
     private var requested: Boolean = false
+    private var countDone = 0
 
     override fun onFABClick() {
         val showButton = AnimationUtils.loadAnimation(activity, R.anim.show_button)
@@ -103,6 +104,7 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
             }
 
             if(!requested) {
+                view!!.showProgress()
                 requestLocationData()
                 requested = true
             }
@@ -142,6 +144,7 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
             }
 
             if(!requested) {
+                view!!.showProgress()
                 requestLocationData()
                 requested = true
             }
@@ -181,6 +184,7 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
     }
 
     private fun requestLocationData() {
+        view!!.showProgress()
         interactor.getLocationData(this, interactor.getLatitude(), interactor.getLongitude())
         interactor.getLocationData(this, interactor.getLatitude()+1, interactor.getLongitude()) // 111.19, Nord
         interactor.getLocationData(this, interactor.getLatitude()-1, interactor.getLongitude()) // 111.19, Sør
@@ -277,7 +281,6 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
             view!!.showMarkers(activity.getString(R.string.rain) + ": " + nowData[1].location.precipitation.value, nowData[0].location.latitude.toDouble(), nowData[0].location.longitude.toDouble(), "rain")
         }
         else if(windShowing) {
-            Log.d("Ahmed", "Wind: " + String.format("%.1f", value) + measurement)
             view!!.showMarkers(activity.getString(R.string.wind) + ": " + String.format("%.1f", value) + measurement, nowData[0].location.latitude.toDouble(), nowData[0].location.longitude.toDouble(), "wind")
         }
 
@@ -285,6 +288,12 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
         windData.add(String.format("%.1f", value) + measurement)
         latitudeData.add(nowData[0].location.latitude.toDouble())
         longitudeData.add(nowData[0].location.longitude.toDouble())
+
+        countDone++
+
+        if(countDone == 5) {
+            view!!.hideProgress()
+        }
     }
 
     override fun onFailure(t: Throwable) {

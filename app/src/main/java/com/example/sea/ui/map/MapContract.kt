@@ -27,6 +27,9 @@ interface MapContract {
         fun hideHarbors()
         fun hideAnimation(hideButton: Animation?)
         fun onFailure(t: Throwable)
+
+        fun showProgress()
+        fun hideProgress()
     }
 
     interface Presenter {

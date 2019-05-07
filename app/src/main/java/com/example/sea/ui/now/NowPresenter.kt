@@ -9,9 +9,12 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
     private var view: NowContract.View? = view
     private var context : Context? = context
     private var waveValue : Double? = null
+    private var oceanDone = false
+    private var locationDone = false
 
     override fun fetchData() {
         //Henter ut data fra LocationForecast api.
+        view!!.showProgress()
         requestLocationData(interactor.getLatitude(), interactor.getLongitude())
         requestOceanData(interactor.getLatitude().toDouble(), interactor.getLongitude().toDouble())
     }
@@ -109,6 +112,11 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         //Oppdaterer adapter og trygghetsskala.
         view!!.updateRecyclerView()
         calculateWindRisk(wind)
+
+        locationDone = true
+        if(oceanDone && locationDone) {
+            view!!.hideProgress()
+        }
     }
 
     override fun onFinished(data: OceanData.Forecast.OceanForecast.OceanValue?) {
@@ -123,6 +131,11 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
             view!!.setDataInRecyclerView(NowElement("-", context!!.getString(R.string.navigation_drawer_wave), ""))
             view!!.updateRecyclerView()
             view!!.setSeekbarProgress(0)
+        }
+
+        oceanDone = true
+        if(oceanDone && locationDone) {
+            view!!.hideProgress()
         }
     }
 

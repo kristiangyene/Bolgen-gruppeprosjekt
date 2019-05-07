@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.support.v7.widget.GridLayoutManager
 import android.util.Log
+import android.widget.ProgressBar
 import android.widget.SeekBar
 import com.example.sea.R
 
@@ -19,6 +20,7 @@ class NowFragment : Fragment(), NowContract.View {
     private lateinit var seekbar: SeekBar
     private lateinit var presenter: NowContract.Presenter
     private val fileName = "com.example.sea"
+    private lateinit var indeterminateBar : ProgressBar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_now, container, false)
@@ -59,9 +61,19 @@ class NowFragment : Fragment(), NowContract.View {
         seekbar = rootView.findViewById(R.id.seekbar)
         seekbar.isEnabled = false
 
+        indeterminateBar = rootView.findViewById(R.id.indeterminateBar)
+
         recyclerView = rootView.findViewById(R.id.recycler_view)
         recyclerView!!.layoutManager = GridLayoutManager(context, 1)
         adapter = NowAdapter(listOfElements, activity!!)
         recyclerView!!.adapter = adapter
+    }
+
+    override fun showProgress() {
+        indeterminateBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+        indeterminateBar.visibility = View.GONE
     }
 }

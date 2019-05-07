@@ -19,6 +19,7 @@ import com.google.maps.android.data.geojson.GeoJsonLayer
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.view_pager.*
 import android.util.Log
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
@@ -34,11 +35,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     private val fileName = "com.example.sea"
     private var markers = mutableListOf<Marker>()
     private val colorPrimary = 0xFFEEEEEE
+    private lateinit var progress : ProgressBar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
         val rootView = inflater.inflate(R.layout.fragment_map, container, false)
 
         presenter = MapPresenter(this, activity!!, this, MapInteractor(activity!!, fileName))
+        progress = rootView.findViewById(R.id.indeterminateBar)
 
         return rootView
     }
@@ -219,5 +222,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
 
     override fun onFailure(t: Throwable) {
         Log.d("Error: ", t.toString())
+    }
+
+    override fun showProgress() {
+        progress.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+        progress.visibility = View.GONE
     }
 }
