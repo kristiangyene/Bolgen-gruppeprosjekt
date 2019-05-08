@@ -89,7 +89,9 @@ class HourlyFragment : Fragment(), HourlyContract.View {
     }
 
     override fun updateRecyclerView() {
-        recyclerView.adapter!!.notifyDataSetChanged()
+        //recyclerView.adapter!!.notifyDataSetChanged()
+        recyclerView.adapter = HourlyAdapter(listWithData, recyclerView)
+
     }
 
     override fun getList(): ArrayList<HourlyElement> {

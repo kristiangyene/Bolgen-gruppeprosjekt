@@ -3,17 +3,22 @@ package com.example.sea.ui.hourly
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
+import android.util.Log
 import com.example.sea.R
 import com.example.sea.data.remote.model.OceanData
 import com.example.sea.data.remote.model.LocationData
 import com.google.android.gms.maps.model.LatLng
+import com.google.type.Date
 import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
+@Suppress("DEPRECATION")
 class HourlyPresenter(view: HourlyContract.View, private var context: Context, private var interactor: HourlyContract.Interactor) : HourlyContract.Presenter, HourlyContract.Interactor.OnFinished {
     private var view : HourlyContract.View? = view
     private var startTimeFound = false
     private var startTime : String? = null
-
+    private var correcTime = false
     override fun onDestroy() {
         view = null
     }
@@ -86,8 +91,8 @@ class HourlyPresenter(view: HourlyContract.View, private var context: Context, p
                     if (x.title.equals("Kl $wavesFormat")) {
                         val typo = i.oceanForecast.significantTotalWaveHeight
                         if (typo != null) {
-                            x.waves = typo.content + " m"
-                            //view!!.getList()[counter++].waves = typo.content
+                            //x.waves = typo.content + " m"
+                            view!!.getList()[counter++].waves = typo.content
                         }
 
 
@@ -96,7 +101,7 @@ class HourlyPresenter(view: HourlyContract.View, private var context: Context, p
                 }
             }
         }
-        //view!!.updateRecyclerView()
+        //return view
     }
 
     // Viser tidevann for de neste 24 timene
@@ -128,18 +133,23 @@ class HourlyPresenter(view: HourlyContract.View, private var context: Context, p
                 }
             }
         }
+        //view!!.updateRecyclerView()
+
+
     }
 
     @SuppressLint("SimpleDateFormat")
     override fun onFinished(data: LocationData?) {
         val formatterFrom = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        //val check = SimpleDateFormat("yyyy-MM-dd")
         val formatTo = SimpleDateFormat("H")
         val output = data?.product?.time!!
         val checkList = ArrayList<Int>()
-
+        //var now = Calendar.getInstance().time
         for (i in output) {
             val from = formatterFrom.parse(i.to)
             val toFormatted = formatTo.format(from)
+            //val checked = check.format(from)
             var windSpeed = i.location?.windSpeed?.mps
             val fog = i.location?.fog?.percent
             var temp = i.location?.temperature?.value
@@ -150,7 +160,18 @@ class HourlyPresenter(view: HourlyContract.View, private var context: Context, p
                 startTime = toFormatted
                 startTimeFound = true
             }
+            //val pattern = SimpleDateFormat("EEE MMM d HH:mm:ss z+z:z yyyy")
+            //val actualtime = pattern.parse(now.toString())
+            //val gethour = formatTo.format(actualtime)
 
+            val date = Date()
+            val formatdate = formatTo.format(date)
+            //Log.d("datefromcompare", formatdate)
+            val difference = formatTo.format(from)
+            //Log.d("datetocompare", difference)
+
+            if(difference == formatdate && correcTime == false) correcTime = true
+            else if(difference != formatdate && correcTime == false) continue
 
             if (toFormatted.toInt() !in checkList) {
                 checkList.add(toFormatted.toInt())

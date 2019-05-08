@@ -27,12 +27,15 @@ class HourlyInteractor(context: Context, fileName: String) : HourlyContract.Inte
                 finished.onFinished(oceanData)
             }
 
+            //Thread.sleep(1000)
+           // HourlyContract.Interactor!!.View!!.updateRecyclerView()
             if(harbor != null) {
                 val tidalData = tidalCall!!.execute().body()
                 if(tidalData != null) {
                     finished.onFinished(tidalData)
                 }
             }
+
         }
 
     }
