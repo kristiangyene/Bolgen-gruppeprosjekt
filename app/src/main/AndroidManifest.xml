@@ -16,9 +16,9 @@
 
     <application
             android:allowBackup="true"
-            android:icon="@mipmap/launcher"
+            android:icon="@mipmap/logo_bolgen"
             android:label="@string/app_name"
-            android:roundIcon="@mipmap/launcher"
+            android:roundIcon="@mipmap/logo_bolgen"
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
