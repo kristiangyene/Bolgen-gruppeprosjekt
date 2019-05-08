@@ -1,7 +1,6 @@
 package com.example.sea.ui.main
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
@@ -18,7 +17,7 @@ import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
 import java.text.DecimalFormat
 
-class MainPresenter(view: MainContract.View, private var context: Context, private var interactor: MainContract.Interactor) : MainContract.Presenter, BasePresenter(context) {
+class MainPresenter(view: MainContract.View, private var activity: Activity, private var interactor: MainContract.Interactor) : MainContract.Presenter, BasePresenter(activity) {
     private var lastLocation: Location? = null
     private lateinit var locationCallback: LocationCallback
     private var locationUpdateState = false
@@ -36,8 +35,8 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
 
     // Ber brukeren å velge ce merke når appen startes for første gang
     override fun firstStart() {
-        val builder = AlertDialog.Builder(context, R.style.AlertDialogStyle)
-        val measurements = arrayOf(context.getString(R.string.ce_mark_a), context.getString(R.string.ce_mark_b), context.getString(R.string.ce_mark_c), context.getString(R.string.ce_mark_d))
+        val builder = AlertDialog.Builder(activity, R.style.AlertDialogStyle)
+        val measurements = arrayOf(activity.getString(R.string.ce_mark_a), activity.getString(R.string.ce_mark_b), activity.getString(R.string.ce_mark_c), activity.getString(R.string.ce_mark_d))
         var checkedItem: Int?
 
         builder.setTitle(R.string.navigation_drawer_ce_mark)
@@ -92,8 +91,8 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
     }
 
     override fun onDrawerCeClick(menuItem: MenuItem) {
-        val builder = AlertDialog.Builder(context, R.style.AlertDialogStyle)
-        val measurements = arrayOf(context.getString(R.string.ce_mark_a), context.getString(R.string.ce_mark_b), context.getString(R.string.ce_mark_c), context.getString(R.string.ce_mark_d))
+        val builder = AlertDialog.Builder(activity, R.style.AlertDialogStyle)
+        val measurements = arrayOf(activity.getString(R.string.ce_mark_a), activity.getString(R.string.ce_mark_b), activity.getString(R.string.ce_mark_c), activity.getString(R.string.ce_mark_d))
 
         builder.setTitle(R.string.navigation_drawer_ce_mark)
 
@@ -104,6 +103,7 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
             interactor.setCeMark(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition].split(" ")[0], menuItem.itemId)
             menuItem.isChecked = false
+            view!!.showMessage("Du må starte appen på nytt for å oppdatere safty scale", Toast.LENGTH_LONG)
             dialog.dismiss()
         }
 
@@ -116,7 +116,7 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
     }
 
     override fun onDrawerTemperatureClick(menuItem: MenuItem) {
-        val builder = AlertDialog.Builder(context, R.style.AlertDialogStyle)
+        val builder = AlertDialog.Builder(activity, R.style.AlertDialogStyle)
         val measurements = arrayOf("˚C", "˚F")
 
         builder.setTitle(R.string.navigation_drawer_temperature)
@@ -132,6 +132,7 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
             interactor.setTemperaturUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
             menuItem.isChecked = false
+       //     view!!.updateFragmentNow()
             dialog.dismiss()
         }
 
@@ -144,7 +145,7 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
     }
 
     override fun onDrawerWindClick(menuItem: MenuItem) {
-        val builder = AlertDialog.Builder(context, R.style.AlertDialogStyle)
+        val builder = AlertDialog.Builder(activity, R.style.AlertDialogStyle)
         val measurements = arrayOf("mps", "km/t")
 
         builder.setTitle(R.string.navigation_drawer_wind_speed)
@@ -161,6 +162,9 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
             interactor.setWindUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
             menuItem.isChecked = false
+           // view!!.updateFragemntWeek()
+          //  view!!.updateFragmentNow()
+         //   view!!.updateFrgamentHour()
             dialog.dismiss()
         }
 
@@ -173,7 +177,7 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
     }
 
     override fun onDrawerPressureClick(menuItem: MenuItem) {
-        val builder = AlertDialog.Builder(context, R.style.AlertDialogStyle)
+        val builder = AlertDialog.Builder(activity, R.style.AlertDialogStyle)
         val measurements = arrayOf("hPa", "mb", "bar", "mmHg")
 
         builder.setTitle(R.string.navigation_drawer_pressure)
@@ -190,6 +194,7 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
             interactor.setPressureUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
             dialog.dismiss()
+        //   view!!.updateFragmentNow()
         }
 
         builder.setNegativeButton(R.string.navigation_drawer_cancel) { _, _ ->
@@ -202,17 +207,17 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
 
     override fun onDrawerPreferencesClick(menuItem: MenuItem) {
         val checkedItems = booleanArrayOf(false, false, false, false, false, false, false)
-        val builder = AlertDialog.Builder(context, R.style.AlertDialogStyle)
+        val builder = AlertDialog.Builder(activity, R.style.AlertDialogStyle)
 
-        builder.setTitle(context.getString(R.string.navigation_drawer_weatherpreferences))
+        builder.setTitle(activity.getString(R.string.navigation_drawer_weatherpreferences))
         val parameters = arrayOf(
-            context.getString(R.string.navigation_drawer_tide),
-            context.getString(R.string.navigation_drawer_temperature2),
-            context.getString(R.string.navigation_drawer_weather),
-            context.getString(R.string.navigation_drawer_fog),
-            context.getString(R.string.navigation_drawer_humidity),
-            context.getString(R.string.navigation_drawer_cloudiness),
-            context.getString(R.string.navigation_drawer_pressure2)
+            activity.getString(R.string.navigation_drawer_tide),
+            activity.getString(R.string.navigation_drawer_temperature2),
+            activity.getString(R.string.navigation_drawer_weather),
+            activity.getString(R.string.navigation_drawer_fog),
+            activity.getString(R.string.navigation_drawer_humidity),
+            activity.getString(R.string.navigation_drawer_cloudiness),
+            activity.getString(R.string.navigation_drawer_pressure2)
         )
 
         for (item in 0 until parameters.size) {
@@ -246,7 +251,7 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
 
     override fun setupPreviewText() {
         val units = arrayOf(interactor.getCeMark(), interactor.getTemperaturUnit(), interactor.getWindUnit(), interactor.getVisibilityUnit(), interactor.getPressureUnit())
-        val startUnits = arrayOf("A", "C", context.getString(R.string.navigation_drawer_wind_base), context.getString(R.string.navigation_drawer_pressure_base))
+        val startUnits = arrayOf("A", "C", activity.getString(R.string.navigation_drawer_wind_base), activity.getString(R.string.navigation_drawer_pressure_base))
         val startId = arrayOf(R.id.ce, R.id.temperature, R.id.wind, R.id.pressure)
 
         for(i in 0 until startUnits.size) {
@@ -308,7 +313,7 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
         }
 
         val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest!!)
-        val client: SettingsClient = LocationServices.getSettingsClient(context)
+        val client: SettingsClient = LocationServices.getSettingsClient(activity)
         val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
 
         // Kalle på API og hente brukerens posisjon bare hvis vi har både tillatelse til å hente enhetens posisjon og at lokasjon instillingen er på,
@@ -332,7 +337,7 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
     // Henter enhetens posisjon enten ved å hente siste registrerte posisjon i enheten eller ved å requeste en location update
     override fun getLocation(locationRequest: LocationRequest) {
         val format = DecimalFormat("#.###")
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
         if (checkPermission("location")) {
             // henter siste registrerte posisjon i enheten, posisjonen kan være null for ulike grunner, når bruker skrur av posisjon innstillingen
             // sletter cache, eller at enheten aldri registrerte en posisjon. Retunerer null ganske sjeldent

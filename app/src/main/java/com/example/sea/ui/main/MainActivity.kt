@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -13,7 +14,10 @@ import android.widget.TextView
 import android.widget.Toast
 import com.ebanx.swipebtn.SwipeButton
 import com.example.sea.R
+import com.example.sea.ui.hourly.HourlyFragment
+import com.example.sea.ui.now.NowFragment
 import com.example.sea.ui.settings.SettingsActivity
+import com.example.sea.ui.weekly.WeeklyFragment
 import com.google.android.gms.common.api.ResolvableApiException
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.navigation_menu_items.*
@@ -48,6 +52,17 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             presenter.sendSMS()
             sosButton.toggleState()
         }
+    }
+
+    override fun updateFragmentNow() {
+        supportFragmentManager.beginTransaction().replace(R.id.now_fragment, NowFragment()).commit()
+   }
+
+    override  fun updateFrgamentHour(){
+        supportFragmentManager.beginTransaction().replace(R.id.recyclerview1, HourlyFragment()).commit()
+    }
+    override fun updateFragemntWeek(){
+        supportFragmentManager.beginTransaction().replace(R.id.recyclerview2, WeeklyFragment()).commit()
     }
 
     private fun setupViewPagerAndTabs() {

@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.support.v7.widget.GridLayoutManager
 import android.util.Log
 import android.widget.SeekBar
+import android.widget.Toast
 import com.example.sea.R
+
 
 class NowFragment : Fragment(), NowContract.View {
     private var recyclerView: RecyclerView? = null
@@ -22,12 +24,9 @@ class NowFragment : Fragment(), NowContract.View {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_now, container, false)
-
         setupViews()
-
         presenter = NowPresenter(this, activity!!, NowInteractor(activity!!, fileName))
         presenter.fetchData()
-
         return rootView
     }
 
@@ -40,10 +39,10 @@ class NowFragment : Fragment(), NowContract.View {
     }
 
     override fun setSeekbarProgress(progress: Int) {
-        if(seekbar.progress < progress || progress == 0) {
+        if(seekbar.progress < progress || progress ==0) {
             seekbar.progress = progress
             seekbar.refreshDrawableState()
-        }
+       }
     }
 
     override fun onFailure(t: Throwable) {
@@ -58,7 +57,6 @@ class NowFragment : Fragment(), NowContract.View {
     private fun setupViews() {
         seekbar = rootView.findViewById(R.id.seekbar)
         seekbar.isEnabled = false
-
         recyclerView = rootView.findViewById(R.id.recycler_view)
         recyclerView!!.layoutManager = GridLayoutManager(context, 1)
         adapter = NowAdapter(listOfElements, activity!!)
