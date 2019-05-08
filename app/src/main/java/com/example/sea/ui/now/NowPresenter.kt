@@ -1,6 +1,8 @@
 package com.example.sea.ui.now
 
 import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import com.example.sea.data.remote.model.LocationData
 import com.example.sea.R
 import com.example.sea.data.remote.model.OceanData
@@ -12,19 +14,18 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
 
     override fun fetchData() {
         //Henter ut data fra LocationForecast api.
+        view!!.setSeekbarProgress(0)
         requestLocationData(interactor.getLatitude(), interactor.getLongitude())
         requestOceanData(interactor.getLatitude().toDouble(), interactor.getLongitude().toDouble())
     }
 
     override fun onFinished(data: LocationData?) {
         val listOfStrings: ArrayList<String> = arrayListOf(context!!.getString(R.string.navigation_drawer_tide), context!!.getString(R.string.navigation_drawer_temperature2), context!!.getString(R.string.navigation_drawer_weather), context!!.getString(R.string.navigation_drawer_fog), context!!.getString(R.string.navigation_drawer_humidity), context!!.getString(R.string.navigation_drawer_cloudiness), context!!.getString(R.string.navigation_drawer_pressure2))
-
         val nowData = data?.product?.time!!
         val wind : Double?
         var measurement: String
         var value = nowData[0].location.windSpeed.mps.toDouble()
         val windText = interactor.getWindUnit()
-
         wind = value
 
         if (windText == null || windText == "mps") {
@@ -122,7 +123,6 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
             waveValue = 0.0
             view!!.setDataInRecyclerView(NowElement("-", context!!.getString(R.string.navigation_drawer_wave), ""))
             view!!.updateRecyclerView()
-            view!!.setSeekbarProgress(0)
         }
     }
 
@@ -175,7 +175,6 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         }
 
         text = ceText.split(" ")[0]
-
         //valgte disse verdiene for CE-merke A fra Beauforts skala hvor de skal tåle opp mot orkan.
         when(text){
             "A"-> {
@@ -227,6 +226,7 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
                 return risk.toInt()
             }
             "D"-> {
+
                 risk = if(content == "wind") {
                     (value/7.7)*100
                 }
@@ -243,7 +243,6 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
                 return risk.toInt()
             }
         }
-
         return -1
     }
 }

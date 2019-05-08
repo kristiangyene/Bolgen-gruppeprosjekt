@@ -80,10 +80,7 @@ class WeeklyFragment : Fragment() {
                     var windMeasurement: String
                     val windText = sharedPreferences.getString(getString(R.string.navigation_drawer_wind_speed), null)
                     if (windText == null || windText == "mps") windMeasurement =  "mps"
-                    else if(windText == "mph"){
-                        windMeasurement = windText
-                        windSpeed = (windSpeed.toDouble() * 2.236936).toString()
-                    }else{
+                    else{
                         windMeasurement = windText
                         windSpeed = (windSpeed.toDouble() * 3.6).toString()
                     }
