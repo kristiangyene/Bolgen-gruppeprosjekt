@@ -104,8 +104,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
 
         val locationName = presenter.getAddress(p0!!.latitude, p0.longitude)
 
-        showMarker(p0, locationName)
-        setupMarkerWindow(p0, locationName)
+        setupMarker(p0, locationName)
     }
 
     private fun setUpMapStyle() {
@@ -127,19 +126,16 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         presenter.setUpHarborMarkers(harborsLayer)
     }
 
-    private fun showMarker(p0: LatLng?, locationName: String) {
+    private fun setupMarker(p0: LatLng?, locationName: String) {
         marker = map.addMarker(MarkerOptions().position(p0!!).title(locationName))
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(p0.latitude, p0.longitude), 8f), 2000, null)
-    }
-
-    private fun setupMarkerWindow(p0: LatLng?, locationName: String) {
-        map.setInfoWindowAdapter(presenter.createInfoWindowAdapter(p0!!, locationName))
+        map.setInfoWindowAdapter(presenter.createInfoWindowAdapter(p0, locationName))
     }
 
     override fun getMarker() = marker
 
     override fun setTitle(text: String) {
-        activity!!.toolbar.title = text
+        activity!!.toolbar_title.text = text
     }
 
     override fun showCameraAnimation(currentLatLng: LatLng) {
@@ -162,21 +158,12 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     }
 
     override fun showMarkers(data: String, lat: Double, long: Double, type : String) {
-//        val markerOption =  MarkerOptions().title(data).position(LatLng(lat, long))
-//        if(type == "rain") {
-//            markerOption.icon(BitmapDescriptorFactory.fromBitmap(presenter.createRainMarker()))
-//        }
-//        else {
-//            markerOption.icon(BitmapDescriptorFactory.fromBitmap(presenter.createWindMarker()))
-//        }
-
         val iconFactory = IconGenerator(activity!!)
         iconFactory.setTextAppearance(R.style.markerTextStyle)
         iconFactory.setColor(colorPrimary.toInt())
         val marker = map.addMarker(MarkerOptions().position(LatLng(lat, long)))
         marker.setIcon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(data)))
 
-//        val marker = map.addMarker(markerOption)
         markers.add(marker)
     }
 

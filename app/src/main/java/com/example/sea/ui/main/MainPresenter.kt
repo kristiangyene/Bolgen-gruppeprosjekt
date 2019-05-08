@@ -189,6 +189,7 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
         builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
             interactor.setPressureUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
+            menuItem.isChecked = false
             dialog.dismiss()
         }
 
@@ -245,7 +246,7 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
     }
 
     override fun setupPreviewText() {
-        val units = arrayOf(interactor.getCeMark(), interactor.getTemperaturUnit(), interactor.getWindUnit(), interactor.getVisibilityUnit(), interactor.getPressureUnit())
+        val units = arrayOf(interactor.getCeMark(), interactor.getTemperaturUnit(), interactor.getWindUnit(), interactor.getPressureUnit())
         val startUnits = arrayOf("A", "C", context.getString(R.string.navigation_drawer_wind_base), context.getString(R.string.navigation_drawer_pressure_base))
         val startId = arrayOf(R.id.ce, R.id.temperature, R.id.wind, R.id.pressure)
 

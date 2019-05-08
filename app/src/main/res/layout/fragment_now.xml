@@ -10,8 +10,6 @@
         android:id="@+id/now_fragment"
         tools:context="ui.now.NowFragment">
 
-
-
     <android.support.v7.widget.CardView
             android:id="@+id/card"
             android:layout_width="match_parent"
@@ -26,9 +24,7 @@
                 android:layout_gravity="bottom|center"
                 android:layout_marginBottom="40dp"
                 android:progressDrawable="@drawable/custom_progress"
-                style="?android:attr/progressBarStyleHorizontal"
-
-        />
+                style="?android:attr/progressBarStyleHorizontal"/>
         <SeekBar
                 android:id="@+id/seekbar"
                 android:layout_width="431dp"
@@ -38,9 +34,7 @@
                 android:max="100"
                 android:progressTint="@android:color/transparent"
                 android:thumb="@drawable/progress_thumb"
-                style="?android:attr/progressBarStyleHorizontal"
-
-        />
+                style="?android:attr/progressBarStyleHorizontal"/>
         <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:text = "\t0\t\t\t10\t\t\t20\t\t\t30\t\t\t40\t\t\t50\t\t\t60\t\t\t70\t\t\t80\t\t\t90\t\t\t100"
@@ -86,7 +80,7 @@
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
-            android:layout_width="406dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:paddingTop="130dp"

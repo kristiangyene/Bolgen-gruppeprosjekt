@@ -12,8 +12,8 @@ class NowInteractor(context: Context, fileName: String) : NowContract.Interactor
     //Henter ut data fra OceanForecast api.
     override fun getOceanData(finished : NowContract.Interactor.OnFinished, latitude : Double, longitude : Double) {
         val call = RetrofitClient().getClient("json").getOceanData(latitude, longitude)
-        call.enqueue(object : retrofit2.Callback<OceanData> {
 
+        call.enqueue(object : retrofit2.Callback<OceanData> {
             override fun onResponse(call: Call<OceanData>, response: Response<OceanData>){
                 if (response.isSuccessful && response.code() == 200){
                     finished.onFinished(response.body()?.forecast?.get(0)?.oceanForecast?.significantTotalWaveHeight)
@@ -33,8 +33,8 @@ class NowInteractor(context: Context, fileName: String) : NowContract.Interactor
      */
     override fun getLocationData(finished : NowContract.Interactor.OnFinished, latitude : Float, longitude : Float) {
         val call = RetrofitClient().getClient("json").getLocationData(latitude, longitude, null)
-        call.enqueue(object : retrofit2.Callback<LocationData> {
 
+        call.enqueue(object : retrofit2.Callback<LocationData> {
             override fun onResponse(call: Call<LocationData>, response: Response<LocationData>){
                 if (response.isSuccessful && response.code() == 200){
                     finished.onFinished(response.body())
@@ -42,6 +42,23 @@ class NowInteractor(context: Context, fileName: String) : NowContract.Interactor
             }
 
             override fun onFailure(call: Call<LocationData>, t: Throwable) {
+                finished.onFailure(t)
+            }
+        })
+    }
+
+    //Henter data om tidevann dersom det er en havn i nærheten.
+    override fun getTidalData(finished : NowContract.Interactor.OnFinished, latitude: Float, longitude: Float, harbor : String) {
+        val call = RetrofitClient().getClient("string").getTidalWater(harbor)
+
+        call.enqueue(object : retrofit2.Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if ((response.isSuccessful && response.code() == 200)) {
+                    finished.onFinished(response.body())
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
                 finished.onFailure(t)
             }
         })

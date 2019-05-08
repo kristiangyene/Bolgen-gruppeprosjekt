@@ -109,7 +109,7 @@
 
     <!-- After About -->
     <string name="settings_header_about">Om Bølgen</string>
-    <string name="summary_about" translatable="false">Vi er ..........</string>
+    <string name="summary_about" translatable="false">Bølgen består av seks studenter ved Universitetet i Oslo, institutt for informatikk. Appen er utviklet som et prosjekt i emnet IN2000 Software Engineering.</string>
     <string name="app_version" translatable="false">1.0</string>
     <string name="summary_support">Send oss tilbakemelding slik at vi kan forbedre appen</string>
     <string name="title_send_feedback">Send oss tilbakmelding</string>
