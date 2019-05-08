@@ -2,17 +2,17 @@ package com.example.sea.ui.now
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.widget.SeekBar
 import com.example.sea.R
+import com.example.sea.utils.ConnectionUtil
 
 class NowFragment : Fragment(), NowContract.View {
-    private var recyclerView: RecyclerView? = null
     private lateinit var adapter: NowAdapter
     private val listOfElements = ArrayList<NowElement>()
     private lateinit var rootView: View
@@ -26,7 +26,9 @@ class NowFragment : Fragment(), NowContract.View {
         setupViews()
 
         presenter = NowPresenter(this, activity!!, NowInteractor(activity!!, fileName))
-        presenter.fetchData()
+        if(ConnectionUtil.checkNetwork(activity!!)) {
+            presenter.fetchData()
+        }
 
         return rootView
     }
@@ -37,6 +39,10 @@ class NowFragment : Fragment(), NowContract.View {
 
     override fun setDataInRecyclerView(element: NowElement) {
         listOfElements.add(element)
+    }
+
+    override fun setDataInRecyclerViewStart(element: NowElement) {
+        listOfElements.add(0, element)
     }
 
     override fun setSeekbarProgress(progress: Int) {
@@ -59,9 +65,9 @@ class NowFragment : Fragment(), NowContract.View {
         seekbar = rootView.findViewById(R.id.seekbar)
         seekbar.isEnabled = false
 
-        recyclerView = rootView.findViewById(R.id.recycler_view)
-        recyclerView!!.layoutManager = GridLayoutManager(context, 1)
+        val recyclerView = rootView.findViewById<RecyclerView>(R.id.recycler_view)
+        recyclerView.layoutManager = GridLayoutManager(context, 1)
         adapter = NowAdapter(listOfElements, activity!!)
-        recyclerView!!.adapter = adapter
+        recyclerView.adapter = adapter
     }
 }

@@ -9,6 +9,7 @@ interface NowContract {
         fun onFailure(t : Throwable)
         fun setSeekbarProgress(progress : Int)
         fun setDataInRecyclerView(element : NowElement)
+        fun setDataInRecyclerViewStart(element : NowElement)
         fun updateRecyclerView()
     }
 
@@ -21,13 +22,13 @@ interface NowContract {
         fun calculateWindRisk(value : Double?)
         fun calculateRisk(value : Double?, content : String) : Int
         fun fetchData()
+        fun findNearestHarbor(latitude: Float, longitude: Float)
     }
 
     interface Interactor : BaseContract.Interactor {
         fun getOceanData(finished : OnFinished, latitude : Double, longitude : Double)
         fun getLocationData(finished : OnFinished, latitude : Float, longitude : Float)
-        fun getTidalData(finished : OnFinished, latitude : Float, longitude : Float)
-        fun setClosestHarbor(latitude : Float, longitude : Float)
+        fun getTidalData(finished : OnFinished, latitude : Float, longitude : Float, harbor : String)
 
         interface OnFinished {
             fun onFinished(data : OceanData.Forecast.OceanForecast.OceanValue?)

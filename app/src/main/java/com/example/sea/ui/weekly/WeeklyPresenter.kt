@@ -6,6 +6,10 @@ import com.example.sea.data.remote.model.LocationData
 import java.text.SimpleDateFormat
 
 class WeeklyPresenter(view: WeeklyContract.View, private var interactor: WeeklyContract.Interactor) : WeeklyContract.Presenter, WeeklyContract.Interactor.OnFinished {
+    override fun updateView() {
+        view!!.updateRecyclerView()
+    }
+
     private var view : WeeklyContract.View? = view
 
     override fun onDestroy() {
@@ -34,9 +38,9 @@ class WeeklyPresenter(view: WeeklyContract.View, private var interactor: WeeklyC
                         if (x.day.equals(day)) {
                             val waveValue = time.oceanForecast.significantTotalWaveHeight
                             // gir 'warning' men kræsjer om vi fjerner den
-                            if(waveValue != null) x.waves = waveValue.content + " m"
-
-                            //recyclerview2.adapter?.notifyDataSetChanged()
+                            if(waveValue != null) {
+                                x.waves = waveValue.content + " m"
+                            }
                         }
                     }
                 }
@@ -54,7 +58,6 @@ class WeeklyPresenter(view: WeeklyContract.View, private var interactor: WeeklyC
 
         val locationForecast = data?.product?.time!!
         val checkList = ArrayList<Int>()
-
 
         // Finner fram til vinddata for time '12' og plasserer dette i et nytt weeklyElement
         for (time in locationForecast) {
@@ -79,7 +82,7 @@ class WeeklyPresenter(view: WeeklyContract.View, private var interactor: WeeklyC
                         windMeasurement = windText
                         windSpeed = (windSpeed.toDouble() * 2.236936).toString()
                     }
-                    else{
+                    else {
                         windMeasurement = windText
                         windSpeed = (windSpeed.toDouble() * 3.6).toString()
                     }
@@ -88,5 +91,9 @@ class WeeklyPresenter(view: WeeklyContract.View, private var interactor: WeeklyC
                 }
             }
         }
+    }
+
+    override fun onFailure(t: Throwable) {
+        view!!.onFailure(t)
     }
 }

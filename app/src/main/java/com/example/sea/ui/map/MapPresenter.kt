@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils
 import com.example.sea.R
 import com.example.sea.data.remote.model.LocationData
 import com.example.sea.ui.base.BasePresenter
+import com.example.sea.utils.ConnectionUtil
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
@@ -102,7 +103,7 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
                 windShowing = false
             }
 
-            if(!requested) {
+            if(!requested && ConnectionUtil.checkNetwork(activity)) {
                 requestLocationData()
                 requested = true
             }
@@ -141,7 +142,7 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
                 harborsShowing = false
             }
 
-            if(!requested) {
+            if(!requested && ConnectionUtil.checkNetwork(activity)) {
                 requestLocationData()
                 requested = true
             }
@@ -282,7 +283,7 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
         }
 
         rainData.add(activity.getString(R.string.rain) + ": " + nowData[1].location.precipitation.value)
-        windData.add(String.format("%.1f", value) + measurement)
+        windData.add(String.format(activity.getString(R.string.wind) + ": " + "%.1f", value) + measurement)
         latitudeData.add(nowData[0].location.latitude.toDouble())
         longitudeData.add(nowData[0].location.longitude.toDouble())
     }

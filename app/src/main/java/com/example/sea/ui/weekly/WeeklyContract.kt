@@ -5,11 +5,11 @@ import com.example.sea.data.remote.model.OceanData
 import com.example.sea.ui.base.BaseContract
 
 interface WeeklyContract {
-
     interface View {
         fun setDataInRecyclerView(element : WeeklyElement)
         fun updateRecyclerView()
         fun getList() : ArrayList<WeeklyElement>
+        fun onFailure(t: Throwable)
     }
 
     interface Presenter {
@@ -23,6 +23,8 @@ interface WeeklyContract {
         interface OnFinished {
             fun onFinished(data : OceanData?)
             fun onFinished(data : LocationData?)
+            fun onFailure(t: Throwable)
+            fun updateView()
         }
     }
 }

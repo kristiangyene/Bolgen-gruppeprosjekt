@@ -11,7 +11,7 @@
             android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:id="@+id/map1"
-              tools:context=".ui.map.MapsActivity"
+              tools:context=".ui.map.MapFragment"
               android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
     <android.support.design.widget.FloatingActionButton
@@ -40,7 +40,6 @@
             app:layout_constraintBottom_toTopOf="@+id/fab"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" android:layout_marginBottom="8dp"/>
-
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_rain"
@@ -81,6 +80,7 @@
             android:id="@+id/fab_wind_text" app:layout_constraintStart_toEndOf="@+id/fab_wind"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="@+id/fab_wind"/>
+
     <TextView
             android:text="@string/fab_map_rain"
             android:layout_width="wrap_content"

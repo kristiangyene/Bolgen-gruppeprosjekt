@@ -29,7 +29,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        supportActionBar?.title = getString(R.string.app_name)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        toolbar_title.text = getString(R.string.app_name)
 
         presenter = MainPresenter(this, this, MainInteractor(this, fileName))
 
@@ -117,7 +118,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun updateTitle(text : String) {
-        supportActionBar?.title = text
+        toolbar_title.text = text
     }
 
     override fun showLocationSettingsMessage(exception: ResolvableApiException, checkValue : Int) {
