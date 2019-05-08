@@ -23,7 +23,7 @@ interface MainContract {
         fun updateFrgamentHour()
         fun updateFragemntWeek()
     }
-
+    //Hei
     interface Presenter {
         fun firstStart()
         fun checkFirstStart() : Boolean
