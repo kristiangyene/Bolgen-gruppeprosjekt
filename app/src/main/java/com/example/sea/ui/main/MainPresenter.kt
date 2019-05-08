@@ -103,7 +103,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             interactor.setCeMark(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition].split(" ")[0], menuItem.itemId)
             menuItem.isChecked = false
-            view!!.showMessage("Du må starte appen på nytt for å oppdatere safty scale", Toast.LENGTH_LONG)
+            view!!.showMessage("Du må starte appen på nytt for å oppdatere CE merket og saft scale", Toast.LENGTH_LONG)
             dialog.dismiss()
         }
 
@@ -132,7 +132,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             interactor.setTemperaturUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
             menuItem.isChecked = false
-       //     view!!.updateFragmentNow()
+            view!!.showMessage("Du må starte appen på nytt for å oppdatere måleenheten", Toast.LENGTH_LONG)
             dialog.dismiss()
         }
 
@@ -162,9 +162,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             interactor.setWindUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
             menuItem.isChecked = false
-           // view!!.updateFragemntWeek()
-          //  view!!.updateFragmentNow()
-         //   view!!.updateFrgamentHour()
+            view!!.showMessage("Du må starte appen på nytt for å oppdatere måleenheten", Toast.LENGTH_LONG)
             dialog.dismiss()
         }
 
@@ -194,7 +192,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             interactor.setPressureUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
             dialog.dismiss()
-        //   view!!.updateFragmentNow()
+            view!!.showMessage("Du må starte appen på nytt for å oppdatere måleenheten", Toast.LENGTH_LONG)
         }
 
         builder.setNegativeButton(R.string.navigation_drawer_cancel) { _, _ ->
