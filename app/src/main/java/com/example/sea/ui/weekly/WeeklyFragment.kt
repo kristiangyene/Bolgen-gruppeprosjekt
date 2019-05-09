@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import com.example.sea.R
 import com.example.sea.utils.ConnectionUtil
 
@@ -17,6 +18,7 @@ class WeeklyFragment : Fragment(), WeeklyContract.View {
     private val fileName = "com.example.sea"
     private lateinit var rootView: View
     private lateinit var presenter: WeeklyContract.Presenter
+    private lateinit var indeterminateBar : ProgressBar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_weekly, container, false)
@@ -36,6 +38,8 @@ class WeeklyFragment : Fragment(), WeeklyContract.View {
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = WeeklyAdapter(listWithData)
         recyclerView.adapter = adapter
+
+        indeterminateBar = rootView.findViewById(R.id.indeterminateBar)
     }
 
     override fun setDataInRecyclerView(element: WeeklyElement) {
@@ -57,5 +61,13 @@ class WeeklyFragment : Fragment(), WeeklyContract.View {
 
     override fun onFailure(t: Throwable) {
         Log.d("Error", t.toString())
+    }
+
+    override fun showProgress() {
+        indeterminateBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+        indeterminateBar.visibility = View.GONE
     }
 }

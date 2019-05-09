@@ -10,6 +10,8 @@ interface WeeklyContract {
         fun updateRecyclerView()
         fun getList() : ArrayList<WeeklyElement>
         fun onFailure(t: Throwable)
+        fun showProgress()
+        fun hideProgress()
     }
 
     interface Presenter {

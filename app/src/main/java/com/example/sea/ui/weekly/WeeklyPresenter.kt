@@ -6,6 +6,9 @@ import com.example.sea.data.remote.model.LocationData
 import java.text.SimpleDateFormat
 
 class WeeklyPresenter(view: WeeklyContract.View, private var interactor: WeeklyContract.Interactor) : WeeklyContract.Presenter, WeeklyContract.Interactor.OnFinished {
+    private var oceanDone = false
+    private var locationDone = false
+
     override fun updateView() {
         view!!.updateRecyclerView()
     }
@@ -17,6 +20,7 @@ class WeeklyPresenter(view: WeeklyContract.View, private var interactor: WeeklyC
     }
 
     override fun fetchData() {
+        view!!.showProgress()
         interactor.getData(this, interactor.getLatitude(), interactor.getLongitude())
     }
 
@@ -45,6 +49,11 @@ class WeeklyPresenter(view: WeeklyContract.View, private var interactor: WeeklyC
                     }
                 }
             }
+        }
+
+        oceanDone = true
+        if(oceanDone && locationDone) {
+            view!!.hideProgress()
         }
     }
 
@@ -90,6 +99,11 @@ class WeeklyPresenter(view: WeeklyContract.View, private var interactor: WeeklyC
                     view!!.setDataInRecyclerView(WeeklyElement(dayText, day, "${"%.1f".format(windSpeed.toDouble())} $windMeasurement", "-"))
                 }
             }
+        }
+
+        locationDone = true
+        if(oceanDone && locationDone) {
+            view!!.hideProgress()
         }
     }
 
