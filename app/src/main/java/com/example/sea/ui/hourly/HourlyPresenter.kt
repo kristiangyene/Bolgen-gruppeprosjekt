@@ -101,7 +101,7 @@ class HourlyPresenter(view: HourlyContract.View, private var context: Context, p
                 }
             }
         }
-        //view!!.updateRecyclerView()
+        view!!.updateRecyclerView()
         //return view
     }
 
