@@ -17,7 +17,7 @@ interface HourlyContract {
     }
 
     interface Interactor : BaseContract.Interactor {
-        fun getData(finished : OnFinished, latitude : Float, longitude : Float, harbor: String?)
+        fun setData(finished : OnFinished, latitude : Float, longitude : Float, harbor: String?)
 
         interface OnFinished {
             fun onFinished(data : OceanData?)

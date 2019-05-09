@@ -16,7 +16,7 @@ class HourlyInteractor(context: Context, fileName: String) : HourlyContract.Inte
     val harbors = hashMapOf<String, LatLng>()
     var closestHarbor : String? = null
     var closestHarborValue = Double.MAX_VALUE
-    override fun getData(finished: HourlyContract.Interactor.OnFinished, latitude: Float, longitude: Float, harbor: String?) {
+    override fun setData(finished: HourlyContract.Interactor.OnFinished, latitude: Float, longitude: Float, harbor: String?) {
         val client = RetrofitClient().getClient("json")
 
         val callLocation = client.getLocationData(latitude, longitude, null)
