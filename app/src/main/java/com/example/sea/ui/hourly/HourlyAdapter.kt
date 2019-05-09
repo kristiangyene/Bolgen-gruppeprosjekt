@@ -102,7 +102,7 @@ class HourlyAdapter(private val list: List<HourlyElement>, private val recyclerV
         override fun onExpansionUpdate(expansionFraction: Float, state: Int) {
             Log.d("ExpandableLayout", "State: $state")
             if (state == ExpandableLayout.State.EXPANDING) {
-//                    recyclerView.smoothScrollToPosition(adapterPosition)
+                    recyclerView.smoothScrollToPosition(adapterPosition)
             }
         }
     }

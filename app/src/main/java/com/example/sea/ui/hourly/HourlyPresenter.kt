@@ -25,7 +25,7 @@ class HourlyPresenter(view: HourlyContract.View, private var context: Context, p
 
     override fun fetchData() {
         val harbor = findNearestHarbor()
-        interactor.getData(this, interactor.getLatitude(), interactor.getLongitude(), harbor)
+        interactor.setData(this, interactor.getLatitude(), interactor.getLongitude(), harbor)
     }
 
     private fun findNearestHarbor() : String? {
