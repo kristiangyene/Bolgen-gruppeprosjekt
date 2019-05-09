@@ -30,6 +30,8 @@ interface MapContract {
 
         fun showProgress()
         fun hideProgress()
+        fun showMessage(text: String)
+        fun removeMarker()
     }
 
     interface Presenter {

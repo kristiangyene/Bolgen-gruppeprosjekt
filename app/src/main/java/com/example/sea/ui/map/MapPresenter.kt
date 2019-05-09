@@ -34,6 +34,7 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
     private val longitudeData = mutableListOf<Double>()
     private var requested: Boolean = false
     private var countDone = 0
+    private var location : Location? = null
 
     override fun onFABClick() {
         val showButton = AnimationUtils.loadAnimation(activity, R.anim.show_button)
@@ -105,7 +106,6 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
             }
 
             if(!requested && ConnectionUtil.checkNetwork(activity)) {
-                view!!.showProgress()
                 requestLocationData()
                 requested = true
             }
@@ -145,7 +145,6 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
             }
 
             if(!requested && ConnectionUtil.checkNetwork(activity)) {
-                view!!.showProgress()
                 requestLocationData()
                 requested = true
             }
@@ -185,12 +184,29 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
     }
 
     private fun requestLocationData() {
-        view!!.showProgress()
-        interactor.getLocationData(this, interactor.getLatitude(), interactor.getLongitude())
-        interactor.getLocationData(this, interactor.getLatitude()+1, interactor.getLongitude()) // 111.19, Nord
-        interactor.getLocationData(this, interactor.getLatitude()-1, interactor.getLongitude()) // 111.19, Sør
-        interactor.getLocationData(this, interactor.getLatitude(), interactor.getLongitude()+2) // 111.19, Øst
-        interactor.getLocationData(this, interactor.getLatitude(), interactor.getLongitude()-2) // 111.19, Vest
+        if(location != null) {
+            view!!.showProgress()
+            interactor.getLocationData(this, location!!.latitude.toFloat(), location!!.longitude.toFloat())
+            interactor.getLocationData(this, location!!.latitude.toFloat()+1, location!!.longitude.toFloat()) // 111.19, Nord
+            interactor.getLocationData(this, location!!.latitude.toFloat()-1, location!!.longitude.toFloat()) // 111.19, Sør
+            interactor.getLocationData(this, location!!.latitude.toFloat(), location!!.longitude.toFloat()+2) // 111.19, Øst
+            interactor.getLocationData(this, location!!.latitude.toFloat(), location!!.longitude.toFloat()-2) // 111.19, Vest
+        }
+        else {
+            val marker = view!!.getMarker()
+            if(marker != null) {
+                view!!.showProgress()
+                interactor.getLocationData(this, marker.position.latitude.toFloat(), marker.position.longitude.toFloat())
+                interactor.getLocationData(this, marker.position.latitude.toFloat()+1, marker.position.longitude.toFloat()) // 111.19, Nord
+                interactor.getLocationData(this, marker.position.latitude.toFloat()-1, marker.position.longitude.toFloat()) // 111.19, Sør
+                interactor.getLocationData(this, marker.position.latitude.toFloat(), marker.position.longitude.toFloat()+2) // 111.19, Øst
+                interactor.getLocationData(this, marker.position.latitude.toFloat(), marker.position.longitude.toFloat()-2) // 111.19, Vest
+                view!!.removeMarker()
+            }
+            else {
+                view!!.showMessage("Trykk på kartet for å kunne se værmelding om det valgte stedet")
+            }
+        }
     }
 
     private fun loadData(type : String) {
@@ -210,6 +226,7 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
         if (location != null) {
             val currentLatLng = LatLng(location.latitude, location.longitude)
             view!!.showCameraAnimation(currentLatLng)
+            this.location = location
         }
     }
 

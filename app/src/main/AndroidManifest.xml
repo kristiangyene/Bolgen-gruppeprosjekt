@@ -76,7 +76,7 @@
         </service>
 
         <service
-                android:name=".service.MyFirebaseMessagingService" android:permission="">
+                android:name=".service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>

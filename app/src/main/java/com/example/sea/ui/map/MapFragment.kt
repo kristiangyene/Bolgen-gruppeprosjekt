@@ -167,6 +167,12 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         markers.add(marker)
     }
 
+    override fun removeMarker() {
+        if(marker != null) {
+            marker!!.remove()
+        }
+    }
+
     override fun showButtons() {
         fab_wind.show()
         fab_rain.show()
@@ -217,5 +223,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
 
     override fun hideProgress() {
         progress.visibility = View.GONE
+    }
+
+    override fun showMessage(text: String) {
+        Toast.makeText(activity!!, text, Toast.LENGTH_LONG).show()
     }
 }
