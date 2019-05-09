@@ -91,8 +91,8 @@ class HourlyPresenter(view: HourlyContract.View, private var context: Context, p
                     if (x.title.equals("Kl $wavesFormat")) {
                         val typo = i.oceanForecast.significantTotalWaveHeight
                         if (typo != null) {
-                            //x.waves = typo.content + " m"
-                            view!!.getList()[counter++].waves = typo.content
+                            x.waves = typo.content + " m"
+                            //view!!.getList()[counter++].waves = typo.content
                         }
 
 
@@ -101,6 +101,7 @@ class HourlyPresenter(view: HourlyContract.View, private var context: Context, p
                 }
             }
         }
+        view!!.updateRecyclerView()
         //return view
     }
 
