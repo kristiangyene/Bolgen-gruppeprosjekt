@@ -54,16 +54,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         }
     }
 
-    override fun updateFragmentNow() {
-        supportFragmentManager.beginTransaction().replace(R.id.now_fragment, NowFragment()).commit()
-   }
-
-    override  fun updateFrgamentHour(){
-        supportFragmentManager.beginTransaction().replace(R.id.recyclerview1, HourlyFragment()).commit()
-    }
-    override fun updateFragemntWeek(){
-        supportFragmentManager.beginTransaction().replace(R.id.recyclerview2, WeeklyFragment()).commit()
-    }
 
     private fun setupViewPagerAndTabs() {
         // View Pager tillater brukeren å sveipe mellom fragmenter
