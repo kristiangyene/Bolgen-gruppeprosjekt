@@ -40,7 +40,6 @@ class WeeklyFragment : Fragment(), WeeklyContract.View {
     }
 
     private fun setUpViews(){
-
         val recyclerView = rootView.findViewById<RecyclerView>(R.id.recyclerview2)
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = WeeklyAdapter(listWithData)

@@ -13,6 +13,7 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
     private var view: NowContract.View? = view
     private var context : Context? = context
     private var waveValue : Double? = null
+    private var FirstUse: Boolean = true
 
     override fun fetchData() {
         //Henter ut data fra LocationForecast api.
@@ -179,6 +180,10 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
     }
 
     override fun calculateWindRisk(value: Double?) {
+        if(FirstUse){
+            view!!.setSeekbarProgress(0)
+            FirstUse = false
+        }
         if(waveValue != null && waveValue == 0.0) {
             view!!.setSeekbarProgress(0)
         }
@@ -189,6 +194,10 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
     }
 
     override fun calculateWavesRisk(value : Double?) {
+        if(FirstUse){
+            view!!.setSeekbarProgress(0)
+            FirstUse = false
+        }
         val risk = calculateRisk(value, "waves")
         view!!.setSeekbarProgress(risk)
     }
