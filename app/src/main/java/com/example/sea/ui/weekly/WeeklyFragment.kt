@@ -13,9 +13,9 @@ import com.example.sea.R
 import com.example.sea.utils.ConnectionUtil
 
 class WeeklyFragment : Fragment(), WeeklyContract.View {
+    private val fileName = "com.example.sea"
     private val listWithData = ArrayList<WeeklyElement>()
     private lateinit var adapter: WeeklyAdapter
-    private val fileName = "com.example.sea"
     private lateinit var rootView: View
     private lateinit var presenter: WeeklyContract.Presenter
     private lateinit var indeterminateBar : ProgressBar
@@ -50,17 +50,17 @@ class WeeklyFragment : Fragment(), WeeklyContract.View {
         adapter.notifyDataSetChanged()
     }
 
-    override fun getList(): ArrayList<WeeklyElement> {
-        return listWithData
-    }
+    override fun getList(): ArrayList<WeeklyElement> = listWithData
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.onDestroy()
+        // presenter.onDestroy()
     }
 
-    override fun onFailure(t: Throwable) {
-        Log.d("Error", t.toString())
+    override fun onFailure(t: String?) {
+        if(t != null) {
+            Log.d("Error", t)
+        }
     }
 
     override fun showProgress() {

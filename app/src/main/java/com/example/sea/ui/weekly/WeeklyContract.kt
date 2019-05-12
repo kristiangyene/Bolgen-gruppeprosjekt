@@ -9,7 +9,7 @@ interface WeeklyContract {
         fun setDataInRecyclerView(element : WeeklyElement)
         fun updateRecyclerView()
         fun getList() : ArrayList<WeeklyElement>
-        fun onFailure(t: Throwable)
+        fun onFailure(t: String?)
         fun showProgress()
         fun hideProgress()
     }
@@ -20,12 +20,12 @@ interface WeeklyContract {
     }
 
     interface Interactor : BaseContract.Interactor {
-        fun getData(finished : OnFinished, latitude : Float, longitude : Float)
+        fun fetchData(finished : OnFinished, latitude : Float, longitude : Float)
 
         interface OnFinished {
             fun onFinished(data : OceanData?)
             fun onFinished(data : LocationData?)
-            fun onFailure(t: Throwable)
+            fun onFailure(t: String?)
             fun updateView()
         }
     }

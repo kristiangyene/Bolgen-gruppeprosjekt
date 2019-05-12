@@ -30,7 +30,7 @@ interface MainContract {
         fun onDrawerWindClick(menuItem: MenuItem)
         fun onDrawerPressureClick(menuItem: MenuItem)
         fun onDrawerPreferencesClick(menuItem: MenuItem)
-        fun onDrawerSettingsClick()
+        fun onDrawerSettingsClick(menuItem: MenuItem)
         fun setupPreviewText()
 
         fun checkPermission(permissionOption: String): Boolean

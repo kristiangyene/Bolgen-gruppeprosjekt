@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                     presenter.onDrawerPreferencesClick(menuItem)
                 }
                 R.id.settings -> {
-                    presenter.onDrawerSettingsClick()
+                    presenter.onDrawerSettingsClick(menuItem)
                 }
             }
             true

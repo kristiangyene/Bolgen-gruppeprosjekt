@@ -21,7 +21,6 @@
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:textColor="#000000"
-                    android:layout_gravity="start|center"
                     android:layout_width="60dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentStart="true"
@@ -33,7 +32,6 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/wind_black"
-                    android:layout_gravity="center"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:layout_toStartOf="@id/weekly_wind"
@@ -46,7 +44,6 @@
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:textColor="#000000"
-                    android:layout_gravity="end|center"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="5dp"
                     android:layout_centerHorizontal="true"
@@ -59,8 +56,7 @@
                     android:src="@drawable/waves_black"
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@id/weekly_wave"
-                    android:layout_margin="10dp"
-                    android:layout_gravity="end|center"/>
+                    android:layout_margin="10dp"/>
 
             <TextView
                     android:id="@+id/weekly_wave"
@@ -69,7 +65,6 @@
                     android:textSize="18sp"
                     android:textColor="#000000"
                     android:layout_marginEnd="20dp"
-                    android:layout_gravity="end|center"
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
                     android:textAlignment="center"/>

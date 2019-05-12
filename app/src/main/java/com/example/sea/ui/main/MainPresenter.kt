@@ -241,7 +241,8 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
         builder.show()
     }
 
-    override fun onDrawerSettingsClick() {
+    override fun onDrawerSettingsClick(menuItem: MenuItem) {
+        menuItem.isChecked = false
         view!!.loadSettingsScreen()
     }
 
@@ -308,6 +309,8 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
             numUpdates = 1
         }
 
+        interactor.setMapNeverClicked(false)
+
         val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest!!)
         val client: SettingsClient = LocationServices.getSettingsClient(context)
         val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
@@ -346,6 +349,9 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
                     view!!.updateTitle("${format.format(lastLocation!!.latitude)}, ${format.format(lastLocation!!.longitude)}")
                     interactor.setLatitude(lastLocation!!.latitude.toFloat())
                     interactor.setLongitude(lastLocation!!.longitude.toFloat())
+
+                    interactor.setUserLatitude(lastLocation!!.latitude.toFloat())
+                    interactor.setUserLongitude(lastLocation!!.longitude.toFloat())
                 }
                 else {
                     // Hvis enheten ikke finner siste posisjon, så opprettes en ny klient og ber om plasseringsoppdateringer
@@ -359,6 +365,9 @@ class MainPresenter(view: MainContract.View, private var context: Context, priva
                             view!!.updateTitle("${format.format(lastLocation!!.latitude)}, ${format.format(lastLocation!!.longitude)}")
                             interactor.setLatitude(lastLocation!!.latitude.toFloat())
                             interactor.setLongitude(lastLocation!!.longitude.toFloat())
+
+                            interactor.setUserLatitude(lastLocation!!.latitude.toFloat())
+                            interactor.setUserLongitude(lastLocation!!.longitude.toFloat())
                         }
                     }
 

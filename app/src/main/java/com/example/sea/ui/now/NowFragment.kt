@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.widget.ProgressBar
 import android.widget.SeekBar
+import android.widget.TextView
 import com.example.sea.R
 import com.example.sea.utils.ConnectionUtil
 
@@ -21,6 +22,7 @@ class NowFragment : Fragment(), NowContract.View {
     private lateinit var presenter: NowContract.Presenter
     private val fileName = "com.example.sea"
     private lateinit var indeterminateBar : ProgressBar
+    private lateinit var textScale : TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_now, container, false)
@@ -29,7 +31,12 @@ class NowFragment : Fragment(), NowContract.View {
 
         presenter = NowPresenter(this, activity!!, NowInteractor(activity!!, fileName))
         if(ConnectionUtil.checkNetwork(activity!!)) {
-            presenter.fetchData()
+            if(savedInstanceState == null) {
+                presenter.fetchData(true)
+            }
+            else {
+                presenter.fetchData(false)
+            }
         }
 
         return rootView
@@ -47,6 +54,12 @@ class NowFragment : Fragment(), NowContract.View {
         listOfElements.add(0, element)
     }
 
+    override fun setDataInRecyclerViewPosition(index : Int, element: NowElement) {
+        listOfElements.add(index, element)
+    }
+
+    override fun getList(): ArrayList<NowElement> = listOfElements
+
     override fun setSeekbarProgress(progress: Int) {
         if(seekbar.progress < progress || progress == 0) {
             seekbar.progress = progress
@@ -54,18 +67,22 @@ class NowFragment : Fragment(), NowContract.View {
         }
     }
 
-    override fun onFailure(t: Throwable) {
-        Log.d("Failure: ", t.toString())
+    override fun onFailure(t: String?) {
+        if(t != null) {
+            Log.d("Failure: ", t)
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.onDestroy()
+        // presenter.onDestroy()
     }
 
     private fun setupViews() {
         seekbar = rootView.findViewById(R.id.seekbar)
         seekbar.isEnabled = false
+
+        textScale = rootView.findViewById(R.id.textScale)
 
         indeterminateBar = rootView.findViewById(R.id.indeterminateBar)
 
@@ -74,6 +91,12 @@ class NowFragment : Fragment(), NowContract.View {
         adapter = NowAdapter(listOfElements, activity!!)
         recyclerView.adapter = adapter
     }
+
+    override fun updateTextScale(text: String) {
+        textScale.text = text
+    }
+
+    override fun getTextScaleLines(): Int = textScale.lineCount
 
     override fun showProgress() {
         indeterminateBar.visibility = View.VISIBLE

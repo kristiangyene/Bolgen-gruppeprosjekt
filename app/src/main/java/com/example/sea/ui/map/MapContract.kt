@@ -4,16 +4,17 @@ import android.graphics.Bitmap
 import android.location.Location
 import android.view.animation.Animation
 import com.example.sea.data.remote.model.LocationData
-import com.example.sea.data.remote.model.OceanData
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.data.geojson.GeoJsonLayer
 
 interface MapContract {
     interface View {
         fun getMarker() : Marker?
+        fun getStartMarker() : Marker?
         fun setTitle(text: String)
-        fun showCameraAnimation(currentLatLng: LatLng)
+        fun showCameraAnimation(currentLatLng: LatLng, zoomLevel: Float)
         fun changeTab()
         fun showMarkers(data: String, lat: Double, long: Double, type: String)
         fun hideMarkers()
@@ -26,12 +27,13 @@ interface MapContract {
         fun hideTextView()
         fun hideHarbors()
         fun hideAnimation(hideButton: Animation?)
-        fun onFailure(t: Throwable)
+        fun onFailure(t: String?)
 
         fun showProgress()
         fun hideProgress()
         fun showMessage(text: String)
-        fun removeMarker()
+        fun removeMarker(marker: Marker?)
+        fun setMarkerOnStart(markerOptions: MarkerOptions?)
     }
 
     interface Presenter {
@@ -47,6 +49,7 @@ interface MapContract {
         fun getAddress(latitude: Double?, longitude: Double?) : String
         fun createInfoWindowAdapter(position: LatLng?, locationName: String) : CustomInfoWindowAdapter
         fun onInfoWindowClick(marker: Marker?)
+        fun createStartMarker() : MarkerOptions?
     }
 
     interface Interactor{
@@ -56,7 +59,7 @@ interface MapContract {
 
         interface OnFinished {
             fun onFinished(data: LocationData?)
-            fun onFailure(t: Throwable)
+            fun onFailure(t: String?)
         }
     }
 }

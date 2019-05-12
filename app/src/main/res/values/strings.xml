@@ -65,7 +65,6 @@
     <string name="waves_image" translatable="false">waves image</string>
     <string name="wind_image" translatable="false">wind image</string>
 
-
     <string name="rain">Regn</string>
     <string name="wind">Vind</string>
 
@@ -74,12 +73,13 @@
 
     <!-- After General -->
     <string name="settings_title_general">Generell</string>
-    <string name="title_theme_mode">Nattmodus</string>
-    <string name="summary_selected_theme_mode">Av</string>
-    <string name="key_theme_mode" translatable="false">key_theme_mode</string>
+
+    <string name="title_network_calls" translatable="false">Nettverk</string>
+    <string name="summary_selected_network_calls" translatable="false">Lav</string>
+    <string name="key_network_calls" translatable="false">key_network_calls</string>
 
     <!-- After Notifications -->
-    <string name="title_new_notification_sound">New message notification</string>
+    <string name="title_new_notification_sound">Melding notifikasjon</string>
     <string name="notifications_new_message" translatable="false">notifications_new_message</string>
     <string name="key_notifications_new_message_ringtone" translatable="false">key_notifications_new_message_ringtone</string>
 
@@ -95,7 +95,6 @@
     <string name="settings_header_notifications">Varslinger</string>
     <string name="pref_title_new_message_notifications">Vær varsling</string>
 
-
     <!-- After Permissions -->
     <string name="settings_title_permissions">Tillatelser</string>
     <string name="title_settings_permissions_position">Posisjon</string>
@@ -106,24 +105,17 @@
     <string name="title_settings_permissions_sms">Telefon</string>
     <string name="key_settings_permissions_sms" translatable="false">key_title_settings_permissions_sms</string>
 
-
     <!-- After About -->
     <string name="settings_header_about">Om Bølgen</string>
     <string name="summary_about" translatable="false">Bølgen består av seks studenter ved Universitetet i Oslo, institutt for informatikk. Appen er utviklet som et prosjekt i emnet IN2000 Software Engineering.</string>
     <string name="app_version" translatable="false">1.0</string>
     <string name="summary_support">Send oss tilbakemelding slik at vi kan forbedre appen</string>
     <string name="title_send_feedback">Send oss tilbakmelding</string>
-    <string name="title_faq" translatable="false">FAQ</string>
-    <string name="summary_faq">Se vanlige spørsmål</string>
-    <string name="url_faq" translatable="false">https://www.androidhive.info/privacy-policy/</string>
-    <string name="privacy_policy">Personvern</string>
-    <string name="url_privacy" translatable="false">https://www.androidhive.info/privacy-policy/</string>
-    <string name="title_terms">Vilkår &amp; Betingelser</string>
-    <string name="url_terms" translatable="false">https://www.androidhive.info/terms-of-service/</string>
     <string name="title_version">Versjon</string>
     <string name="choose_email_client">Velg email klient</string>
     <string name="key_send_feedback" translatable="false">key_send_feedback</string>
-
+    <string name="feedback_message">Tilbakemelding til Bølgen app: </string>
+    <string name="title_terms">Vilkår &amp; Betingelser</string>
 
     <!-- String arrays related to Settings -->
     <string name="sunset">Automatisk ved solnedgang</string>
@@ -136,6 +128,21 @@
         <item>@string/sunset</item>
     </string-array>
     <string-array name="settings_theme_mode_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="network_low" translatable="false">Lav</string>
+    <string name="network_medium" translatable="false">Medium</string>
+    <string name="network_high" translatable="false">Høy</string>
+
+    <string-array name="settings_network_calls_entries">
+        <item>@string/network_low</item>
+        <item>@string/network_medium</item>
+        <item>@string/network_high</item>
+    </string-array>
+    <string-array name="settings_network_calls_values">
         <item>0</item>
         <item>1</item>
         <item>2</item>

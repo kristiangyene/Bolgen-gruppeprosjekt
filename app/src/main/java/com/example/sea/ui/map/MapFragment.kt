@@ -30,12 +30,15 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     GoogleMap.OnMyLocationButtonClickListener, OnSuccessListener<Location>, GoogleMap.OnInfoWindowClickListener, MapContract.View {
     private lateinit var map: GoogleMap
     private var marker: Marker? = null
+    private var startMarker: Marker? = null
     private lateinit var harborsLayer: GeoJsonLayer
     private lateinit var presenter: MapPresenter
     private val fileName = "com.example.sea"
     private var markers = mutableListOf<Marker>()
     private val colorPrimary = 0xFFEEEEEE
     private lateinit var progress : ProgressBar
+    private var markerClicked = false
+    private var startMarkerClicked = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
         val rootView = inflater.inflate(R.layout.fragment_map, container, false)
@@ -71,6 +74,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
             map.setOnMyLocationButtonClickListener(this)
             presenter.findLastLocation()
         }
+        else {
+            setMarkerOnStart(presenter.createStartMarker())
+        }
 
         restrictMap()
         setUpMapStyle()
@@ -78,7 +84,23 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     }
 
     override fun onMarkerClick(p0: Marker?) : Boolean {
-        if(marker != null && marker!!.id == p0!!.id) {
+        if((marker != null && marker!!.id == p0!!.id)) {
+            markerClicked = !markerClicked
+
+            if(marker != null && !markerClicked) {
+                marker!!.hideInfoWindow()
+                return true
+            }
+
+            return false
+        }
+        else if(startMarker != null && startMarker!!.id == p0!!.id) {
+            startMarkerClicked = !startMarkerClicked
+            if(startMarker != null && !startMarkerClicked) {
+                startMarker!!.hideInfoWindow()
+                return true
+            }
+
             return false
         }
 
@@ -112,6 +134,14 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         map.setMapStyle(style)
     }
 
+    override fun setMarkerOnStart(markerOptions: MarkerOptions?) {
+        if(markerOptions != null) {
+            startMarker = map.addMarker(markerOptions)
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(markerOptions.position, 8f))
+            map.setInfoWindowAdapter(presenter.createInfoWindowAdapter(markerOptions.position, markerOptions.title))
+        }
+    }
+
     private fun restrictMap() {
         // Lager en LatLngBound som inkluderer Norge.
         val norway = LatLngBounds(LatLng(52.177844, -15.245368), LatLng(81.685035, 49.537870))
@@ -127,19 +157,24 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     }
 
     private fun setupMarker(p0: LatLng?, locationName: String) {
+        if(startMarker != null) {
+            startMarker!!.remove()
+        }
+
         marker = map.addMarker(MarkerOptions().position(p0!!).title(locationName))
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(p0.latitude, p0.longitude), 8f), 2000, null)
         map.setInfoWindowAdapter(presenter.createInfoWindowAdapter(p0, locationName))
     }
 
     override fun getMarker() = marker
+    override fun getStartMarker() = startMarker
 
     override fun setTitle(text: String) {
         activity!!.toolbar_title.text = text
     }
 
-    override fun showCameraAnimation(currentLatLng: LatLng) {
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 8f))
+    override fun showCameraAnimation(currentLatLng: LatLng, zoomLevel : Float) {
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, zoomLevel))
     }
 
     override fun changeTab() {
@@ -167,10 +202,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         markers.add(marker)
     }
 
-    override fun removeMarker() {
-        if(marker != null) {
-            marker!!.remove()
-        }
+    override fun removeMarker(marker: Marker?) {
+        marker?.remove()
     }
 
     override fun showButtons() {
@@ -213,8 +246,10 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         fab_harbor.hide()
     }
 
-    override fun onFailure(t: Throwable) {
-        Log.d("Error: ", t.toString())
+    override fun onFailure(t: String?) {
+        if(t != null) {
+            Log.d("Error: ", t)
+        }
     }
 
     override fun showProgress() {

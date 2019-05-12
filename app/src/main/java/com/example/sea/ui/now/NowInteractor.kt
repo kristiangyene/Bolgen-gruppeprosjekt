@@ -1,66 +1,86 @@
 package com.example.sea.ui.now
 
 import android.content.Context
+import android.util.Log
 import com.example.sea.ui.base.BaseInteractor
 import com.example.sea.data.remote.model.LocationData
 import com.example.sea.data.remote.RetrofitClient
 import com.example.sea.data.remote.model.OceanData
 import retrofit2.Call
+import retrofit2.HttpException
 import retrofit2.Response
+import rx.Subscriber
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 class NowInteractor(context: Context, fileName: String) : NowContract.Interactor, BaseInteractor(context, fileName) {
-    //Henter ut data fra OceanForecast api.
-    override fun getOceanData(finished : NowContract.Interactor.OnFinished, latitude : Double, longitude : Double) {
-        val call = RetrofitClient().getClient("json").getOceanData(latitude, longitude)
+    // Henter ut data fra OceanForecast api
+    override fun getOceanData(finished : NowContract.Interactor.OnFinished, latitude : Float, longitude : Float) {
+        val retrofit = RetrofitClient().getClient("json")
+        retrofit.getOceanDataObservable(latitude, longitude)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Subscriber<OceanData>() {
+                override fun onCompleted() {}
 
-        call.enqueue(object : retrofit2.Callback<OceanData> {
-            override fun onResponse(call: Call<OceanData>, response: Response<OceanData>){
-                if (response.isSuccessful && response.code() == 200){
-                    finished.onFinished(response.body()?.forecast?.get(0)?.oceanForecast?.significantTotalWaveHeight)
+                override fun onError(t: Throwable) {
+                    finished.onFailure(t.message)
+
+                    if(t is HttpException) {
+                        finished.onFailure(t.response().errorBody()?.string())
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<OceanData>, t: Throwable) {
-                finished.onFailure(t)
-            }
-        })
+                override fun onNext(response: OceanData) {
+                    finished.onFinished(response?.forecast?.get(0)?.oceanForecast?.significantTotalWaveHeight)
+                }
+            })
     }
 
-    /*
-     Enqueue() sender asynkront forespørselen og gir beskjed om appen din med tilbakekalling når et svar kommer
-     tilbake: onresponse dersom man får respons, og onfailure om ikke. Siden denne forespørselen er asynkron,
-     håndterer Retrofit den på en bakgrunnstråd.
-     */
+    // Henter data fra LocationForecast api
     override fun getLocationData(finished : NowContract.Interactor.OnFinished, latitude : Float, longitude : Float) {
-        val call = RetrofitClient().getClient("json").getLocationData(latitude, longitude, null)
+        val retrofit = RetrofitClient().getClient("json")
+        retrofit.getLocationDataObservable(latitude, longitude, null)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Subscriber<LocationData>() {
+                override fun onCompleted() {}
 
-        call.enqueue(object : retrofit2.Callback<LocationData> {
-            override fun onResponse(call: Call<LocationData>, response: Response<LocationData>){
-                if (response.isSuccessful && response.code() == 200){
-                    finished.onFinished(response.body())
+                override fun onError(t: Throwable) {
+                    finished.onFailure(t.message)
+
+                    if(t is HttpException) {
+                        finished.onFailure(t.response().errorBody()?.string())
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<LocationData>, t: Throwable) {
-                finished.onFailure(t)
-            }
-        })
+                override fun onNext(response: LocationData) {
+                    finished.onFinished(response)
+                }
+            })
     }
 
-    //Henter data om tidevann dersom det er en havn i nærheten.
+    // Henter data om tidevann dersom det er en havn i nærheten
     override fun getTidalData(finished : NowContract.Interactor.OnFinished, latitude: Float, longitude: Float, harbor : String) {
-        val call = RetrofitClient().getClient("string").getTidalWater(harbor)
+        Log.d("Kart", "Havn")
+        val retrofit = RetrofitClient().getClient("string")
+        retrofit.getTidalWaterObservable(harbor)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Subscriber<String>() {
+                override fun onCompleted() {}
 
-        call.enqueue(object : retrofit2.Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                if ((response.isSuccessful && response.code() == 200)) {
-                    finished.onFinished(response.body())
+                override fun onError(t: Throwable) {
+                    finished.onFailure(t.message)
+
+                    if(t is HttpException) {
+                        finished.onFailure(t.response().errorBody()?.string())
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                finished.onFailure(t)
-            }
-        })
+                override fun onNext(response: String) {
+                    finished.onFinished(response)
+                }
+            })
     }
 }

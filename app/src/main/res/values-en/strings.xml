@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_vibrate">Vibrate</string>
-    <string name="title_theme_mode">Night Mode</string>
     <string name="title_settings_permissions_sms">Telephone</string>
     <string name="title_settings_permissions_position">Position</string>
     <string name="ce_mark_a">A - Wind speed: &gt; 20,8sm Wave height: &gt; 4m</string>
@@ -38,7 +37,6 @@
     <string name="navigation_drawer_wind">Wind</string>
     <string name="navigation_drawer_wind_speed">Wind speed</string>
     <string name="pref_title_new_message_notifications">Weather forecast</string>
-    <string name="privacy_policy">Privacy</string>
     <string name="rain">Rain</string>
     <string name="settings_header_about">About Bølgen</string>
     <string name="settings_header_notifications">"Notifications "</string>
@@ -48,9 +46,7 @@
     <string name="settings_title_permissions">Permissions</string>
     <string name="settings_title_vibrate">Vibrate</string>
     <string name="summary_choose_ringtone">Choose notification sound</string>
-    <string name="summary_faq">See frequently asked questions</string>
     <string name="summary_position">Off</string>
-    <string name="summary_selected_theme_mode">Off</string>
     <string name="summary_support">Send us feedback so we can improve the app</string>
     <string name="summary_vibrate">The phone vibrates on new notification</string>
     <string name="tabs_day">Week</string>
@@ -59,9 +55,8 @@
     <string name="tabs_time">Hour</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="title_new_notification_sound">New message notification</string>
+    <string name="title_new_notification_sound">Message notification</string>
     <string name="title_send_feedback">"Nytt meldingsvarsel "</string>
-    <string name="title_terms">Terms &amp; Conditions</string>
     <string name="title_version" translatable="false">Version</string>
     <string name="wind">Wind</string>
     <string name="dangerous">Dangerous</string>
@@ -74,4 +69,6 @@
     <string name="theme_off">Off</string>
     <string name="theme_on">On</string>
     <string name="sunset">"Automatic at sunset "</string>
+    <string name="feedback_message">Feedback to Bølgen app</string>
+    <string name="title_terms">Terms &amp; Conditions</string>
 </resources>

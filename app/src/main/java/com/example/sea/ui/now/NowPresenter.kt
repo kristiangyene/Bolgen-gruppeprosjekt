@@ -17,13 +17,32 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
     private var closestHarborValue = Double.MAX_VALUE
     private var oceanDone = false
     private var locationDone = false
+    private var riskValuesDone = false
+    private var tidalDone = false
+    private var tidalSelected = false
+    private var tidalNear = false
 
-    override fun fetchData() {
+    override fun fetchData(onFirstStart: Boolean) {
         //Henter ut data fra LocationForecast api.
         view!!.showProgress()
-        requestOceanData(interactor.getLatitude().toDouble(), interactor.getLongitude().toDouble())
-        requestLocationData(interactor.getLatitude(), interactor.getLongitude())
-        requestTidalData(interactor.getLatitude(), interactor.getLongitude())
+        if(onFirstStart) {
+            requestOceanData(interactor.getUserLatitude(), interactor.getUserLatitude())
+            requestLocationData(interactor.getUserLatitude(), interactor.getUserLongitude())
+
+            if(interactor.getWeatherPreference(context!!.getString(R.string.navigation_drawer_tide))) {
+                tidalSelected = true
+                requestTidalData(interactor.getUserLatitude(), interactor.getUserLongitude())
+            }
+        }
+        else {
+            requestOceanData(interactor.getLatitude(), interactor.getLongitude())
+            requestLocationData(interactor.getLatitude(), interactor.getLongitude())
+
+            if(interactor.getWeatherPreference(context!!.getString(R.string.navigation_drawer_tide))) {
+                tidalSelected = true
+                requestTidalData(interactor.getLatitude(), interactor.getLongitude())
+            }
+        }
     }
 
     override fun onFinished(data: LocationData?) {
@@ -50,17 +69,28 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         }
 
         var windDirection = nowData[0].location.windDirection.name
-        //Endrer retningen til norsk.
         windDirection = windDirection.replace("E", context!!.getString(R.string.east))
         windDirection = windDirection.replace("W", context!!.getString(R.string.west))
 
-        view!!.setDataInRecyclerView(NowElement(String.format("%.1f", value) + " " + measurement, context!!.resources.getString(R.string.navigation_drawer_wind), windDirection))
+        var pos = 1
+        if(view!!.getList().size == 0) {
+            view!!.setDataInRecyclerView(NowElement(String.format("%.1f", value) + " " + measurement, context!!.resources.getString(R.string.navigation_drawer_wind), windDirection))
+        }
+        else {
+            if(view!!.getList().size > 1 && view!!.getList()[1].image == context!!.resources.getString(R.string.navigation_drawer_tide)) {
+                view!!.setDataInRecyclerViewPosition(1, NowElement(String.format("%.1f", value) + " " + measurement, context!!.resources.getString(R.string.navigation_drawer_wind), windDirection))
+                pos = 2
+            }
+            else {
+                view!!.setDataInRecyclerView(NowElement(String.format("%.1f", value) + " " + measurement, context!!.resources.getString(R.string.navigation_drawer_wind), windDirection))
+            }
+        }
 
         var visibility =  context!!.getString(R.string.good_visibility)
         if(nowData[0].location.fog.percent.toDouble() > 25.0) {
             visibility = context!!.getString(R.string.bad_visibility)
         }
-        view!!.setDataInRecyclerView(NowElement(visibility, context!!.resources.getString(R.string.navigation_drawer_visibility),null))
+        view!!.setDataInRecyclerViewPosition(pos++, NowElement(visibility, context!!.resources.getString(R.string.navigation_drawer_visibility),null))
 
         for(item in 0 until listOfStrings.size){
             if(interactor.getWeatherPreference(listOfStrings[item])){
@@ -77,19 +107,19 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
                             value = (value * 1.8) + 32
                         }
 
-                        view!!.setDataInRecyclerView(NowElement(String.format("%.1f", value) + " " + measurement, listOfStrings[item], ""))
+                        view!!.setDataInRecyclerViewPosition(pos++, NowElement(String.format("%.1f", value) + " " + measurement, listOfStrings[item], ""))
                     }
                     listOfStrings[item] == context!!.resources.getString(R.string.navigation_drawer_weather) -> {
-                        view!!.setDataInRecyclerView(NowElement(nowData[1].location.precipitation.value + " mm", listOfStrings[item], ""))
+                        view!!.setDataInRecyclerViewPosition(pos++, NowElement(nowData[1].location.precipitation.value + " mm", listOfStrings[item], ""))
                     }
                     listOfStrings[item] == context!!.resources.getString(R.string.navigation_drawer_fog) -> {
-                        view!!.setDataInRecyclerView(NowElement(nowData[0].location.fog.percent + " %", listOfStrings[item], ""))
+                        view!!.setDataInRecyclerViewPosition(pos++, NowElement(nowData[0].location.fog.percent + " %", listOfStrings[item], ""))
                     }
                     listOfStrings[item] == context!!.resources.getString(R.string.navigation_drawer_cloudiness) -> {
-                        view!!.setDataInRecyclerView(NowElement(nowData[0].location.cloudiness.percent + " %", listOfStrings[item], ""))
+                        view!!.setDataInRecyclerViewPosition(pos++, NowElement(nowData[0].location.cloudiness.percent + " %", listOfStrings[item], ""))
                     }
                     listOfStrings[item] == context!!.resources.getString(R.string.navigation_drawer_humidity) -> {
-                        view!!.setDataInRecyclerView(NowElement(nowData[0].location.humidity.value + " %", listOfStrings[item], ""))
+                        view!!.setDataInRecyclerViewPosition(pos++, NowElement(nowData[0].location.humidity.value + " %", listOfStrings[item], ""))
                     }
                     listOfStrings[item] == context!!.resources.getString(R.string.navigation_drawer_pressure2) -> {
                         value = nowData[0].location.pressure.value.toDouble()
@@ -110,19 +140,24 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
                             measurement = pressureText
                         }
 
-                        view!!.setDataInRecyclerView(NowElement(String.format("%.1f", value) + " " + measurement, listOfStrings[item], ""))
+                        view!!.setDataInRecyclerViewPosition(pos++, NowElement(String.format("%.1f", value) + " " + measurement, listOfStrings[item], ""))
                     }
                 }
             }
         }
 
-        //Oppdaterer adapter og trygghetsskala.
-        view!!.updateRecyclerView()
+        if(!riskValuesDone) {
+            setUpSeekbarValues()
+            riskValuesDone = true
+        }
+
+        //Oppdatere trygghetsskala.
         calculateWindRisk(wind)
 
         locationDone = true
-        if(oceanDone && locationDone) {
+        if((oceanDone && !tidalSelected) || (oceanDone && !tidalNear) || (oceanDone && tidalNear && tidalSelected)) {
             view!!.hideProgress()
+            view!!.updateRecyclerView()
         }
     }
 
@@ -130,19 +165,23 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         if(data != null) {
             waveValue = data.content.toDouble()
             view!!.setDataInRecyclerViewStart(NowElement(data.content + " m", context!!.getString(R.string.navigation_drawer_wave), ""))
-            view!!.updateRecyclerView()
             calculateWavesRisk(data.content.toDouble())
         }
         else {
             waveValue = 0.0
             view!!.setDataInRecyclerViewStart(NowElement("-", context!!.getString(R.string.navigation_drawer_wave), ""))
-            view!!.updateRecyclerView()
             view!!.setSeekbarProgress(0)
         }
 
+        if(!riskValuesDone) {
+            setUpSeekbarValues()
+            riskValuesDone = true
+        }
+
         oceanDone = true
-        if(oceanDone && locationDone) {
+        if((locationDone && !tidalSelected) || (locationDone && !tidalNear) || (locationDone && tidalNear && tidalSelected)) {
             view!!.hideProgress()
+            view!!.updateRecyclerView()
         }
     }
 
@@ -173,17 +212,30 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
                 view!!.setDataInRecyclerView(NowElement(line[startIndex].substring(line[startIndex].length - 6, line[startIndex].length), context!!.getString(R.string.navigation_drawer_tide), ""))
             }
         }
+
+        if(!riskValuesDone) {
+            setUpSeekbarValues()
+            riskValuesDone = true
+        }
+
+        tidalDone = true
+        if(oceanDone && locationDone) {
+            view!!.hideProgress()
+            view!!.updateRecyclerView()
+        }
     }
 
-    override fun onFailure(t: Throwable) {
-        view!!.onFailure(t)
+    override fun onFailure(t: String?) {
+        if(t != null) {
+            view!!.onFailure(t)
+        }
     }
 
     override fun onDestroy() {
         view = null
     }
 
-    override fun requestOceanData(latitude : Double, longitude : Double) {
+    override fun requestOceanData(latitude : Float, longitude : Float) {
         interactor.getOceanData(this, latitude , longitude)
     }
 
@@ -342,7 +394,27 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
             if (distance < closestHarborValue) {
                 closestHarborValue = distance
                 closestHarbor = harbor.key
+                tidalNear = true
             }
+        }
+    }
+
+    fun setUpSeekbarValues() {
+        val screenWidthInPixels = context!!.resources.displayMetrics.widthPixels
+        val pixelsPerNumber = (screenWidthInPixels.toDouble()-16)/10
+        var numberWidth = ((pixelsPerNumber-3)/16).toInt()
+        var str = "0".padEnd(numberWidth) + "10".padEnd(numberWidth) + "20".padEnd(numberWidth) + "30".padEnd(numberWidth) + "40".padEnd(numberWidth) + "50".padEnd(numberWidth) + "60".padEnd(numberWidth) + "80".padEnd(numberWidth) + "80".padEnd(numberWidth) + "90".padEnd(numberWidth) + "100"
+        view!!.updateTextScale(str)
+        while(view!!.getTextScaleLines() == 1) {
+            numberWidth++
+            str = "0".padEnd(numberWidth) + "10".padEnd(numberWidth) + "20".padEnd(numberWidth) + "30".padEnd(numberWidth) + "40".padEnd(numberWidth) + "50".padEnd(numberWidth) + "60".padEnd(numberWidth) + "80".padEnd(numberWidth) + "80".padEnd(numberWidth) + "90".padEnd(numberWidth) + "100"
+            view!!.updateTextScale(str)
+        }
+
+        if(view!!.getTextScaleLines() != 1) {
+            numberWidth--
+            str = "0".padEnd(numberWidth) + "10".padEnd(numberWidth) + "20".padEnd(numberWidth) + "30".padEnd(numberWidth) + "40".padEnd(numberWidth) + "50".padEnd(numberWidth) + "60".padEnd(numberWidth) + "80".padEnd(numberWidth) + "80".padEnd(numberWidth) + "90".padEnd(numberWidth) + "100"
+            view!!.updateTextScale(str)
         }
     }
 }

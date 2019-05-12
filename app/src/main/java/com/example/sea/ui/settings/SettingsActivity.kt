@@ -26,14 +26,14 @@ import com.example.sea.ui.main.MainPresenter
  * for more information on developing a Settings UI.
  */
 class SettingsActivity : AppCompatPreferenceActivity() {
+    var context : Context? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        context = this
 
         // load settings fragment
-        fragmentManager.beginTransaction().replace(android.R.id.content,
-            MainPreferenceFragment()
-        ).commit()
+        fragmentManager.beginTransaction().replace(android.R.id.content, MainPreferenceFragment()).commit()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -58,6 +58,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
     companion object {
         lateinit var smsPreference : SwitchPreference
         lateinit var locationPreference: SwitchPreference
+        var number : Int? = null
 
         fun bindPreferenceSummaryToValue(preference: Preference) {
             preference.onPreferenceChangeListener =
@@ -93,6 +94,12 @@ class SettingsActivity : AppCompatPreferenceActivity() {
                             null
                         }
                     )
+
+                    if(preference.key == "key_network_calls") {
+                        if(index >= 0) {
+                            number = index
+                        }
+                    }
                 }
                 else if (preference is RingtonePreference) {
                     // For ringtone preferences, look up the correct display value
@@ -132,6 +139,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
                 true
             }
 
+
         /**
          * Email client intent to send support mail
          * Appends the necessary device information to email body
@@ -145,13 +153,13 @@ class SettingsActivity : AppCompatPreferenceActivity() {
                     "\n\n-----------------------------\nPlease don't remove this information\n Device OS: Android \n Device OS version: " +
                             Build.VERSION.RELEASE + "\n App Version: " + body + "\n Device Brand: " + Build.BRAND +
                             "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER
-            } catch (e: PackageManager.NameNotFoundException) {
             }
+            catch (e: PackageManager.NameNotFoundException) {}
 
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "message/rfc822"
-            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("contact@androidhive.info"))
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Query from android app")
+            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("eirikgs@student.matnat.uio.no"))
+            intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.feedback_message))
             intent.putExtra(Intent.EXTRA_TEXT, body)
             context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_client)))
         }

@@ -90,7 +90,7 @@ class HourlyFragment : Fragment() {
     private fun threadCreation(){
         val client = RetrofitClient().getClient("json")
         val locationCall = client.getLocationData(sharedPreferences.getFloat("lat", 60F), sharedPreferences.getFloat("long", 11F), null)
-        val oceanCall = client.getOceanData(60.10, 5.0)
+        val oceanCall = client.getOceanData(60.10F, 5.0F)
         var tidalCall : Call<String>? = null
         if(closestHarbor != null) {
             tidalCall = RetrofitClient().getClient("string").getTidalWater(closestHarbor!!)
