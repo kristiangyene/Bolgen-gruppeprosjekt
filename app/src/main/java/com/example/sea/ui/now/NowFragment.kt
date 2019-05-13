@@ -23,10 +23,12 @@ class NowFragment : Fragment(), NowContract.View {
     private val fileName = "com.example.sea"
     private lateinit var indeterminateBar : ProgressBar
     private lateinit var textScale : TextView
+    private var onCreateDone = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_now, container, false)
 
+        onCreateDone = true
         setupViews()
 
         presenter = NowPresenter(this, activity!!, NowInteractor(activity!!, fileName))
@@ -73,8 +75,20 @@ class NowFragment : Fragment(), NowContract.View {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if(ConnectionUtil.checkNetwork(activity!!) && !onCreateDone) {
+            clear()
+            presenter.fetchData(true)
+        }
+
+        onCreateDone = false
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        onCreateDone = false
         // presenter.onDestroy()
     }
 
@@ -90,6 +104,11 @@ class NowFragment : Fragment(), NowContract.View {
         recyclerView.layoutManager = GridLayoutManager(context, 1)
         adapter = NowAdapter(listOfElements, activity!!)
         recyclerView.adapter = adapter
+    }
+
+    private fun clear() {
+        listOfElements.clear()
+        adapter.notifyItemRangeRemoved(0, listOfElements.size)
     }
 
     override fun updateTextScale(text: String) {

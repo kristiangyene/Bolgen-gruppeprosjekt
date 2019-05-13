@@ -2,7 +2,6 @@ package com.example.sea.ui.now
 
 import android.content.Context
 import android.location.Location
-import android.util.Log
 import com.example.sea.data.remote.model.LocationData
 import com.example.sea.R
 import com.example.sea.data.remote.model.OceanData
@@ -59,11 +58,11 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         if (windText == null || windText == "mps") {
             measurement =  "mps"
         }
-        else if(windText == "mph"){
+        else if(windText == "mph") {
             measurement = windText
             value *= 2.236936
         }
-        else{
+        else {
             measurement = windText
             value *= 3.6
         }
@@ -78,12 +77,7 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
             view!!.setDataInRecyclerView(NowElement(String.format("%.1f", value) + " " + measurement, context!!.resources.getString(R.string.navigation_drawer_wind), windDirection))
         }
         else {
-            if(view!!.getList().size > 1 && view!!.getList()[1].image == context!!.resources.getString(R.string.navigation_drawer_tide)) {
-                view!!.setDataInRecyclerViewPosition(pos++, NowElement(String.format("%.1f", value) + " " + measurement, context!!.resources.getString(R.string.navigation_drawer_wind), windDirection))
-            }
-            else {
-                view!!.setDataInRecyclerViewPosition(pos, NowElement(String.format("%.1f", value) + " " + measurement, context!!.resources.getString(R.string.navigation_drawer_wind), windDirection))
-            }
+            view!!.setDataInRecyclerViewPosition(pos++, NowElement(String.format("%.1f", value) + " " + measurement, context!!.resources.getString(R.string.navigation_drawer_wind), windDirection))
         }
 
         var visibility =  context!!.getString(R.string.good_visibility)
@@ -158,6 +152,14 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         if((oceanDone && !tidalSelected) || (oceanDone && !tidalNear) || (oceanDone && tidalNear && tidalSelected)) {
             view!!.hideProgress()
             view!!.updateRecyclerView()
+
+            tidalDone = false
+            tidalNear = false
+            tidalSelected = false
+            waveValue = null
+            closestHarbor = null
+            closestHarborValue = Double.MAX_VALUE
+
         }
     }
 
@@ -182,6 +184,13 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         if((locationDone && !tidalSelected) || (locationDone && !tidalNear) || (locationDone && tidalNear && tidalSelected)) {
             view!!.hideProgress()
             view!!.updateRecyclerView()
+
+            tidalDone = false
+            tidalNear = false
+            tidalSelected = false
+            waveValue = null
+            closestHarbor = null
+            closestHarborValue = Double.MAX_VALUE
         }
     }
 
@@ -222,6 +231,13 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         if(oceanDone && locationDone) {
             view!!.hideProgress()
             view!!.updateRecyclerView()
+
+            tidalDone = false
+            tidalNear = false
+            tidalSelected = false
+            waveValue = null
+            closestHarbor = null
+            closestHarborValue = Double.MAX_VALUE
         }
     }
 
@@ -244,7 +260,7 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
     }
 
     override fun requestTidalData(latitude: Float, longitude: Float) {
-        findNearestHarbor(interactor.getLatitude(), interactor.getLongitude())
+        findNearestHarbor(latitude, longitude)
         if(closestHarbor != null && closestHarborValue < 30000) {
             interactor.getTidalData(this, latitude , longitude, closestHarbor!!)
         }
