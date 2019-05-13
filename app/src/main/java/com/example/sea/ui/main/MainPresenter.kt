@@ -207,6 +207,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
     override fun onDrawerPreferencesClick(menuItem: MenuItem) {
         val checkedItems = booleanArrayOf(false, false, false, false, false, false, false)
         val builder = AlertDialog.Builder(activity, R.style.AlertDialogStyle)
+        val selected = arrayListOf<Int>()
 
         builder.setTitle(activity.getString(R.string.navigation_drawer_weatherpreferences))
         val parameters = arrayOf(
@@ -233,11 +234,22 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             else {
                 interactor.setWeatherPreference(parameters[which], false)
             }
+
+            selected.add(which)
         }
 
         builder.setPositiveButton(R.string.navigation_drawer_ok) { _, _ ->
             menuItem.isChecked = false
             view!!.updateFragmentNow()
+        }
+
+        builder.setNegativeButton(R.string.navigation_drawer_cancel) { _, _ ->
+            for (item in selected) {
+                interactor.setWeatherPreference(parameters[item], !checkedItems[item])
+                checkedItems[item] = false
+            }
+
+            menuItem.isChecked = false
         }
 
         builder.setCancelable(false)

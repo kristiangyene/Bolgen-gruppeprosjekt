@@ -16,8 +16,7 @@ import com.example.sea.utils.ConnectionUtil
 
 class NowFragment : Fragment(), NowContract.View {
     private lateinit var adapter: NowAdapter
-    private val listOfDisplayedElements = ArrayList<NowElement>()
-    private val listOfUndisplayedElements = ArrayList<NowElement>()
+    private val listOfElements = ArrayList<NowElement>()
     private lateinit var rootView: View
     private lateinit var seekbar: SeekBar
     private lateinit var presenter: NowContract.Presenter
@@ -50,18 +49,18 @@ class NowFragment : Fragment(), NowContract.View {
     }
 
     override fun setDataInRecyclerView(element: NowElement) {
-        listOfDisplayedElements.add(element)
+        listOfElements.add(element)
     }
 
     override fun setDataInRecyclerViewStart(element: NowElement) {
-        listOfUndisplayedElements.add(0, element)
+        listOfElements.add(0, element)
     }
 
     override fun setDataInRecyclerViewPosition(index : Int, element: NowElement) {
-        listOfUndisplayedElements.add(index, element)
+        listOfElements.add(index, element)
     }
 
-    override fun getList(): ArrayList<NowElement> = listOfUndisplayedElements
+    override fun getList(): ArrayList<NowElement> = listOfElements
 
     override fun setSeekbarProgress(progress: Int) {
         if(seekbar.progress < progress || progress == 0) {
@@ -103,13 +102,13 @@ class NowFragment : Fragment(), NowContract.View {
 
         val recyclerView = rootView.findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.layoutManager = GridLayoutManager(context, 1)
-        adapter = NowAdapter(listOfUndisplayedElements, activity!!)
+        adapter = NowAdapter(listOfElements, activity!!)
         recyclerView.adapter = adapter
     }
 
     private fun clear() {
-        listOfUndisplayedElements.clear()
-        adapter.notifyItemRangeRemoved(0, listOfUndisplayedElements.size)
+        listOfElements.clear()
+        adapter.notifyItemRangeRemoved(0, listOfElements.size)
     }
 
     override fun updateTextScale(text: String) {
