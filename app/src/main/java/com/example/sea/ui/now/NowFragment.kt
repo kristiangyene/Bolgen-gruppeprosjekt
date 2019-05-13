@@ -16,7 +16,8 @@ import com.example.sea.R
 class NowFragment : Fragment(), NowContract.View {
     private var recyclerView: RecyclerView? = null
     private lateinit var adapter: NowAdapter
-    private val listOfElements = ArrayList<NowElement>()
+    private val listOfDisplayedElements = ArrayList<NowElement>()
+    private val listOfUndisplayedElements = ArrayList<NowElement>()
     private lateinit var rootView: View
     private lateinit var seekbar: SeekBar
     private lateinit var presenter: NowContract.Presenter
@@ -35,7 +36,11 @@ class NowFragment : Fragment(), NowContract.View {
     }
 
     override fun setDataInRecyclerView(element: NowElement) {
-        listOfElements.add(element)
+        listOfDisplayedElements.add(element)
+    }
+
+    override fun setDataInHiddenList(element: NowElement){
+        listOfUndisplayedElements.add(element)
     }
 
     override fun setSeekbarProgress(progress: Int) {
@@ -54,12 +59,12 @@ class NowFragment : Fragment(), NowContract.View {
         presenter.onDestroy()
     }
 
-    private fun setupViews() {
+    override fun setupViews() {
         seekbar = rootView.findViewById(R.id.seekbar)
         seekbar.isEnabled = false
         recyclerView = rootView.findViewById(R.id.recycler_view)
         recyclerView!!.layoutManager = GridLayoutManager(context, 1)
-        adapter = NowAdapter(listOfElements, activity!!)
+        adapter = NowAdapter(listOfDisplayedElements, activity!!)
         recyclerView!!.adapter = adapter
     }
 }

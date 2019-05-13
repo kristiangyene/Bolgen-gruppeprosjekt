@@ -17,7 +17,7 @@ class NowAdapter(private val listOfElements: ArrayList<NowElement>, private var 
         return MyViewHolder(itemView)
     }
 
-    // Retunerer størrelsen på datasettet (påkalt av layout manager)
+    // Retunerer størrelsen på datasttet (påkalt av layout manager)
     override fun getItemCount() = listOfElements.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {

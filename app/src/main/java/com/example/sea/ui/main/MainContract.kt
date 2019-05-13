@@ -19,6 +19,10 @@ interface MainContract {
         fun showLocationSettingsMessage(exception: ResolvableApiException, checkValue : Int)
         fun showMessage(text : String, length : Int)
         fun getActivity() : Activity
+        fun updateFragmentNow()
+        fun updateFragmentHour()
+        fun updateFragmentWeek()
+        fun updateFragments()
     }
     //Hei
     interface Presenter {
