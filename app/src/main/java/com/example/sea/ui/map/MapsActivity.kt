@@ -67,7 +67,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
-        Toast.makeText(this, "Map is Ready", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.map_ready), Toast.LENGTH_SHORT).show()
         Log.d(tag, "onMapReady: map is ready")
         mMap = googleMap
 

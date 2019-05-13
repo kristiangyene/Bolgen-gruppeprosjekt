@@ -34,7 +34,7 @@ interface NowContract {
         interface OnFinished {
             fun onFinished(data : OceanData.Forecast.OceanForecast.OceanValue?)
             fun onFinished(data : LocationData?)
-            fun onFinished(data : String?)
+            fun onFinished(data : String?, harbor: String?, closestHarborValue: Double)
             fun onFailure(t: Throwable)
         }
     }
