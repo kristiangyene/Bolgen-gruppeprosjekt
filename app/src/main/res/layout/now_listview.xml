@@ -19,7 +19,7 @@
                 android:id="@+id/icon_widget"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_margin="50dp"
+                android:layout_margin="35dp"
                 android:layout_gravity="start|center"
                 />
 
@@ -28,15 +28,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="14dp"
-                android:textSize="25sp"
+                android:textSize="23sp"
                 android:textColor="#000"
                 android:layout_gravity="center"/>
         <TextView
                 android:id="@+id/direction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="50dp"
-                android:textSize="25sp"
+                android:layout_marginRight="35dp"
+                android:textSize="23sp"
                 android:textColor="#000000"
                 android:layout_gravity="end|center"/>
 

@@ -131,7 +131,7 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
     }
 
     // Viser tidevann for nåtid.
-    override fun onFinished(data : String?) {
+    override fun onFinished(data : String?, harbor: String?, closestHarborValue: Double) {
         val currentTime = Calendar.getInstance()
         val currentHour = currentTime.get(Calendar.HOUR_OF_DAY).toString()
         var foundStart = false
@@ -149,14 +149,14 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
                 break
             }
         }
-        if (foundStart) {
+        if (foundStart && (harbor != null && closestHarborValue < 30000)) {
             if (line[startIndex][line[startIndex].length - 6] == ' ') {
-                view!!.setDataInRecyclerView(NowElement(line[startIndex].substring(line[startIndex].length - 5, line[startIndex].length), context!!.getString(R.string.navigation_drawer_tide), ""))
+                view!!.setDataInRecyclerView(NowElement(line[startIndex].substring(line[startIndex].length - 5, line[startIndex].length), context!!.getString(R.string.navigation_drawer_tide), harbor.capitalize()))
             }
             else {
-                view!!.setDataInRecyclerView(NowElement(line[startIndex].substring(line[startIndex].length - 6, line[startIndex].length), context!!.getString(R.string.navigation_drawer_tide), ""))
+                view!!.setDataInRecyclerView(NowElement(line[startIndex].substring(line[startIndex].length - 6, line[startIndex].length), context!!.getString(R.string.navigation_drawer_tide), harbor.capitalize()))
             }
-        }
+        }else view!!.setDataInRecyclerView(NowElement("-", context!!.getString(R.string.navigation_drawer_tide), ""))
     }
 
     override fun onFailure(t: Throwable) {

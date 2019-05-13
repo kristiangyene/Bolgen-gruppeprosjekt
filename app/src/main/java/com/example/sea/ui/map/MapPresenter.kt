@@ -277,7 +277,6 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
             view!!.showMarkers(activity.getString(R.string.rain) + ": " + nowData[1].location.precipitation.value, nowData[0].location.latitude.toDouble(), nowData[0].location.longitude.toDouble(), "rain")
         }
         else if(windShowing) {
-            Log.d("Ahmed", "Wind: " + String.format("%.1f", value) + measurement)
             view!!.showMarkers(activity.getString(R.string.wind) + ": " + String.format("%.1f", value) + measurement, nowData[0].location.latitude.toDouble(), nowData[0].location.longitude.toDouble(), "wind")
         }
 

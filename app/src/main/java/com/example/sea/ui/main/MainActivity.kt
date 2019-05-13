@@ -58,10 +58,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun sosDialog(sosButton: SwipeButton, builder: AlertDialog.Builder){
-        builder.setTitle("Nødstilfelle")
-        builder.setMessage("Er du sikkert på at du vil sende posisjon til nødsetralen?")
+        builder.setTitle(R.string.navigation_drawer_emergency)
+        builder.setMessage(R.string.navigation_drawer_emergency_text)
 
-        builder.setPositiveButton("Bekreft") { _, _ ->
+        builder.setPositiveButton(R.string.navigation_drawer_ok) { _, _ ->
             presenter.sendSMS()
             sosButton.toggleState()
         }

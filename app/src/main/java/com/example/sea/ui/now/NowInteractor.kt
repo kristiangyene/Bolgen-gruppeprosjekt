@@ -61,8 +61,8 @@ class NowInteractor(context: Context, fileName: String) : NowContract.Interactor
             val call = RetrofitClient().getClient("string").getTidalWater(closestHarbor!!)
             call.enqueue(object : retrofit2.Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
-                    if ((response.isSuccessful && response.code() == 200) && (closestHarbor != null && closestHarborValue < 30000)) {
-                        finished.onFinished(response.body())
+                    if (response.isSuccessful && response.code() == 200) {
+                        finished.onFinished(response.body(), closestHarbor, closestHarborValue)
                     }
                 }
 
