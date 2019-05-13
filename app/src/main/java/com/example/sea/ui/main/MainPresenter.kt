@@ -74,7 +74,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
 
             smsManager.sendTextMessage(phoneNumber, null, "${interactor.getLatitude()} , ${interactor.getLongitude()}", null, null)
 
-            view!!.showMessage("Tekstmelding sendt til 47327997", Toast.LENGTH_LONG)
+            view!!.showMessage("Koordinater sendt til 47327997", Toast.LENGTH_LONG)
         }
         else {
             val intent = Intent(Intent.ACTION_SENDTO).apply {
@@ -85,7 +85,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
                 }
             }
 
-            view!!.showMessage("Har ikke tilatelse til å sende melding!", Toast.LENGTH_LONG)
+            view!!.showMessage("Har ikke tillatelse til å sende melding!", Toast.LENGTH_LONG)
             view!!.launchSMSApp(intent)
         }
     }

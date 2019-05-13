@@ -1,9 +1,11 @@
 package com.example.sea.ui.main
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.location.Location
 import android.view.MenuItem
+import com.ebanx.swipebtn.SwipeButton
 import com.example.sea.ui.base.BaseContract
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
@@ -23,6 +25,7 @@ interface MainContract {
         fun updateFragmentHour()
         fun updateFragmentWeek()
         fun updateFragments()
+        fun sosDialog(sosButton: SwipeButton, builder: AlertDialog.Builder)
     }
     //Hei
     interface Presenter {
