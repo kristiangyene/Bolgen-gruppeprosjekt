@@ -5,10 +5,10 @@
     <string name="start_maps_button" translatable="false">start maps</string>
 
     <!-- Strings for description of CE marks -->
-    <string name="ce_mark_a">A - Vindstyrke: &gt; 20,8sm Bølgehøyde: &gt; 4m</string>
-    <string name="ce_mark_b">B - Vindstyrke: 20,7sm Bølgehøyde: 4m</string>
-    <string name="ce_mark_c">C - Vindstyrke: 13,8sm Bølgehøyde: 2m</string>
-    <string name="ce_mark_d">D - Vindstyrke: > 7,7sm Bølgehøyde: 0,3m</string>
+    <string name="ce_mark_a">A - Havgående båter, skal tåle en vindstyrke på mer enn 20,8 m/s og en bølgehøyde på mer enn 4m.</string>
+    <string name="ce_mark_b">B - Båter til bruk utenfor kysten, skal tåle en vindstyrke opp til 20,7 m/s og en bølgehøyde opp til 4m.</string>
+    <string name="ce_mark_c">C - Båter nær kysten, skal tåle en vindstyrke opp til 13,8 m/s og en bølgehøyde opp til 2m.</string>
+    <string name="ce_mark_d">D - Båter i beskyttet farvann, tåler mindre enn 7,7 m/s vindstyrke og opp til 0,3m bølgehøyde.</string>
 
     <!-- Strings for the navigation_drawer -->
     <string name="navigation_drawer_open">Åpen Navigation Drawer</string>

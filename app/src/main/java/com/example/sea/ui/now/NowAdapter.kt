@@ -13,7 +13,6 @@ class NowAdapter(private val listOfElements: ArrayList<NowElement>, private var 
 
     // Oppretter nye visninger (påkalt av layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.now_listview, parent, false)
         return MyViewHolder(itemView)
     }

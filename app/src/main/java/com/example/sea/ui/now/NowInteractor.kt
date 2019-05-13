@@ -62,7 +62,6 @@ class NowInteractor(context: Context, fileName: String) : NowContract.Interactor
 
     // Henter data om tidevann dersom det er en havn i nærheten
     override fun getTidalData(finished : NowContract.Interactor.OnFinished, latitude: Float, longitude: Float, harbor : String) {
-        Log.d("Kart", "Havn")
         val retrofit = RetrofitClient().getClient("string")
         retrofit.getTidalWaterObservable(harbor)
             .subscribeOn(Schedulers.io())

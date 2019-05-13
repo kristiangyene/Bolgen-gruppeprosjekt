@@ -3,10 +3,10 @@
     <string name="title_vibrate">Vibrate</string>
     <string name="title_settings_permissions_sms">Telephone</string>
     <string name="title_settings_permissions_position">Position</string>
-    <string name="ce_mark_a">A - Wind speed: &gt; 20,8sm Wave height: &gt; 4m</string>
-    <string name="ce_mark_c" translatable="false">C - Wind speed: 13,8sm Wave height: 2m</string>
-    <string name="ce_mark_b">B - Wind speed: 20,7sm Wave height: 4m</string>
-    <string name="ce_mark_d">D - Wind speed: > 7,7sm Wave height: 0,3m</string>
+    <string name="ce_mark_a">A - Sea-going boats, must withstand a wind speed of more than 20.8 m/s and a wave height of more than 4m.</string>
+    <string name="ce_mark_b">B - Boats for offshore use, should withstand a wind speed up to 20.7 m/s and a wave height of up to 4m.</string>
+    <string name="ce_mark_c">C - Boats close to the coast, must withstand a wind speed up to 13.8 m/s and a wave height up to 2m</string>
+    <string name="ce_mark_d">D - Boats in protected waters, can withstand a wind speed less than 7.7 m/s a wave height up to 0.3m</string>
     <string name="choose_email_client">Choose email client</string>
     <string name="fab_map_harbor">Harbor</string>
     <string name="fab_map_rain">Rain</string>
@@ -69,6 +69,7 @@
     <string name="theme_off">Off</string>
     <string name="theme_on">On</string>
     <string name="sunset">"Automatic at sunset "</string>
+    <string name="summary_about">Bølgen consists of six students at the University of Oslo, Department of Informatics. The app is developed as a project in the subject IN2000 Software Engineering</string>
     <string name="feedback_message">Feedback to Bølgen app</string>
     <string name="title_terms">Terms &amp; Conditions</string>
 </resources>

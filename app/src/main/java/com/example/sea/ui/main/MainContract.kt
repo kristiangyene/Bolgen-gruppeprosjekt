@@ -20,7 +20,7 @@ interface MainContract {
         fun showMessage(text : String, length : Int)
         fun getActivity() : Activity
     }
-
+    //Hei
     interface Presenter {
         fun firstStart()
         fun checkFirstStart() : Boolean

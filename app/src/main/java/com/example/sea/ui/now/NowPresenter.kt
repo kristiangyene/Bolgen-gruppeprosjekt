@@ -2,6 +2,7 @@ package com.example.sea.ui.now
 
 import android.content.Context
 import android.location.Location
+import android.util.Log
 import com.example.sea.data.remote.model.LocationData
 import com.example.sea.R
 import com.example.sea.data.remote.model.OceanData
@@ -21,6 +22,7 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
     private var tidalDone = false
     private var tidalSelected = false
     private var tidalNear = false
+    private var firstUse: Boolean = true
 
     override fun fetchData(onFirstStart: Boolean) {
         //Henter ut data fra LocationForecast api.
@@ -47,13 +49,11 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
 
     override fun onFinished(data: LocationData?) {
         val listOfStrings: ArrayList<String> = arrayListOf(context!!.getString(R.string.navigation_drawer_tide), context!!.getString(R.string.navigation_drawer_temperature2), context!!.getString(R.string.navigation_drawer_weather), context!!.getString(R.string.navigation_drawer_fog), context!!.getString(R.string.navigation_drawer_humidity), context!!.getString(R.string.navigation_drawer_cloudiness), context!!.getString(R.string.navigation_drawer_pressure2))
-
         val nowData = data?.product?.time!!
         val wind : Double?
         var measurement: String
         var value = nowData[0].location.windSpeed.mps.toDouble()
         val windText = interactor.getWindUnit()
-
         wind = value
 
         if (windText == null || windText == "mps") {
@@ -69,6 +69,7 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         }
 
         var windDirection = nowData[0].location.windDirection.name
+        // Endrer retningen til norsk.
         windDirection = windDirection.replace("E", context!!.getString(R.string.east))
         windDirection = windDirection.replace("W", context!!.getString(R.string.west))
 
@@ -78,11 +79,10 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         }
         else {
             if(view!!.getList().size > 1 && view!!.getList()[1].image == context!!.resources.getString(R.string.navigation_drawer_tide)) {
-                view!!.setDataInRecyclerViewPosition(1, NowElement(String.format("%.1f", value) + " " + measurement, context!!.resources.getString(R.string.navigation_drawer_wind), windDirection))
-                pos = 2
+                view!!.setDataInRecyclerViewPosition(pos++, NowElement(String.format("%.1f", value) + " " + measurement, context!!.resources.getString(R.string.navigation_drawer_wind), windDirection))
             }
             else {
-                view!!.setDataInRecyclerView(NowElement(String.format("%.1f", value) + " " + measurement, context!!.resources.getString(R.string.navigation_drawer_wind), windDirection))
+                view!!.setDataInRecyclerViewPosition(pos, NowElement(String.format("%.1f", value) + " " + measurement, context!!.resources.getString(R.string.navigation_drawer_wind), windDirection))
             }
         }
 
@@ -251,6 +251,11 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
     }
 
     override fun calculateWindRisk(value: Double?) {
+        if(firstUse) {
+            view!!.setSeekbarProgress(0)
+            firstUse = false
+        }
+
         if(waveValue != null && waveValue == 0.0) {
             view!!.setSeekbarProgress(0)
         }
@@ -261,6 +266,11 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
     }
 
     override fun calculateWavesRisk(value : Double?) {
+        if(firstUse) {
+            view!!.setSeekbarProgress(0)
+            firstUse = false
+        }
+
         val risk = calculateRisk(value, "waves")
         view!!.setSeekbarProgress(risk)
     }
@@ -283,7 +293,6 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         }
 
         text = ceText.split(" ")[0]
-
         //valgte disse verdiene for CE-merke A fra Beauforts skala hvor de skal tåle opp mot orkan.
         when(text){
             "A"-> {
