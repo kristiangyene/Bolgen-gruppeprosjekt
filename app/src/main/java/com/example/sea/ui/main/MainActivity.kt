@@ -1,6 +1,7 @@
 package com.example.sea.ui.main
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -50,10 +51,26 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         setupViewPagerAndTabs()
 
         val sosButton = findViewById<SwipeButton>(R.id.swipe_btn)
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogStyle)
         sosButton.setOnActiveListener {
+            sosDialog(sosButton, builder)
+        }
+    }
+
+    override fun sosDialog(sosButton: SwipeButton, builder: AlertDialog.Builder){
+        builder.setTitle("Nødstilfelle")
+        builder.setMessage("Er du sikkert på at du vil sende posisjon til nødsetralen?")
+
+        builder.setPositiveButton("Bekreft") { _, _ ->
             presenter.sendSMS()
             sosButton.toggleState()
         }
+        builder.setNegativeButton(R.string.navigation_drawer_cancel) { dialog, _ ->
+            sosButton.toggleState()
+            dialog.dismiss()
+        }
+        builder.setCancelable(false)
+        builder.show()
     }
 
 
