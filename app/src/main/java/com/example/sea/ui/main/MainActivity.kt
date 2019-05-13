@@ -1,10 +1,13 @@
 package com.example.sea.ui.main
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.design.widget.TabLayout
+import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v4.view.GravityCompat
@@ -49,12 +52,49 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         setupViewPagerAndTabs()
 
         val sosButton = findViewById<SwipeButton>(R.id.swipe_btn)
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogStyle)
         sosButton.setOnActiveListener {
-            presenter.sendSMS()
-            sosButton.toggleState()
+            sosDialog(sosButton, builder)
         }
     }
 
+    override fun sosDialog(sosButton: SwipeButton, builder: AlertDialog.Builder){
+        builder.setTitle(R.string.navigation_drawer_emergency)
+        builder.setMessage(R.string.navigation_drawer_emergency_text)
+
+        builder.setPositiveButton(R.string.navigation_drawer_ok) { _, _ ->
+            presenter.sendSMS()
+            sosButton.toggleState()
+        }
+        builder.setNegativeButton(R.string.navigation_drawer_cancel) { dialog, _ ->
+            sosButton.toggleState()
+            dialog.dismiss()
+        }
+        builder.setCancelable(false)
+        builder.show()
+    }
+
+
+    override fun updateFragments(){
+        updateFragmentNow()
+        updateFragmentHour()
+        updateFragmentWeek()
+    }
+
+    override fun updateFragmentNow() {
+        val tabs = findViewById<TabLayout>(R.id.tabs)
+        if(tabs.getTabAt(0)!!.isSelected || tabs.getTabAt(1)!!.isSelected) {
+            supportFragmentManager.beginTransaction().replace(R.id.now_fragment, NowFragment()).commit()
+        }
+    }
+
+    override fun updateFragmentHour(){
+        supportFragmentManager.beginTransaction().replace(R.id.recyclerview1, HourlyFragment()).commit()
+    }
+
+    override fun updateFragmentWeek(){
+        supportFragmentManager.beginTransaction().replace(R.id.recyclerview2, WeeklyFragment()).commit()
+    }
 
     private fun setupViewPagerAndTabs() {
         // View Pager tillater brukeren å sveipe mellom fragmenter

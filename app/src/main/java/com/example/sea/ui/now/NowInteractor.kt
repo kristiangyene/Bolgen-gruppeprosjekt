@@ -6,9 +6,7 @@ import com.example.sea.ui.base.BaseInteractor
 import com.example.sea.data.remote.model.LocationData
 import com.example.sea.data.remote.RetrofitClient
 import com.example.sea.data.remote.model.OceanData
-import retrofit2.Call
 import retrofit2.HttpException
-import retrofit2.Response
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -62,6 +60,7 @@ class NowInteractor(context: Context, fileName: String) : NowContract.Interactor
 
     // Henter data om tidevann dersom det er en havn i nærheten
     override fun getTidalData(finished : NowContract.Interactor.OnFinished, latitude: Float, longitude: Float, harbor : String) {
+        Log.d("Kart", "getTidalData $harbor")
         val retrofit = RetrofitClient().getClient("string")
         retrofit.getTidalWaterObservable(harbor)
             .subscribeOn(Schedulers.io())
@@ -78,7 +77,8 @@ class NowInteractor(context: Context, fileName: String) : NowContract.Interactor
                 }
 
                 override fun onNext(response: String) {
-                    finished.onFinished(response)
+                    Log.d("Kart", "onNext $harbor")
+                    finished.onFinished(response, harbor)
                 }
             })
     }

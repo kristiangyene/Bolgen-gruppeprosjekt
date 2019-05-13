@@ -74,7 +74,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
 
             smsManager.sendTextMessage(phoneNumber, null, "${interactor.getLatitude()} , ${interactor.getLongitude()}", null, null)
 
-            view!!.showMessage("Tekstmelding sendt til 47327997", Toast.LENGTH_LONG)
+            view!!.showMessage(activity.getString(R.string.navigation_drawer_coordinates_sent), Toast.LENGTH_LONG)
         }
         else {
             val intent = Intent(Intent.ACTION_SENDTO).apply {
@@ -85,7 +85,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
                 }
             }
 
-            view!!.showMessage("Har ikke tilatelse til å sende melding!", Toast.LENGTH_LONG)
+            view!!.showMessage(activity.getString(R.string.navigation_drawer_coordinates_not_sent), Toast.LENGTH_LONG)
             view!!.launchSMSApp(intent)
         }
     }
@@ -237,7 +237,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
 
         builder.setPositiveButton(R.string.navigation_drawer_ok) { _, _ ->
             menuItem.isChecked = false
-//            recreate()
+            view!!.updateFragmentNow()
         }
 
         builder.setCancelable(false)
@@ -279,15 +279,15 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
         when (requestCode) {
             LOCATION_PERMISSION -> {
                 if (!(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    view!!.showMessage("Appen funker ikke uten posisjon tilgang", Toast.LENGTH_LONG)
+                    view!!.showMessage(activity.getString(R.string.navigation_drawer_location_permission), Toast.LENGTH_LONG)
                 }
             }
             BOTH_PERMISSION -> {
                 if (!(grantResults.isNotEmpty() && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
-                    view!!.showMessage("Appen funker ikke uten posisjon tilgang", Toast.LENGTH_LONG)
+                    view!!.showMessage(activity.getString(R.string.navigation_drawer_location_permission), Toast.LENGTH_LONG)
                 }
                 else if (!(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    view!!.showMessage("Du kan endre tillatelsene i innstillinger", Toast.LENGTH_LONG)
+                    view!!.showMessage(activity.getString(R.string.navigation_drawer_change_permission), Toast.LENGTH_LONG)
                 }
                 else if (grantResults.isNotEmpty() && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     createLocationRequest()
@@ -295,7 +295,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             }
             SMS_PERMISSION -> {
                 if (!(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    view!!.showMessage("Du kan endre tillatelsene i innstillinger", Toast.LENGTH_LONG)
+                    view!!.showMessage(activity.getString(R.string.navigation_drawer_change_permission), Toast.LENGTH_LONG)
                 }
             }
         }

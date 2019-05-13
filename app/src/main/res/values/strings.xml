@@ -32,6 +32,12 @@
     <string name="navigation_drawer_weatherpreferences">Værpreferanser</string>
     <string name="navigation_drawer_cancel">Avbryt</string>
     <string name="navigation_drawer_ok" translatable="false">OK</string>
+    <string name="navigation_drawer_emergency">Nødstilfelle</string>
+    <string name="navigation_drawer_emergency_text">Er du sikkert på at du vil sende posisjon til nødsetralen?</string>
+    <string name="navigation_drawer_coordinates_sent">Koordinater sendt til +47 473 27 997</string>
+    <string name="navigation_drawer_coordinates_not_sent">Har ikke tillatelse til å sende melding!</string>
+    <string name="navigation_drawer_location_permission">Appen fungerer ikke uten tilgang til posisjon</string>
+    <string name="navigation_drawer_change_permission">"Du kan endre tillatelser i innstillinger</string>
     <string name="navigation_drawer_wind_base" translatable="false">mps</string>
     <string name="navigation_drawer_visibility_base" translatable="false">mm</string>
     <string name="navigation_drawer_pressure_base" translatable="false">hPa</string>
@@ -56,6 +62,7 @@
     <string name="fab_map_rain">Regn</string>
     <string name="fab_map_wind">Vind</string>
     <string name="fab_map_waves">Bølger</string>
+    <string name="map_ready">Kart er klart</string>
     <string name="humidity_image" translatable="false">humidity image</string>
     <string name="visibility_image" translatable="false">visibility image</string>
     <string name="water_image" translatable="false">water image</string>
@@ -107,7 +114,7 @@
 
     <!-- After About -->
     <string name="settings_header_about">Om Bølgen</string>
-    <string name="summary_about" translatable="false">Bølgen består av seks studenter ved Universitetet i Oslo, institutt for informatikk. Appen er utviklet som et prosjekt i emnet IN2000 Software Engineering.</string>
+    <string name="summary_about">Bølgen består av seks studenter ved Universitetet i Oslo, institutt for informatikk. Appen er utviklet som et prosjekt i emnet IN2000 Software Engineering.</string>
     <string name="app_version" translatable="false">1.0</string>
     <string name="summary_support">Send oss tilbakemelding slik at vi kan forbedre appen</string>
     <string name="title_send_feedback">Send oss tilbakmelding</string>

@@ -72,4 +72,14 @@
     <string name="summary_about">Bølgen consists of six students at the University of Oslo, Department of Informatics. The app is developed as a project in the subject IN2000 Software Engineering</string>
     <string name="feedback_message">Feedback to Bølgen app</string>
     <string name="title_terms">Terms &amp; Conditions</string>
+    <string name="navigation_drawer_emergency">Emergency</string>
+    <string name="navigation_drawer_emergency_text">Are you sure you want to send your position to the emergency
+        services?
+    </string>
+    <string name="navigation_drawer_coordinates_sent">Coordinates sent to +47 473 27 997</string>
+    <string name="navigation_drawer_coordinates_not_sent">No permission to send message!</string>
+    <string name="navigation_drawer_location_permission">The app needs permission to your position to work properly
+    </string>
+    <string name="navigation_drawer_change_permission">You can change permissions in settings</string>
+    <string name="map_ready">Map is ready</string>
 </resources>

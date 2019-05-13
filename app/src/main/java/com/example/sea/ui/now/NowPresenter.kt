@@ -2,6 +2,7 @@ package com.example.sea.ui.now
 
 import android.content.Context
 import android.location.Location
+import android.util.Log
 import com.example.sea.data.remote.model.LocationData
 import com.example.sea.R
 import com.example.sea.data.remote.model.OceanData
@@ -141,7 +142,7 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         }
 
         if(!riskValuesDone) {
-            setUpSeekbarValues()
+            setupSeekbarValues()
             riskValuesDone = true
         }
 
@@ -176,7 +177,7 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         }
 
         if(!riskValuesDone) {
-            setUpSeekbarValues()
+            setupSeekbarValues()
             riskValuesDone = true
         }
 
@@ -195,7 +196,7 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
     }
 
     // Viser tidevann for nåtid.
-    override fun onFinished(data : String?) {
+    override fun onFinished(data : String?, harbor: String?) {
         val currentTime = Calendar.getInstance()
         val currentHour = currentTime.get(Calendar.HOUR_OF_DAY).toString()
         var foundStart = false
@@ -213,17 +214,21 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
                 break
             }
         }
-        if (foundStart) {
+
+        Log.d("Kart", "onFinished $harbor")
+        Log.d("Kart", foundStart.toString())
+
+        if(foundStart) {
             if (line[startIndex][line[startIndex].length - 6] == ' ') {
-                view!!.setDataInRecyclerView(NowElement(line[startIndex].substring(line[startIndex].length - 5, line[startIndex].length), context!!.getString(R.string.navigation_drawer_tide), ""))
+                view!!.setDataInRecyclerView(NowElement(line[startIndex].substring(line[startIndex].length - 5, line[startIndex].length), context!!.getString(R.string.navigation_drawer_tide), harbor!!.capitalize()))
             }
             else {
-                view!!.setDataInRecyclerView(NowElement(line[startIndex].substring(line[startIndex].length - 6, line[startIndex].length), context!!.getString(R.string.navigation_drawer_tide), ""))
+                view!!.setDataInRecyclerView(NowElement(line[startIndex].substring(line[startIndex].length - 6, line[startIndex].length), context!!.getString(R.string.navigation_drawer_tide), harbor!!.capitalize()))
             }
         }
 
         if(!riskValuesDone) {
-            setUpSeekbarValues()
+            setupSeekbarValues()
             riskValuesDone = true
         }
 
@@ -262,6 +267,7 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
     override fun requestTidalData(latitude: Float, longitude: Float) {
         findNearestHarbor(latitude, longitude)
         if(closestHarbor != null && closestHarborValue < 30000) {
+            Log.d("Kart", "$closestHarborValue, $closestHarbor")
             interactor.getTidalData(this, latitude , longitude, closestHarbor!!)
         }
     }
@@ -424,7 +430,7 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         }
     }
 
-    fun setUpSeekbarValues() {
+    private fun setupSeekbarValues() {
         val screenWidthInPixels = context!!.resources.displayMetrics.widthPixels
         val pixelsPerNumber = (screenWidthInPixels.toDouble()-16)/10
         var numberWidth = ((pixelsPerNumber-3)/16).toInt()
