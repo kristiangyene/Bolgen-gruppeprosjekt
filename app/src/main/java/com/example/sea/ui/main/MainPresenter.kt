@@ -236,7 +236,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
 
         builder.setPositiveButton(R.string.navigation_drawer_ok) { _, _ ->
             menuItem.isChecked = false
-//            recreate()
+            view!!.updateFragmentNow()
         }
 
         builder.setCancelable(false)
