@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.sea.data.remote.RetrofitClient
 import com.example.sea.data.remote.model.WeeklyModel
 import com.example.sea.ui.base.BaseInteractor
+import retrofit2.HttpException
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -14,12 +15,12 @@ class WeeklyInteractor(context: Context, fileName: String) : WeeklyContract.Inte
         val client = RetrofitClient().getClient("json")
 
         val location = client
-            .getLocationDataObservable(latitude, longitude, null)
+            .getLocationData(latitude, longitude, null)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
 
         val ocean = client
-            .getOceanDataObservable(latitude, longitude)
+            .getOceanData(latitude, longitude)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
 
@@ -36,6 +37,10 @@ class WeeklyInteractor(context: Context, fileName: String) : WeeklyContract.Inte
 
             override fun onError(t: Throwable) {
                 finished.onFailure(t.message)
+
+                if(t is HttpException) {
+                    finished.onFailure(t.response().errorBody()?.string())
+                }
             }
         })
     }

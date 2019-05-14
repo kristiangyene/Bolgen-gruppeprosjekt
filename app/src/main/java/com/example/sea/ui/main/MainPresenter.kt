@@ -103,7 +103,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             interactor.setCeMark(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition].split(" ")[0], menuItem.itemId)
             menuItem.isChecked = false
-            activity!!.recreate()
+            activity.recreate()
             dialog.dismiss()
         }
 
@@ -132,7 +132,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             interactor.setTemperaturUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
             menuItem.isChecked = false
-            activity!!.recreate()
+            activity.recreate()
             dialog.dismiss()
         }
 
@@ -162,7 +162,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             interactor.setWindUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
             menuItem.isChecked = false
-            activity!!.recreate()
+            activity.recreate()
             dialog.dismiss()
         }
 
@@ -192,7 +192,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             interactor.setPressureUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
             menuItem.isChecked = false
-            activity!!.recreate()
+            activity.recreate()
             dialog.dismiss()
         }
 

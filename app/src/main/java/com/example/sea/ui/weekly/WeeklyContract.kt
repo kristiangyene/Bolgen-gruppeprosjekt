@@ -16,7 +16,7 @@ interface WeeklyContract {
 
     interface Presenter {
         fun onDestroy()
-        fun fetchData()
+        fun fetchData(onStart: Boolean)
     }
 
     interface Interactor : BaseContract.Interactor {

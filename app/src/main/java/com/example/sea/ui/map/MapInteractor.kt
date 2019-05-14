@@ -23,7 +23,7 @@ class MapInteractor(context: Context, fileName : String) : MainContract.Interact
 
     override fun getLocationData(finished : MapContract.Interactor.OnFinished, latitude : Float, longitude : Float) {
         val retrofit = RetrofitClient().getClient("json")
-        retrofit.getLocationDataObservable(latitude, longitude, null)
+        retrofit.getLocationData(latitude, longitude, null)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Subscriber<LocationData>() {

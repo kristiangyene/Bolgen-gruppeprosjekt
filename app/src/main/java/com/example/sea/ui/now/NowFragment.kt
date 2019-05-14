@@ -40,6 +40,9 @@ class NowFragment : Fragment(), NowContract.View {
                 presenter.fetchData(false)
             }
         }
+        else {
+            return inflater.inflate((R.layout.no_internet), container, false)
+        }
 
         return rootView
     }
@@ -71,7 +74,7 @@ class NowFragment : Fragment(), NowContract.View {
 
     override fun onFailure(t: String?) {
         if(t != null) {
-            Log.d("Failure: ", t)
+            Log.e("Error: ", t)
         }
     }
 

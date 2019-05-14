@@ -82,4 +82,5 @@
     </string>
     <string name="navigation_drawer_change_permission">You can change permissions in settings</string>
     <string name="map_ready">Map is ready</string>
+    <string name="internet_connection">Please turn on internet or else the app won\'t work</string>
 </resources>

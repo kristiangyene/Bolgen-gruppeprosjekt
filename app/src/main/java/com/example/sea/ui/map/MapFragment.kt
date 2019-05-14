@@ -248,7 +248,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
 
     override fun onFailure(t: String?) {
         if(t != null) {
-            Log.d("Error: ", t)
+            Log.e("Error: ", t)
         }
     }
 

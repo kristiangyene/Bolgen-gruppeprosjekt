@@ -92,18 +92,14 @@ class HourlyAdapter(private val list: List<HourlyElement>, private val recyclerV
 
             if (position == selectedItem) {
                 selectedItem = UNSELECTED
-            } else {
+            }
+            else {
                 expandButton.isSelected = true
                 expandableLayout.expand()
                 selectedItem = position
             }
         }
 
-        override fun onExpansionUpdate(expansionFraction: Float, state: Int) {
-            Log.d("ExpandableLayout", "State: $state")
-            if (state == ExpandableLayout.State.EXPANDING) {
-                    recyclerView.smoothScrollToPosition(adapterPosition)
-            }
-        }
+        override fun onExpansionUpdate(expansionFraction: Float, state: Int) {}
     }
 }

@@ -163,5 +163,6 @@
     <string name="bad_visibility">Dårlig sikt</string>
     <string name="east">Ø</string>
     <string name="west">V</string>
+    <string name="internet_connection">Vennligst skru på internet ellers vil ikke appen funke</string>
 
 </resources>

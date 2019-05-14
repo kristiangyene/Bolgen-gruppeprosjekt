@@ -27,7 +27,15 @@ class WeeklyFragment : Fragment(), WeeklyContract.View {
 
         presenter = WeeklyPresenter(this, WeeklyInteractor(activity!!, fileName))
         if(ConnectionUtil.checkNetwork(activity!!)) {
-            presenter.fetchData()
+            if(savedInstanceState == null) {
+                presenter.fetchData(true)
+            }
+            else {
+                presenter.fetchData(false)
+            }
+        }
+        else {
+            return inflater.inflate(R.layout.no_internet, container, false)
         }
 
         return rootView
@@ -59,7 +67,7 @@ class WeeklyFragment : Fragment(), WeeklyContract.View {
 
     override fun onFailure(t: String?) {
         if(t != null) {
-            Log.d("Error", t)
+            Log.e("Error", t)
         }
     }
 

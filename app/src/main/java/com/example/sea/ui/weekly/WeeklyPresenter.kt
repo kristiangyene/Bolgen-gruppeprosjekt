@@ -19,9 +19,15 @@ class WeeklyPresenter(view: WeeklyContract.View, private var interactor: WeeklyC
         view = null
     }
 
-    override fun fetchData() {
+    override fun fetchData(onStart: Boolean) {
         view!!.showProgress()
-        interactor.fetchData(this, interactor.getLatitude(), interactor.getLongitude())
+
+        if(onStart) {
+            interactor.fetchData(this, interactor.getUserLatitude(), interactor.getUserLongitude())
+        }
+        else {
+            interactor.fetchData(this, interactor.getUserLatitude(), interactor.getUserLongitude())
+        }
     }
 
     @SuppressLint("SimpleDateFormat")

@@ -16,22 +16,11 @@ interface WeatherService {
     @Headers("User-Agent: Gruppe17")
     @GET("weatherapi/oceanforecast/0.9/.json")
     fun getOceanData(@Query("lat") lat: Float,
-                   @Query("lon") lon: Float) : Call<OceanData>
-
-    @Headers("User-Agent: Gruppe17")
-    @GET("weatherapi/oceanforecast/0.9/.json")
-    fun getOceanDataObservable(@Query("lat") lat: Float,
                      @Query("lon") lon: Float) : Observable<OceanData>
 
     @Headers("User-Agent: Gruppe17")
     @GET("weatherapi/locationforecast/1.9/.json")
     fun getLocationData(@Query("lat") lat: Float,
-                        @Query("lon") lon: Float,
-                        @Query("msl") msl: Float?) : Call<LocationData> // msl parameteret er valgfri, send inn null hvis du ikke vil sende inn msl verdi
-
-    @Headers("User-Agent: Gruppe17")
-    @GET("weatherapi/locationforecast/1.9/.json")
-    fun getLocationDataObservable(@Query("lat") lat: Float,
                         @Query("lon") lon: Float,
                         @Query("msl") msl: Float?) : Observable<LocationData> // msl parameteret er valgfri, send inn null hvis du ikke vil sende inn msl verdi
 
@@ -52,11 +41,8 @@ interface WeatherService {
                    @Query("offset") offset: String,
                    @Query("days") days: Int?) : Call<SunData>
 
-    @Headers("User-Agent: Gruppe17")
-    @GET("weatherapi/tidalwater/1.1/")
-    fun getTidalWater(@Query("harbor") harbor: String) : Call<String>
 
     @Headers("User-Agent: Gruppe17")
     @GET("weatherapi/tidalwater/1.1/")
-    fun getTidalWaterObservable(@Query("harbor") harbor: String) : Observable<String>
+    fun getTidalWater(@Query("harbor") harbor: String) : Observable<String>
 }
