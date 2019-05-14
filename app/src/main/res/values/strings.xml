@@ -125,7 +125,7 @@
     <string name="url_faq" translatable="false">https://www.androidhive.info/privacy-policy/</string>
     <string name="privacy_policy">Personvern</string>
     <string name="url_privacy" translatable="false">https://www.androidhive.info/privacy-policy/</string>
-    <string name="title_terms">Vilkår &amp; Betingelser</string>
+    <string name="title_terms">Vilkår og Betingelser</string>
     <string name="url_terms" translatable="false">https://www.androidhive.info/terms-of-service/</string>
     <string name="title_version">Versjon</string>
     <string name="choose_email_client">Velg email klient</string>

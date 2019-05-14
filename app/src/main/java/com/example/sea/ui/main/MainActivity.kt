@@ -11,8 +11,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
-import android.util.Log
-import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import com.ebanx.swipebtn.SwipeButton
@@ -25,7 +23,7 @@ import com.google.android.gms.common.api.ResolvableApiException
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.navigation_menu_items.*
 import kotlinx.android.synthetic.main.view_pager.*
-import org.jetbrains.anko.toast
+import kotlin.NullPointerException
 
 class MainActivity : AppCompatActivity(), MainContract.View {
     private lateinit var drawerLayout: DrawerLayout
