@@ -16,7 +16,7 @@
     <string name="marker_button_text" translatable="false">Click to see weather forecast</string>
     <string name="marker_position">Position</string>
     <string name="navigation_drawer_cancel">Cancel</string>
-    <string name="navigation_drawer_ce_mark">CE mark</string>
+    <string name="navigation_drawer_ce_mark">Boat Type</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
     <string name="navigation_drawer_cloudiness">Sky density</string>
     <string name="navigation_drawer_fog">Fog</string>
