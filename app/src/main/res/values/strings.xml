@@ -15,7 +15,7 @@
     <string name="navigation_drawer_close">Lukk Navigation Drawer</string>
     <string name="navigation_drawer_settings">Innstillinger</string>
     <string name="navigation_drawer_measurments">Måleenheter</string>
-    <string name="navigation_drawer_ce_mark">CE merking</string>
+    <string name="navigation_drawer_ce_mark">Båttype</string>
     <string name="navigation_drawer_temperature">Temperatur</string>
     <string name="navigation_drawer_temperature2">Grader</string>
     <string name="navigation_drawer_wind">Vind</string>
