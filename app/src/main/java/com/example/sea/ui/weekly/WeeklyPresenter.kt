@@ -26,7 +26,7 @@ class WeeklyPresenter(view: WeeklyContract.View, private var interactor: WeeklyC
             interactor.fetchData(this, interactor.getUserLatitude(), interactor.getUserLongitude())
         }
         else {
-            interactor.fetchData(this, interactor.getUserLatitude(), interactor.getUserLongitude())
+            interactor.fetchData(this, interactor.getLatitude(), interactor.getLongitude())
         }
     }
 

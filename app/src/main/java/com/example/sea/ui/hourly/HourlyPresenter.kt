@@ -3,7 +3,6 @@ package com.example.sea.ui.hourly
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
-import android.util.Log
 import com.example.sea.R
 import com.example.sea.data.remote.model.OceanData
 import com.example.sea.data.remote.model.LocationData
@@ -35,7 +34,6 @@ class HourlyPresenter(view: HourlyContract.View, private var context: Context, p
             else {
                 interactor.fetchData(this, interactor.getUserLatitude(), interactor.getUserLongitude(), null)
             }
-
         }
         else {
             if(outcome) {

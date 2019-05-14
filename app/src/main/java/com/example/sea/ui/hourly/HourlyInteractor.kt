@@ -1,7 +1,6 @@
 package com.example.sea.ui.hourly
 
 import android.content.Context
-import android.util.Log
 import com.example.sea.data.remote.RetrofitClient
 import com.example.sea.data.remote.model.HourlyModel
 import com.example.sea.ui.base.BaseInteractor
@@ -14,7 +13,6 @@ import rx.schedulers.Schedulers
 class HourlyInteractor(context: Context, fileName: String) : HourlyContract.Interactor, BaseInteractor(context, fileName) {
 
     override fun fetchData(finished: HourlyContract.Interactor.OnFinished, latitude: Float, longitude: Float, harbor: String?) {
-        Log.d("Kart", "$latitude, $longitude")
         val clientJson = RetrofitClient().getClient("json")
         val clientString = RetrofitClient().getClient("string")
 
