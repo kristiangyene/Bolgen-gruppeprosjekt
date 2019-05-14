@@ -61,7 +61,7 @@
     <string name="title_activity_settings">Settings</string>
     <string name="title_new_notification_sound">New message notification</string>
     <string name="title_send_feedback">"Nytt meldingsvarsel "</string>
-    <string name="title_terms">Terms &amp; Conditions</string>
+    <string name="title_terms">Terms and Conditions</string>
     <string name="title_version" translatable="false">Version</string>
     <string name="wind">Wind</string>
     <string name="dangerous">Dangerous</string>

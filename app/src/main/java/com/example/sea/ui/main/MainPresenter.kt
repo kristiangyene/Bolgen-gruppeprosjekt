@@ -132,8 +132,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             interactor.setTemperaturUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
             menuItem.isChecked = false
-            view!!.updateFragmentNow()
-            view!!.updateFragmentHour()
+            activity.recreate()
             dialog.dismiss()
         }
 
@@ -163,7 +162,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             interactor.setWindUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
             menuItem.isChecked = false
-            updateFragments()
+            activity.recreate()
             dialog.dismiss()
         }
 
