@@ -103,7 +103,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             interactor.setCeMark(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition].split(" ")[0], menuItem.itemId)
             menuItem.isChecked = false
-            activity!!.recreate()
+            activity.recreate()
             dialog.dismiss()
         }
 
@@ -132,7 +132,8 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             interactor.setTemperaturUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
             menuItem.isChecked = false
-            activity!!.recreate()
+            view!!.updateFragmentNow()
+            view!!.updateFragmentHour()
             dialog.dismiss()
         }
 
@@ -162,7 +163,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             interactor.setWindUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
             menuItem.isChecked = false
-            activity!!.recreate()
+            updateFragments()
             dialog.dismiss()
         }
 
@@ -191,7 +192,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
         builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
             interactor.setPressureUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
-            activity!!.recreate()
+            view!!.updateFragmentNow()
             dialog.dismiss()
         }
 
@@ -399,5 +400,10 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
 
     override fun onDestroy() {
         view = null
+    }
+    override fun updateFragments(){
+        view!!.updateFragmentNow()
+        view!!.updateFragmentHour()
+        view!!.updateFragmentWeek()
     }
 }

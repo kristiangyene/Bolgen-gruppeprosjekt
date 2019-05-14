@@ -7,12 +7,12 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
-import android.support.v4.content.ContextCompat.startActivity
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
+import android.util.Log
+import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import com.ebanx.swipebtn.SwipeButton
@@ -25,6 +25,7 @@ import com.google.android.gms.common.api.ResolvableApiException
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.navigation_menu_items.*
 import kotlinx.android.synthetic.main.view_pager.*
+import org.jetbrains.anko.toast
 
 class MainActivity : AppCompatActivity(), MainContract.View {
     private lateinit var drawerLayout: DrawerLayout
@@ -74,11 +75,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
 
-    override fun updateFragments(){
-        updateFragmentNow()
-        updateFragmentHour()
-        updateFragmentWeek()
-    }
 
     override fun updateFragmentNow() {
         val tabs = findViewById<TabLayout>(R.id.tabs)
@@ -88,11 +84,17 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun updateFragmentHour(){
-        supportFragmentManager.beginTransaction().replace(R.id.recyclerview1, HourlyFragment()).commit()
+        val tabs = findViewById<TabLayout>(R.id.tabs)
+        if(tabs.getTabAt(0)!!.isSelected || tabs.getTabAt(1)!!.isSelected || tabs.getTabAt(2)!!.isSelected) {
+            supportFragmentManager.beginTransaction().replace(R.id.recyclerview1, HourlyFragment()).commit()
+        }
     }
 
     override fun updateFragmentWeek(){
-        supportFragmentManager.beginTransaction().replace(R.id.recyclerview2, WeeklyFragment()).commit()
+        val tabs = findViewById<TabLayout>(R.id.tabs)
+        if(tabs.getTabAt(1)!!.isSelected || tabs.getTabAt(2)!!.isSelected || tabs.getTabAt(3)!!.isSelected) {
+            supportFragmentManager.beginTransaction().replace(R.id.recyclerview2, WeeklyFragment()).commit()
+        }
     }
 
     private fun setupViewPagerAndTabs() {

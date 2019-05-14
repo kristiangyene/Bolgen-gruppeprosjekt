@@ -132,31 +132,51 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
 
     // Viser tidevann for nåtid.
     override fun onFinished(data : String?, harbor: String?, closestHarborValue: Double) {
-        val currentTime = Calendar.getInstance()
-        val currentHour = currentTime.get(Calendar.HOUR_OF_DAY).toString()
-        var foundStart = false
-        var startIndex = 0
-        val line = data!!.split("\n")
+        if(interactor.getWeatherPreference(context!!.getString(R.string.navigation_drawer_tide))) {
+            val currentTime = Calendar.getInstance()
+            val currentHour = currentTime.get(Calendar.HOUR_OF_DAY).toString()
+            var foundStart = false
+            var startIndex = 0
+            val line = data!!.split("\n")
 
-        for (i in 8 until line.size - 1) {
-            val number = line[i].split("\\s+".toRegex())
-            if (number[4] != currentHour) {
-                continue
+            for (i in 8 until line.size - 1) {
+                val number = line[i].split("\\s+".toRegex())
+                if (number[4] != currentHour) {
+                    continue
+                } else {
+                    foundStart = true
+                    startIndex = i
+                    break
+                }
             }
-            else {
-                foundStart = true
-                startIndex = i
-                break
-            }
+            if (foundStart && (harbor != null && closestHarborValue < 30000)) {
+                if (line[startIndex][line[startIndex].length - 6] == ' ') {
+                    view!!.setDataInRecyclerView(
+                        NowElement(
+                            line[startIndex].substring(
+                                line[startIndex].length - 5,
+                                line[startIndex].length
+                            ), context!!.getString(R.string.navigation_drawer_tide), harbor.capitalize()
+                        )
+                    )
+                } else {
+                    view!!.setDataInRecyclerView(
+                        NowElement(
+                            line[startIndex].substring(
+                                line[startIndex].length - 6,
+                                line[startIndex].length
+                            ), context!!.getString(R.string.navigation_drawer_tide), harbor.capitalize()
+                        )
+                    )
+                }
+            } else view!!.setDataInRecyclerView(
+                NowElement(
+                    "-",
+                    context!!.getString(R.string.navigation_drawer_tide),
+                    ""
+                )
+            )
         }
-        if (foundStart && (harbor != null && closestHarborValue < 30000)) {
-            if (line[startIndex][line[startIndex].length - 6] == ' ') {
-                view!!.setDataInRecyclerView(NowElement(line[startIndex].substring(line[startIndex].length - 5, line[startIndex].length), context!!.getString(R.string.navigation_drawer_tide), harbor.capitalize()))
-            }
-            else {
-                view!!.setDataInRecyclerView(NowElement(line[startIndex].substring(line[startIndex].length - 6, line[startIndex].length), context!!.getString(R.string.navigation_drawer_tide), harbor.capitalize()))
-            }
-        }else view!!.setDataInRecyclerView(NowElement("-", context!!.getString(R.string.navigation_drawer_tide), ""))
     }
 
     override fun onFailure(t: Throwable) {
