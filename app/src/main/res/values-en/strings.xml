@@ -28,11 +28,11 @@
     <string name="navigation_drawer_rain">Rain</string>
     <string name="navigation_drawer_settings">Settings</string>
     <string name="navigation_drawer_temperature">"Temperature "</string>
-    <string name="navigation_drawer_temperature2">Degrees</string>
+    <string name="navigation_drawer_temperature2">Temperature</string>
     <string name="navigation_drawer_tide">Tide</string>
     <string name="navigation_drawer_visibility">Visibility</string>
     <string name="navigation_drawer_wave">Wave height</string>
-    <string name="navigation_drawer_weather">Rain</string>
+    <string name="navigation_drawer_weather">Rainfall</string>
     <string name="navigation_drawer_weatherpreferences">"Weather preferences "</string>
     <string name="navigation_drawer_wind">Wind</string>
     <string name="navigation_drawer_wind_speed">Wind speed</string>
@@ -82,5 +82,5 @@
     </string>
     <string name="navigation_drawer_change_permission">You can change permissions in settings</string>
     <string name="map_ready">Map is ready</string>
-    <string name="internet_connection">Please turn on internet or else the app won\'t work</string>
+    <string name="internet_connection">Please turn on internet or else the app wont work</string>
 </resources>
