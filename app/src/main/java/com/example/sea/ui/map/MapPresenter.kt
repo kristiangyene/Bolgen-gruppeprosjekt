@@ -259,7 +259,7 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
                     }
                 }
                 else {
-                    view!!.showMessage("Trykk på kartet for å kunne se værmelding om det valgte stedet")
+                    view!!.showMessage(activity.getString(R.string.click_on_map))
                 }
             }
         }
