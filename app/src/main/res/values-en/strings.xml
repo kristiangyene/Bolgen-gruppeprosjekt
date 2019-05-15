@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_vibrate">Vibrate</string>
-    <string name="title_settings_permissions_sms">Telephone</string>
-    <string name="title_settings_permissions_position">Position</string>
+    <string name="title_settings_permissions_sms">SMS</string>
+    <string name="title_settings_permissions_position">Location</string>
     <string name="ce_mark_a">A - Sea-going boats, must withstand a wind speed of more than 20.8 m/s and a wave height of more than 4m.</string>
     <string name="ce_mark_b">B - Boats for offshore use, should withstand a wind speed up to 20.7 m/s and a wave height of up to 4m.</string>
     <string name="ce_mark_c">C - Boats close to the coast, must withstand a wind speed up to 13.8 m/s and a wave height up to 2m</string>
@@ -12,18 +12,18 @@
     <string name="fab_map_rain">Rain</string>
     <string name="fab_map_waves">Waves</string>
     <string name="fab_map_wind">Wind</string>
-    <string name="marker_button_text" translatable="false">Click to see weather forecast</string>
+    <string name="marker_button_text">Click to see weather forecast</string>
     <string name="marker_position">Position</string>
     <string name="navigation_drawer_cancel">Cancel</string>
-    <string name="navigation_drawer_ce_mark">CE mark</string>
+    <string name="navigation_drawer_ce_mark">Boat type</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
     <string name="navigation_drawer_cloudiness">Sky density</string>
     <string name="navigation_drawer_fog">Fog</string>
     <string name="navigation_drawer_humidity">Moisture</string>
-    <string name="navigation_drawer_measurments">"Measurement units "</string>
+    <string name="navigation_drawer_measurments">Measurement units</string>
     <string name="navigation_drawer_now">Now</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
-    <string name="navigation_drawer_pressure">"Pressure Measurement "</string>
+    <string name="navigation_drawer_pressure">Pressure Measurement</string>
     <string name="navigation_drawer_pressure2">Pressure</string>
     <string name="navigation_drawer_rain">Rain</string>
     <string name="navigation_drawer_settings">Settings</string>
@@ -33,7 +33,7 @@
     <string name="navigation_drawer_visibility">Visibility</string>
     <string name="navigation_drawer_wave">Wave height</string>
     <string name="navigation_drawer_weather">Rainfall</string>
-    <string name="navigation_drawer_weatherpreferences">"Weather preferences "</string>
+    <string name="navigation_drawer_weatherpreferences">Weather preferences</string>
     <string name="navigation_drawer_wind">Wind</string>
     <string name="navigation_drawer_wind_speed">Wind speed</string>
     <string name="pref_title_new_message_notifications">Weather forecast</string>
@@ -56,8 +56,8 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_new_notification_sound">Message notification</string>
-    <string name="title_send_feedback">"Nytt meldingsvarsel "</string>
-    <string name="title_version" translatable="false">Version</string>
+    <string name="title_send_feedback">Give us feedback</string>
+    <string name="title_version">Version</string>
     <string name="wind">Wind</string>
     <string name="dangerous">Dangerous</string>
     <string name="safe">Safe</string>
@@ -73,9 +73,7 @@
     <string name="feedback_message">Feedback to Bølgen app</string>
     <string name="title_terms">Terms &amp; Conditions</string>
     <string name="navigation_drawer_emergency">Emergency</string>
-    <string name="navigation_drawer_emergency_text">Are you sure you want to send your position to the emergency
-        services?
-    </string>
+    <string name="navigation_drawer_emergency_text">Are you sure you want to send your position to the emergency services?</string>
     <string name="navigation_drawer_coordinates_sent">Coordinates sent to +47 473 27 997</string>
     <string name="navigation_drawer_coordinates_not_sent">No permission to send message!</string>
     <string name="navigation_drawer_location_permission">The app needs permission to your position to work properly
@@ -83,5 +81,8 @@
     <string name="navigation_drawer_change_permission">You can change permissions in settings</string>
     <string name="map_ready">Map is ready</string>
     <string name="internet_connection">Please turn on internet or else the app wont work</string>
-    <string name="click_on_map">Click on map to see wather forecast about the selected area</string>
+    <string name="click_on_map">Click on map to see weather forecast about the selected area</string>
+
+    <string name="network_low">Low</string>
+    <string name="network_high">High</string>
 </resources>

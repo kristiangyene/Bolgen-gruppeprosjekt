@@ -15,7 +15,7 @@
     <string name="navigation_drawer_close">Lukk Navigation Drawer</string>
     <string name="navigation_drawer_settings">Innstillinger</string>
     <string name="navigation_drawer_measurments">Måleenheter</string>
-    <string name="navigation_drawer_ce_mark">CE merking</string>
+    <string name="navigation_drawer_ce_mark">Båttype</string>
     <string name="navigation_drawer_temperature">Temperatur</string>
     <string name="navigation_drawer_temperature2">Temperatur</string>
     <string name="navigation_drawer_wind">Vind</string>
@@ -110,7 +110,7 @@
     <string name="summary_position">Av</string>
     <string name="key_position" translatable="false">key_position</string>
 
-    <string name="title_settings_permissions_sms">Telefon</string>
+    <string name="title_settings_permissions_sms">SMS</string>
     <string name="key_settings_permissions_sms" translatable="false">key_title_settings_permissions_sms</string>
 
     <!-- After About -->
@@ -141,9 +141,9 @@
         <item>2</item>
     </string-array>
 
-    <string name="network_low" translatable="false">Lav</string>
+    <string name="network_low">Lav</string>
     <string name="network_medium" translatable="false">Medium</string>
-    <string name="network_high" translatable="false">Høy</string>
+    <string name="network_high">Høy</string>
 
     <string-array name="settings_network_calls_entries">
         <item>@string/network_low</item>
