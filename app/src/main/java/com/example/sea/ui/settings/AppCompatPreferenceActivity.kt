@@ -4,17 +4,11 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.preference.PreferenceActivity
 import android.support.annotation.LayoutRes
-import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatDelegate
-import android.support.v7.widget.Toolbar
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 
-/**
- * A [android.preference.PreferenceActivity] which implements and proxies the necessary calls
- * to be used with AppCompat.
- */
 abstract class AppCompatPreferenceActivity : PreferenceActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,13 +20,6 @@ abstract class AppCompatPreferenceActivity : PreferenceActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         delegate.onPostCreate(savedInstanceState)
-    }
-
-    val supportActionBar: ActionBar?
-        get() = delegate.supportActionBar
-
-    fun setSupportActionBar(toolbar: Toolbar?) {
-        delegate.setSupportActionBar(toolbar)
     }
 
     override fun getMenuInflater(): MenuInflater {

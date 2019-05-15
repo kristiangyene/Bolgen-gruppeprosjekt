@@ -77,4 +77,36 @@ open class BaseInteractor(context: Context, fileName : String) : BaseContract.In
     override fun setWeatherPreference(key: String, value: Boolean) {
         helper.setWeatherPreference(key, value)
     }
+
+    override fun getMapNeverClicked(): Boolean {
+        return helper.getMapNeverClicked()
+    }
+
+    override fun setMapNeverClicked(value: Boolean) {
+        helper.setMapNeverClicked(value)
+    }
+
+    override fun getNetworkUsage(): Int? {
+        return helper.getNetworkUsage()
+    }
+
+    override fun setNetworkUsage(value: Int) {
+        helper.setNetworkUsage(value)
+    }
+
+    override fun getUserLatitude(): Float {
+        return helper.getUserLatitude()
+    }
+
+    override fun setUserLatitude(value: Float) {
+        helper.setUserLatitude(value)
+    }
+
+    override fun getUserLongitude(): Float {
+        return helper.getUserLongitude()
+    }
+
+    override fun setUserLongitude(value: Float) {
+        helper.setUserLongitude(value)
+    }
 }

@@ -19,6 +19,7 @@ import com.google.maps.android.data.geojson.GeoJsonLayer
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.view_pager.*
 import android.util.Log
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
@@ -29,16 +30,21 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     GoogleMap.OnMyLocationButtonClickListener, OnSuccessListener<Location>, GoogleMap.OnInfoWindowClickListener, MapContract.View {
     private lateinit var map: GoogleMap
     private var marker: Marker? = null
+    private var startMarker: Marker? = null
     private lateinit var harborsLayer: GeoJsonLayer
     private lateinit var presenter: MapPresenter
     private val fileName = "com.example.sea"
     private var markers = mutableListOf<Marker>()
     private val colorPrimary = 0xFFEEEEEE
+    private lateinit var progress : ProgressBar
+    private var markerClicked = false
+    private var startMarkerClicked = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
         val rootView = inflater.inflate(R.layout.fragment_map, container, false)
 
         presenter = MapPresenter(this, activity!!, this, MapInteractor(activity!!, fileName))
+        progress = rootView.findViewById(R.id.indeterminateBar)
 
         return rootView
     }
@@ -68,6 +74,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
             map.setOnMyLocationButtonClickListener(this)
             presenter.findLastLocation()
         }
+        else {
+            setMarkerOnStart(presenter.createStartMarker())
+        }
 
         restrictMap()
         setUpMapStyle()
@@ -75,7 +84,23 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     }
 
     override fun onMarkerClick(p0: Marker?) : Boolean {
-        if(marker != null && marker!!.id == p0!!.id) {
+        if((marker != null && marker!!.id == p0!!.id)) {
+            markerClicked = !markerClicked
+
+            if(marker != null && !markerClicked) {
+                marker!!.hideInfoWindow()
+                return true
+            }
+
+            return false
+        }
+        else if(startMarker != null && startMarker!!.id == p0!!.id) {
+            startMarkerClicked = !startMarkerClicked
+            if(startMarker != null && !startMarkerClicked) {
+                startMarker!!.hideInfoWindow()
+                return true
+            }
+
             return false
         }
 
@@ -101,13 +126,20 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
 
         val locationName = presenter.getAddress(p0!!.latitude, p0.longitude)
 
-        showMarker(p0, locationName)
-        setupMarkerWindow(p0, locationName)
+        setupMarker(p0, locationName)
     }
 
     private fun setUpMapStyle() {
         val style = MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_style)
         map.setMapStyle(style)
+    }
+
+    override fun setMarkerOnStart(markerOptions: MarkerOptions?) {
+        if(markerOptions != null) {
+            startMarker = map.addMarker(markerOptions)
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(markerOptions.position, 8f))
+            map.setInfoWindowAdapter(presenter.createInfoWindowAdapter(markerOptions.position, markerOptions.title))
+        }
     }
 
     private fun restrictMap() {
@@ -124,23 +156,25 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         presenter.setUpHarborMarkers(harborsLayer)
     }
 
-    private fun showMarker(p0: LatLng?, locationName: String) {
+    private fun setupMarker(p0: LatLng?, locationName: String) {
+        if(startMarker != null) {
+            startMarker!!.remove()
+        }
+
         marker = map.addMarker(MarkerOptions().position(p0!!).title(locationName))
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(p0.latitude, p0.longitude), 8f), 2000, null)
-    }
-
-    private fun setupMarkerWindow(p0: LatLng?, locationName: String) {
-        map.setInfoWindowAdapter(presenter.createInfoWindowAdapter(p0!!, locationName))
+        map.setInfoWindowAdapter(presenter.createInfoWindowAdapter(p0, locationName))
     }
 
     override fun getMarker() = marker
+    override fun getStartMarker() = startMarker
 
     override fun setTitle(text: String) {
-        activity!!.toolbar.title = text
+        activity!!.toolbar_title.text = text
     }
 
-    override fun showCameraAnimation(currentLatLng: LatLng) {
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 8f))
+    override fun showCameraAnimation(currentLatLng: LatLng, zoomLevel : Float) {
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, zoomLevel))
     }
 
     override fun changeTab() {
@@ -159,22 +193,17 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     }
 
     override fun showMarkers(data: String, lat: Double, long: Double, type : String) {
-//        val markerOption =  MarkerOptions().title(data).position(LatLng(lat, long))
-//        if(type == "rain") {
-//            markerOption.icon(BitmapDescriptorFactory.fromBitmap(presenter.createRainMarker()))
-//        }
-//        else {
-//            markerOption.icon(BitmapDescriptorFactory.fromBitmap(presenter.createWindMarker()))
-//        }
-
         val iconFactory = IconGenerator(activity!!)
         iconFactory.setTextAppearance(R.style.markerTextStyle)
         iconFactory.setColor(colorPrimary.toInt())
         val marker = map.addMarker(MarkerOptions().position(LatLng(lat, long)))
         marker.setIcon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(data)))
 
-//        val marker = map.addMarker(markerOption)
         markers.add(marker)
+    }
+
+    override fun removeMarker(marker: Marker?) {
+        marker?.remove()
     }
 
     override fun showButtons() {
@@ -217,7 +246,21 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         fab_harbor.hide()
     }
 
-    override fun onFailure(t: Throwable) {
-        Log.d("Error: ", t.toString())
+    override fun onFailure(t: String?) {
+        if(t != null) {
+            Log.e("Error: ", t)
+        }
+    }
+
+    override fun showProgress() {
+        progress.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+        progress.visibility = View.GONE
+    }
+
+    override fun showMessage(text: String) {
+        Toast.makeText(activity!!, text, Toast.LENGTH_LONG).show()
     }
 }

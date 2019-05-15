@@ -24,6 +24,7 @@ interface MainContract {
         fun updateFragmentNow()
         fun updateFragmentHour()
         fun updateFragmentWeek()
+        fun updateFragments()
         fun sosDialog(sosButton: SwipeButton, builder: AlertDialog.Builder)
     }
     //Hei
@@ -31,13 +32,12 @@ interface MainContract {
         fun firstStart()
         fun checkFirstStart() : Boolean
         fun sendSMS()
-        fun updateFragments()
         fun onDrawerCeClick(menuItem: MenuItem)
         fun onDrawerTemperatureClick(menuItem: MenuItem)
         fun onDrawerWindClick(menuItem: MenuItem)
         fun onDrawerPressureClick(menuItem: MenuItem)
         fun onDrawerPreferencesClick(menuItem: MenuItem)
-        fun onDrawerSettingsClick()
+        fun onDrawerSettingsClick(menuItem: MenuItem)
         fun setupPreviewText()
 
         fun checkPermission(permissionOption: String): Boolean

@@ -5,8 +5,10 @@ import com.example.sea.data.remote.RetrofitClient
 import com.example.sea.data.remote.model.LocationData
 import com.example.sea.ui.base.BaseInteractor
 import com.example.sea.ui.main.MainContract
-import retrofit2.Call
-import retrofit2.Response
+import retrofit2.HttpException
+import rx.Subscriber
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 class MapInteractor(context: Context, fileName : String) : MainContract.Interactor, MapContract.Interactor, BaseInteractor(context, fileName) {
     private var sharedPreferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
@@ -20,18 +22,24 @@ class MapInteractor(context: Context, fileName : String) : MainContract.Interact
     }
 
     override fun getLocationData(finished : MapContract.Interactor.OnFinished, latitude : Float, longitude : Float) {
-        val call = RetrofitClient().getClient("json").getLocationData(latitude, longitude, null)
-        call.enqueue(object : retrofit2.Callback<LocationData> {
+        val retrofit = RetrofitClient().getClient("json")
+        retrofit.getLocationData(latitude, longitude, null)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Subscriber<LocationData>() {
+                override fun onCompleted() {}
 
-            override fun onResponse(call: Call<LocationData>, response: Response<LocationData>){
-                if (response.isSuccessful && response.code() == 200){
-                    finished.onFinished(response.body())
+                override fun onError(t: Throwable) {
+                    finished.onFailure(t.message)
+
+                    if(t is HttpException) {
+                        finished.onFailure(t.response().errorBody()?.string())
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<LocationData>, t: Throwable) {
-                finished.onFailure(t)
-            }
-        })
+                override fun onNext(response: LocationData) {
+                    finished.onFinished(response)
+                }
+            })
     }
 }

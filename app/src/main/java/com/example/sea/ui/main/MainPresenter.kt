@@ -191,7 +191,8 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
         builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
             interactor.setPressureUnit(measurements[(dialog as AlertDialog).listView.checkedItemPosition])
             view!!.updatePreviewTextView(measurements[(dialog).listView.checkedItemPosition], menuItem.itemId)
-            view!!.updateFragmentNow()
+            menuItem.isChecked = false
+            activity.recreate()
             dialog.dismiss()
         }
 
@@ -206,6 +207,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
     override fun onDrawerPreferencesClick(menuItem: MenuItem) {
         val checkedItems = booleanArrayOf(false, false, false, false, false, false, false)
         val builder = AlertDialog.Builder(activity, R.style.AlertDialogStyle)
+        val selected = arrayListOf<Int>()
 
         builder.setTitle(activity.getString(R.string.navigation_drawer_weatherpreferences))
         val parameters = arrayOf(
@@ -232,6 +234,8 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             else {
                 interactor.setWeatherPreference(parameters[which], false)
             }
+
+            selected.add(which)
         }
 
         builder.setPositiveButton(R.string.navigation_drawer_ok) { _, _ ->
@@ -239,16 +243,26 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             view!!.updateFragmentNow()
         }
 
+        builder.setNegativeButton(R.string.navigation_drawer_cancel) { _, _ ->
+            for (item in selected) {
+                interactor.setWeatherPreference(parameters[item], !checkedItems[item])
+                checkedItems[item] = false
+            }
+
+            menuItem.isChecked = false
+        }
+
         builder.setCancelable(false)
         builder.show()
     }
 
-    override fun onDrawerSettingsClick() {
+    override fun onDrawerSettingsClick(menuItem: MenuItem) {
+        menuItem.isChecked = false
         view!!.loadSettingsScreen()
     }
 
     override fun setupPreviewText() {
-        val units = arrayOf(interactor.getCeMark(), interactor.getTemperaturUnit(), interactor.getWindUnit(), interactor.getVisibilityUnit(), interactor.getPressureUnit())
+        val units = arrayOf(interactor.getCeMark(), interactor.getTemperaturUnit(), interactor.getWindUnit(), interactor.getPressureUnit())
         val startUnits = arrayOf("A", "C", activity.getString(R.string.navigation_drawer_wind_base), activity.getString(R.string.navigation_drawer_pressure_base))
         val startId = arrayOf(R.id.ce, R.id.temperature, R.id.wind, R.id.pressure)
 
@@ -310,6 +324,8 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
             numUpdates = 1
         }
 
+        interactor.setMapNeverClicked(false)
+
         val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest!!)
         val client: SettingsClient = LocationServices.getSettingsClient(activity)
         val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
@@ -348,6 +364,9 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
                     view!!.updateTitle("${format.format(lastLocation!!.latitude)}, ${format.format(lastLocation!!.longitude)}")
                     interactor.setLatitude(lastLocation!!.latitude.toFloat())
                     interactor.setLongitude(lastLocation!!.longitude.toFloat())
+
+                    interactor.setUserLatitude(lastLocation!!.latitude.toFloat())
+                    interactor.setUserLongitude(lastLocation!!.longitude.toFloat())
                 }
                 else {
                     // Hvis enheten ikke finner siste posisjon, så opprettes en ny klient og ber om plasseringsoppdateringer
@@ -361,6 +380,9 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
                             view!!.updateTitle("${format.format(lastLocation!!.latitude)}, ${format.format(lastLocation!!.longitude)}")
                             interactor.setLatitude(lastLocation!!.latitude.toFloat())
                             interactor.setLongitude(lastLocation!!.longitude.toFloat())
+
+                            interactor.setUserLatitude(lastLocation!!.latitude.toFloat())
+                            interactor.setUserLongitude(lastLocation!!.longitude.toFloat())
                         }
                     }
 
@@ -399,10 +421,5 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
 
     override fun onDestroy() {
         view = null
-    }
-    override fun updateFragments(){
-        view!!.updateFragmentNow()
-        view!!.updateFragmentHour()
-        view!!.updateFragmentWeek()
     }
 }

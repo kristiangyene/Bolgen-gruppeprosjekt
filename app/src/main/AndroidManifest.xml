@@ -58,12 +58,8 @@
                 android:value="@string/google_maps_key"/>
 
         <activity
-                android:name="com.example.sea.ui.map.MapsActivity"
-                android:label="@string/title_activity_maps">
-        </activity>
-        <activity
                 android:name="com.example.sea.ui.main.MainActivity"
-                android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+                android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.intent.action.VIEW"/>

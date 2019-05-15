@@ -26,8 +26,6 @@
         </menu>
     </item>
 
-    <item android:title="@string/navigation_drawer_now">
-        <menu>
             <group
                     android:checkableBehavior="single"
                     android:id="@+id/groupTwo">
@@ -38,9 +36,6 @@
                 <item
                 android:id="@+id/settings"
                 android:title="@string/title_activity_settings"
-                android:icon="@drawable/ic_settings_black_24dp"
-                />
+                android:icon="@drawable/ic_settings_black_24dp"/>
             </group>
-        </menu>
-    </item>
 </menu>

@@ -76,4 +76,36 @@ class AppPreferencesHelper(context: Context, fileName : String) : PreferencesHel
     override fun setWeatherPreference(key: String, value : Boolean) {
         sharedPreferences.edit().putBoolean(key, value).apply()
     }
+
+    override fun getMapNeverClicked(): Boolean {
+        return sharedPreferences.getBoolean("clicked", false)
+    }
+
+    override fun setMapNeverClicked(value: Boolean) {
+        sharedPreferences.edit().putBoolean("clicked", value).apply()
+    }
+
+    override fun getNetworkUsage(): Int {
+        return sharedPreferences.getInt("network", 0)
+    }
+
+    override fun setNetworkUsage(value: Int) {
+        sharedPreferences.edit().putInt("network", value).apply()
+    }
+
+    override fun getUserLatitude(): Float {
+        return sharedPreferences.getFloat("user_lat", 60F)
+    }
+
+    override fun setUserLatitude(value: Float) {
+        sharedPreferences.edit().putFloat("user_lat", value).apply()
+    }
+
+    override fun getUserLongitude(): Float {
+        return sharedPreferences.getFloat("user_long", 11F)
+    }
+
+    override fun setUserLongitude(value: Float) {
+        sharedPreferences.edit().putFloat("user_long", value).apply()
+    }
 }

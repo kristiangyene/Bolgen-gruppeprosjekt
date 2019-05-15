@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.sea.R
-
+import kotlinx.android.synthetic.main.weekly_listview.view.*
 
 class WeeklyAdapter(private val list: ArrayList<WeeklyElement>) : RecyclerView.Adapter<WeeklyAdapter.MyViewHolder>() {
-
     // Oppretter nye visninger (påkalt av layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
@@ -18,28 +17,23 @@ class WeeklyAdapter(private val list: ArrayList<WeeklyElement>) : RecyclerView.A
         return MyViewHolder(itemView)
     }
 
+    // Retunerer størrelsen på datasettet (påkalt av layout manager)
+    override fun getItemCount() = list.size
+
     // Erstatter innholdet i en visning (påkalt av layout manager)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // Henter elementer fra datasettet i denne posisjonen
         // Erstatter innholdet til visningen med dette elementet
-        holder.bindItems(list[position])
+
+        holder.title.text = list[position].title
+        holder.wind.text = list[position].windspeed
+        holder.wave.text = list[position].waves
     }
 
-    // Retunerer størrelsen på datasettet (påkalt av layout manager)
-    override fun getItemCount() = list.size
-
-
     // Gi en referanse til visningene for hvert element.
-    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-
-        fun bindItems(element : WeeklyElement){
-            val textTitle = itemView.findViewById(R.id.titleWeekly) as TextView
-            val wind = itemView.findViewById(R.id.weekly_wind) as TextView
-            val waves = itemView.findViewById(R.id.weekly_wave) as TextView
-
-            textTitle.text = element.title
-            wind.text = element.windspeed
-            waves.text = element.waves
-        }
+    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        val title: TextView = itemView.titleWeekly
+        val wind: TextView = itemView.weekly_wind
+        val wave: TextView = itemView.weekly_wave
     }
 }

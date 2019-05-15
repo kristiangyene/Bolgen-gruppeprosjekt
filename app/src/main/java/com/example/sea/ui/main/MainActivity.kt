@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.TabLayout
+import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -23,7 +25,6 @@ import com.google.android.gms.common.api.ResolvableApiException
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.navigation_menu_items.*
 import kotlinx.android.synthetic.main.view_pager.*
-import kotlin.NullPointerException
 
 class MainActivity : AppCompatActivity(), MainContract.View {
     private lateinit var drawerLayout: DrawerLayout
@@ -35,7 +36,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        supportActionBar?.title = getString(R.string.app_name)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        toolbar_title.text = getString(R.string.app_name)
 
         presenter = MainPresenter(this, this, MainInteractor(this, fileName))
 
@@ -73,6 +75,11 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
 
+    override fun updateFragments(){
+        updateFragmentNow()
+        updateFragmentHour()
+        updateFragmentWeek()
+    }
 
     override fun updateFragmentNow() {
         val tabs = findViewById<TabLayout>(R.id.tabs)
@@ -82,17 +89,11 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun updateFragmentHour(){
-        val tabs = findViewById<TabLayout>(R.id.tabs)
-        if(tabs.getTabAt(0)!!.isSelected || tabs.getTabAt(1)!!.isSelected || tabs.getTabAt(2)!!.isSelected) {
-            supportFragmentManager.beginTransaction().replace(R.id.recyclerview1, HourlyFragment()).commit()
-        }
+        supportFragmentManager.beginTransaction().replace(R.id.recyclerview1, HourlyFragment()).commit()
     }
 
     override fun updateFragmentWeek(){
-        val tabs = findViewById<TabLayout>(R.id.tabs)
-        if(tabs.getTabAt(1)!!.isSelected || tabs.getTabAt(2)!!.isSelected || tabs.getTabAt(3)!!.isSelected) {
-            supportFragmentManager.beginTransaction().replace(R.id.recyclerview2, WeeklyFragment()).commit()
-        }
+        supportFragmentManager.beginTransaction().replace(R.id.recyclerview2, WeeklyFragment()).commit()
     }
 
     private fun setupViewPagerAndTabs() {
@@ -135,7 +136,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                     presenter.onDrawerPreferencesClick(menuItem)
                 }
                 R.id.settings -> {
-                    presenter.onDrawerSettingsClick()
+                    presenter.onDrawerSettingsClick(menuItem)
                 }
             }
             true
@@ -162,7 +163,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun updateTitle(text : String) {
-        supportActionBar?.title = text
+        toolbar_title.text = text
     }
 
     override fun showLocationSettingsMessage(exception: ResolvableApiException, checkValue : Int) {

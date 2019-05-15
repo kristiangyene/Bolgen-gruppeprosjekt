@@ -3,12 +3,10 @@ package com.example.sea.ui.hourly
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
-import android.util.Log
 import com.example.sea.R
 import com.example.sea.data.remote.model.OceanData
 import com.example.sea.data.remote.model.LocationData
 import com.google.android.gms.maps.model.LatLng
-import com.google.type.Date
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -18,26 +16,59 @@ class HourlyPresenter(view: HourlyContract.View, private var context: Context, p
     private var view : HourlyContract.View? = view
     private var startTimeFound = false
     private var startTime : String? = null
-    private var correcTime = false
+    private var correctTime = false
+    private var closestHarbor : String? = null
+    private var closestHarborValue = Double.MAX_VALUE
+
     override fun onDestroy() {
         view = null
     }
 
-    override fun fetchData() {
-        val harbor = findNearestHarbor()
-        interactor.setData(this, interactor.getLatitude(), interactor.getLongitude(), harbor)
+    override fun fetchData(onStart: Boolean) {
+        val outcome = requestTidalData(interactor.getLatitude(), interactor.getLongitude())
+
+        if(onStart) {
+            if(outcome) {
+                interactor.fetchData(this, interactor.getUserLatitude(), interactor.getUserLongitude(), closestHarbor)
+            }
+            else {
+                interactor.fetchData(this, interactor.getUserLatitude(), interactor.getUserLongitude(), null)
+            }
+        }
+        else {
+            if(outcome) {
+                interactor.fetchData(this, interactor.getLatitude(), interactor.getLongitude(), closestHarbor)
+            }
+            else {
+                interactor.fetchData(this, interactor.getLatitude(), interactor.getLongitude(), null)
+            }
+        }
     }
 
-    private fun findNearestHarbor() : String? {
-        val harbors = hashMapOf<String, LatLng>()
-        var closestHarbor: String? = null
-        var closestHarborValue = Double.MAX_VALUE
+    override fun requestTidalData(latitude: Float, longitude: Float) : Boolean {
+        findNearestHarbor(latitude, longitude)
+        if(closestHarbor != null && closestHarborValue < 30000) {
+            return true
+        }
 
+        return false
+    }
+
+    override fun updateView() {
+        view!!.updateRecyclerView()
+    }
+
+    override fun onFailure(t: String?) {
+        view!!.onFailure(t)
+    }
+
+    override fun findNearestHarbor(latitude: Float, longitude: Float) {
         val currentLocation = Location("")
-        currentLocation.latitude = interactor.getLatitude().toDouble()
-        currentLocation.longitude = interactor.getLongitude().toDouble()
+        val harbors = hashMapOf<String, LatLng>()
 
-        harbors["andenes"] = LatLng(69.326233, 16.139759)
+        currentLocation.latitude = latitude.toDouble()
+        currentLocation.longitude = longitude.toDouble()
+
         harbors["andenes"] = LatLng(69.326233, 16.139759)
         harbors["bergen"] = LatLng(60.392353, 5.312078)
         harbors["bodø"] = LatLng(67.289953, 14.396987)
@@ -60,19 +91,17 @@ class HourlyPresenter(view: HourlyContract.View, private var context: Context, p
         harbors["vardø"] = LatLng(70.374517, 31.103911)
         harbors["ålesund"] = LatLng(62.475094, 6.150923)
 
-
-        for (harbor in harbors) {
+        for(harbor in harbors) {
             val harborLocation = Location("")
             harborLocation.latitude = harbor.value.latitude
             harborLocation.longitude = harbor.value.longitude
             val distance = currentLocation.distanceTo(harborLocation).toDouble()
 
-            if(distance < closestHarborValue) {
+            if (distance < closestHarborValue) {
                 closestHarborValue = distance
                 closestHarbor = harbor.key
             }
         }
-        return closestHarbor
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -80,7 +109,6 @@ class HourlyPresenter(view: HourlyContract.View, private var context: Context, p
         val formatterFrom = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
         val formatTo = SimpleDateFormat("H")
         val output = data?.forecast
-        var counter = 0
         if (output != null) {
             for (i in output) {
                 val hour = i.oceanForecast.validTime.timePeriod.begin
@@ -92,17 +120,11 @@ class HourlyPresenter(view: HourlyContract.View, private var context: Context, p
                         val typo = i.oceanForecast.significantTotalWaveHeight
                         if (typo != null) {
                             x.waves = typo.content + " m"
-                            //view!!.getList()[counter++].waves = typo.content
                         }
-
-
-
                     }
                 }
             }
         }
-        view!!.updateRecyclerView()
-        //return view
     }
 
     // Viser tidevann for de neste 24 timene
@@ -134,23 +156,17 @@ class HourlyPresenter(view: HourlyContract.View, private var context: Context, p
                 }
             }
         }
-        //view!!.updateRecyclerView()
-
-
     }
 
     @SuppressLint("SimpleDateFormat")
     override fun onFinished(data: LocationData?) {
         val formatterFrom = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        //val check = SimpleDateFormat("yyyy-MM-dd")
         val formatTo = SimpleDateFormat("H")
         val output = data?.product?.time!!
         val checkList = ArrayList<Int>()
-        //var now = Calendar.getInstance().time
         for (i in output) {
             val from = formatterFrom.parse(i.to)
             val toFormatted = formatTo.format(from)
-            //val checked = check.format(from)
             var windSpeed = i.location?.windSpeed?.mps
             val fog = i.location?.fog?.percent
             var temp = i.location?.temperature?.value
@@ -161,37 +177,40 @@ class HourlyPresenter(view: HourlyContract.View, private var context: Context, p
                 startTime = toFormatted
                 startTimeFound = true
             }
-            //val pattern = SimpleDateFormat("EEE MMM d HH:mm:ss z+z:z yyyy")
-            //val actualtime = pattern.parse(now.toString())
-            //val gethour = formatTo.format(actualtime)
 
             val date = Date()
-            val formatdate = formatTo.format(date)
-            //Log.d("datefromcompare", formatdate)
+            val formatDate = formatTo.format(date)
             val difference = formatTo.format(from)
-            //Log.d("datetocompare", difference)
 
-            if(difference == formatdate && correcTime == false) correcTime = true
-            else if(difference != formatdate && correcTime == false) continue
+            if(difference == formatDate && !correctTime) {
+                correctTime = true
+            }
+            else if(difference != formatDate && !correctTime) {
+                continue
+            }
 
             if (toFormatted.toInt() !in checkList) {
                 checkList.add(toFormatted.toInt())
                 if (fog.toDouble() > 25.0) visibility = context.getString(R.string.bad_visibility)
                 var windMeasurement: String
                 val windText = interactor.getWindUnit()
+
                 if (windText == null || windText == "mps") windMeasurement = "mps"
                 else if (windText == "mph") {
                     windMeasurement = windText
                     windSpeed = (windSpeed.toDouble() * 2.236936).toString()
-                } else {
+                }
+                else {
                     windMeasurement = windText
                     windSpeed = (windSpeed.toDouble() * 3.6).toString()
                 }
+
                 var tempMeasurement: String
                 val temperatureText = interactor.getTemperaturUnit()
                 if (temperatureText == null || temperatureText == "˚C") {
                     tempMeasurement = "˚C"
-                } else {
+                }
+                else {
                     tempMeasurement = temperatureText
                     temp = ((temp.toDouble() * 1.8) + 32).toString()
                 }
@@ -208,7 +227,6 @@ class HourlyPresenter(view: HourlyContract.View, private var context: Context, p
                         "$humid%"
                     )
                 )
-
             }
         }
     }

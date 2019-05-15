@@ -15,16 +15,16 @@
     <string name="navigation_drawer_close">Lukk Navigation Drawer</string>
     <string name="navigation_drawer_settings">Innstillinger</string>
     <string name="navigation_drawer_measurments">Måleenheter</string>
-    <string name="navigation_drawer_ce_mark">Båttype</string>
+    <string name="navigation_drawer_ce_mark">CE merking</string>
     <string name="navigation_drawer_temperature">Temperatur</string>
-    <string name="navigation_drawer_temperature2">Grader</string>
+    <string name="navigation_drawer_temperature2">Temperatur</string>
     <string name="navigation_drawer_wind">Vind</string>
     <string name="navigation_drawer_wind_speed">Vindstyrke</string>
     <string name="navigation_drawer_visibility">Synlighet</string>
     <string name="navigation_drawer_pressure">Trykkmåling</string>
     <string name="navigation_drawer_tide">Tidevann</string>
     <string name="navigation_drawer_rain">Regn</string>
-    <string name="navigation_drawer_weather">Regn</string>
+    <string name="navigation_drawer_weather">Nedbør</string>
     <string name="navigation_drawer_fog">Tåke</string>
     <string name="navigation_drawer_wave">Bølgehøyde</string>
     <string name="navigation_drawer_humidity">Fuktighet</string>
@@ -45,6 +45,7 @@
     <string name="navigation_drawer_pressure2">Trykk</string>
 
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="click_on_map">Trykk på kartet for å kunne se værmelding om det valgte stedet</string>
 
     <!-- Strings for the tab -->
     <string name="tabs_now">Nå</string>
@@ -72,7 +73,6 @@
     <string name="waves_image" translatable="false">waves image</string>
     <string name="wind_image" translatable="false">wind image</string>
 
-
     <string name="rain">Regn</string>
     <string name="wind">Vind</string>
 
@@ -81,12 +81,13 @@
 
     <!-- After General -->
     <string name="settings_title_general">Generell</string>
-    <string name="title_theme_mode">Nattmodus</string>
-    <string name="summary_selected_theme_mode">Av</string>
-    <string name="key_theme_mode" translatable="false">key_theme_mode</string>
+
+    <string name="title_network_calls" translatable="false">Nettverk</string>
+    <string name="summary_selected_network_calls" translatable="false">Lav</string>
+    <string name="key_network_calls" translatable="false">key_network_calls</string>
 
     <!-- After Notifications -->
-    <string name="title_new_notification_sound">New message notification</string>
+    <string name="title_new_notification_sound">Melding notifikasjon</string>
     <string name="notifications_new_message" translatable="false">notifications_new_message</string>
     <string name="key_notifications_new_message_ringtone" translatable="false">key_notifications_new_message_ringtone</string>
 
@@ -102,7 +103,6 @@
     <string name="settings_header_notifications">Varslinger</string>
     <string name="pref_title_new_message_notifications">Vær varsling</string>
 
-
     <!-- After Permissions -->
     <string name="settings_title_permissions">Tillatelser</string>
     <string name="title_settings_permissions_position">Posisjon</string>
@@ -113,24 +113,17 @@
     <string name="title_settings_permissions_sms">Telefon</string>
     <string name="key_settings_permissions_sms" translatable="false">key_title_settings_permissions_sms</string>
 
-
     <!-- After About -->
     <string name="settings_header_about">Om Bølgen</string>
     <string name="summary_about">Bølgen består av seks studenter ved Universitetet i Oslo, institutt for informatikk. Appen er utviklet som et prosjekt i emnet IN2000 Software Engineering.</string>
     <string name="app_version" translatable="false">1.0</string>
     <string name="summary_support">Send oss tilbakemelding slik at vi kan forbedre appen</string>
     <string name="title_send_feedback">Send oss tilbakmelding</string>
-    <string name="title_faq" translatable="false">FAQ</string>
-    <string name="summary_faq">Se vanlige spørsmål</string>
-    <string name="url_faq" translatable="false">https://www.androidhive.info/privacy-policy/</string>
-    <string name="privacy_policy">Personvern</string>
-    <string name="url_privacy" translatable="false">https://www.androidhive.info/privacy-policy/</string>
-    <string name="title_terms">Vilkår og Betingelser</string>
-    <string name="url_terms" translatable="false">https://www.androidhive.info/terms-of-service/</string>
     <string name="title_version">Versjon</string>
     <string name="choose_email_client">Velg email klient</string>
     <string name="key_send_feedback" translatable="false">key_send_feedback</string>
-
+    <string name="feedback_message">Tilbakemelding til Bølgen app: </string>
+    <string name="title_terms">Vilkår &amp; Betingelser</string>
 
     <!-- String arrays related to Settings -->
     <string name="sunset">Automatisk ved solnedgang</string>
@@ -148,6 +141,21 @@
         <item>2</item>
     </string-array>
 
+    <string name="network_low" translatable="false">Lav</string>
+    <string name="network_medium" translatable="false">Medium</string>
+    <string name="network_high" translatable="false">Høy</string>
+
+    <string-array name="settings_network_calls_entries">
+        <item>@string/network_low</item>
+        <item>@string/network_medium</item>
+        <item>@string/network_high</item>
+    </string-array>
+    <string-array name="settings_network_calls_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
     <string name="fab_map_harbor">Havn</string>
     <string name="safety_scale">Trygghetsskala</string>
     <string name="dangerous">Farlig</string>
@@ -156,5 +164,6 @@
     <string name="bad_visibility">Dårlig sikt</string>
     <string name="east">Ø</string>
     <string name="west">V</string>
+    <string name="internet_connection">Vennligst skru på internet ellers vil ikke appen funke</string>
 
 </resources>

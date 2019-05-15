@@ -3,14 +3,13 @@
     <PreferenceCategory android:title="@string/settings_title_general">
         <ListPreference
                 android:defaultValue="0"
-                android:dialogTitle="@string/title_theme_mode"
-                android:entries="@array/settings_theme_mode_entries"
-                android:entryValues="@array/settings_theme_mode_values"
-                android:key="@string/key_theme_mode"
-                android:summary="@string/summary_selected_theme_mode"
-                android:icon="@drawable/ic_brightness_3_black_24dp"
-                android:title="@string/title_theme_mode" />
-
+                android:dialogTitle="@string/title_network_calls"
+                android:entries="@array/settings_network_calls_entries"
+                android:entryValues="@array/settings_network_calls_values"
+                android:key="@string/key_network_calls"
+                android:summary="@string/summary_selected_network_calls"
+                android:icon="@drawable/ic_network_check_black_24dp"
+                android:title="@string/title_network_calls" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_title_permissions">
@@ -25,11 +24,9 @@
                 android:icon="@drawable/ic_phone_black_24dp"
                 android:key="@string/key_settings_permissions_sms"
                 android:title="@string/title_settings_permissions_sms" />
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_title_notifications">
-
         <SwitchPreference
                 android:defaultValue="true"
                 android:key="@string/notifications_new_message"
@@ -50,9 +47,7 @@
                 android:title="@string/title_vibrate" />
     </PreferenceCategory>
 
-
     <PreferenceCategory android:title="@string/settings_header_about">
-
         <Preference
                 android:selectable="false"
                 android:summary="@string/summary_about" />
@@ -66,25 +61,7 @@
                 android:summary="@string/summary_support"
                 android:title="@string/title_send_feedback" />
 
-        <!-- preference opens url in browser -->
-        <Preference
-                android:summary="@string/summary_faq"
-                android:title="@string/title_faq">
-            <intent
-                    android:action="android.intent.action.VIEW"
-                    android:data="@string/url_faq" />
-        </Preference>
-
-        <Preference android:title="@string/privacy_policy">
-            <intent
-                    android:action="android.intent.action.VIEW"
-                    android:data="@string/url_privacy" />
-        </Preference>
-
         <Preference android:title="@string/title_terms">
-            <intent
-                    android:action="android.intent.action.VIEW"
-                    android:data="@string/url_terms" />
         </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

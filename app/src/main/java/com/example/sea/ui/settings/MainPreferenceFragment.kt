@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.sea.ui.settings
 
 import android.Manifest
@@ -12,6 +14,7 @@ import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import com.example.sea.R
+import com.example.sea.data.local.AppPreferencesHelper
 import com.example.sea.ui.main.MainPresenter
 
 @Suppress("DEPRECATION")
@@ -23,8 +26,8 @@ class MainPreferenceFragment : PreferenceFragment() {
         // notification preference change listener
         SettingsActivity.bindPreferenceSummaryToValue(findPreference(getString(R.string.key_notifications_new_message_ringtone)))
 
-        // theme change listener
-        SettingsActivity.bindPreferenceSummaryToValue(findPreference(getString(R.string.key_theme_mode)))
+        // network change listener
+        SettingsActivity.bindPreferenceSummaryToValue(findPreference(getString(R.string.key_network_calls)))
 
         // feedback preference click listener
         val myPref = findPreference(getString(R.string.key_send_feedback))
@@ -76,5 +79,14 @@ class MainPreferenceFragment : PreferenceFragment() {
         SettingsActivity.locationPreference.isChecked = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
 
         super.onResume()
+    }
+
+    override fun onDestroy() {
+        val helper = AppPreferencesHelper(context, "com.example.sea")
+        if(SettingsActivity.number != null) {
+            helper.setNetworkUsage(SettingsActivity.number!!)
+        }
+
+        super.onDestroy()
     }
 }

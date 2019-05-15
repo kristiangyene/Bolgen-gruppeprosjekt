@@ -27,4 +27,16 @@ interface PreferencesHelper {
 
     fun getWeatherPreference(key : String) : Boolean
     fun setWeatherPreference(key: String, value : Boolean)
+
+    fun getMapNeverClicked() : Boolean
+    fun setMapNeverClicked(value: Boolean)
+
+    fun getNetworkUsage() : Int?
+    fun setNetworkUsage(value: Int)
+
+    fun getUserLatitude() : Float
+    fun setUserLatitude(value : Float)
+
+    fun getUserLongitude() : Float
+    fun setUserLongitude(value : Float)
 }

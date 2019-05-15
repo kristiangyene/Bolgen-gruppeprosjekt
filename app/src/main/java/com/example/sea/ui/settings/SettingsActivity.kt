@@ -15,25 +15,14 @@ import android.preference.*
 import com.example.sea.R
 import com.example.sea.ui.main.MainPresenter
 
-/**
- * A [PreferenceActivity] that presents a set of application settings. On
- * handset devices, settings are presented as a single list. On tablets,
- * settings are split by category, with category headers shown to the left of
- * the list of settings.
- *
- * See [Android Design: Settings](http://developer.android.com/design/patterns/settings.html)
- * for design guidelines and the [Settings API Guide](http://developer.android.com/guide/topics/ui/settings.html)
- * for more information on developing a Settings UI.
- */
 class SettingsActivity : AppCompatPreferenceActivity() {
+    var context : Context? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        context = this
 
-        // load settings fragment
-        fragmentManager.beginTransaction().replace(android.R.id.content,
-            MainPreferenceFragment()
-        ).commit()
+        fragmentManager.beginTransaction().replace(android.R.id.content, MainPreferenceFragment()).commit()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -58,6 +47,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
     companion object {
         lateinit var smsPreference : SwitchPreference
         lateinit var locationPreference: SwitchPreference
+        var number : Int? = null
 
         fun bindPreferenceSummaryToValue(preference: Preference) {
             preference.onPreferenceChangeListener =
@@ -71,20 +61,13 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             )
         }
 
-        /**
-         * A preference value change listener that updates the preference's summary
-         * to reflect its new value.
-         */
         private val sBindPreferenceSummaryToValueListener =
             Preference.OnPreferenceChangeListener { preference, newValue ->
                 val stringValue = newValue.toString()
 
                 if (preference is ListPreference) {
-                    // For list preferences, look up the correct display value in
-                    // the preference's 'entries' list.
                     val index = preference.findIndexOfValue(stringValue)
 
-                    // Set the summary to reflect the new value.
                     preference.setSummary(
                         if (index >= 0) {
                             preference.entries[index]
@@ -93,12 +76,15 @@ class SettingsActivity : AppCompatPreferenceActivity() {
                             null
                         }
                     )
+
+                    if(preference.key == "key_network_calls") {
+                        if(index >= 0) {
+                            number = index
+                        }
+                    }
                 }
                 else if (preference is RingtonePreference) {
-                    // For ringtone preferences, look up the correct display value
-                    // using RingtoneManager.
                     if (TextUtils.isEmpty(stringValue)) {
-                        // Empty values correspond to 'silent' (no ringtone).
                         preference.setSummary(R.string.settings_ringtone_silent)
 
                     }
@@ -108,12 +94,9 @@ class SettingsActivity : AppCompatPreferenceActivity() {
                         )
 
                         if (ringtone == null) {
-                            // Clear the summary if there was a lookup error.
                             preference.setSummary(R.string.summary_choose_ringtone)
                         }
                         else {
-                            // Set the summary to reflect the new ringtone display
-                            // name.
                             val name = ringtone.getTitle(preference.getContext())
                             preference.setSummary(name)
                         }
@@ -122,7 +105,6 @@ class SettingsActivity : AppCompatPreferenceActivity() {
                 }
                 else if (preference is EditTextPreference) {
                     if (preference.getKey() == "key_gallery_name") {
-                        // update the changed gallery name to summary filed
                         preference.setSummary(stringValue)
                     }
                 }
@@ -132,11 +114,6 @@ class SettingsActivity : AppCompatPreferenceActivity() {
                 true
             }
 
-        /**
-         * Email client intent to send support mail
-         * Appends the necessary device information to email body
-         * useful when providing support
-         */
         fun sendFeedback(context: Context) {
             var body: String? = null
             try {
@@ -145,13 +122,13 @@ class SettingsActivity : AppCompatPreferenceActivity() {
                     "\n\n-----------------------------\nPlease don't remove this information\n Device OS: Android \n Device OS version: " +
                             Build.VERSION.RELEASE + "\n App Version: " + body + "\n Device Brand: " + Build.BRAND +
                             "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER
-            } catch (e: PackageManager.NameNotFoundException) {
             }
+            catch (e: PackageManager.NameNotFoundException) {}
 
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "message/rfc822"
-            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("contact@androidhive.info"))
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Query from android app")
+            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("eirikgs@student.matnat.uio.no"))
+            intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.feedback_message))
             intent.putExtra(Intent.EXTRA_TEXT, body)
             context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_client)))
         }
