@@ -1,6 +1,5 @@
 package com.example.sea.ui.map
 
-import android.graphics.Bitmap
 import android.location.Location
 import android.view.animation.Animation
 import com.example.sea.data.remote.model.LocationData
@@ -42,8 +41,6 @@ interface MapContract {
         fun onRainClick()
         fun onWindClick()
         fun setUpHarborMarkers(harborsLayer: GeoJsonLayer)
-        fun createRainMarker() : Bitmap?
-        fun createWindMarker() : Bitmap?
         fun onSuccess(location: Location?)
         fun findLastLocation()
         fun getAddress(latitude: Double?, longitude: Double?) : String
