@@ -1,7 +1,5 @@
 package com.example.sea.ui.map
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -280,18 +278,6 @@ class MapPresenter(view: MapContract.View, private var activity: FragmentActivit
             pointStyle.icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
             feature.pointStyle = pointStyle
         }
-    }
-
-    override fun createRainMarker() : Bitmap {
-        val imageBitmap = BitmapFactory.decodeResource(activity.resources,
-            activity.resources.getIdentifier("rain_black", "drawable", activity.packageName))
-        return Bitmap.createScaledBitmap(imageBitmap, 75, 75, false)
-    }
-
-    override fun createWindMarker(): Bitmap? {
-        val imageBitmap = BitmapFactory.decodeResource(activity.resources,
-            activity.resources.getIdentifier("wind_black", "drawable", activity.packageName))
-        return Bitmap.createScaledBitmap(imageBitmap, 75, 75, false)
     }
 
     private fun requestLocationData(latitude: Float, longitude: Float) {
