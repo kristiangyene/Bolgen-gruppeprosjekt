@@ -2,7 +2,6 @@ package com.example.sea.ui.now
 
 import android.content.Context
 import android.location.Location
-import android.util.Log
 import com.example.sea.data.remote.model.LocationData
 import com.example.sea.R
 import com.example.sea.data.remote.model.OceanData
@@ -31,7 +30,7 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
             requestOceanData(interactor.getUserLatitude(), interactor.getUserLatitude())
             requestLocationData(interactor.getUserLatitude(), interactor.getUserLongitude())
 
-            if(interactor.getWeatherPreference(context!!.getString(R.string.navigation_drawer_tide))) {
+            if(interactor.getWeatherPreference("0")) {
                 tidalSelected = true
                 requestTidalData(interactor.getUserLatitude(), interactor.getUserLongitude())
             }
@@ -40,7 +39,7 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
             requestOceanData(interactor.getLatitude(), interactor.getLongitude())
             requestLocationData(interactor.getLatitude(), interactor.getLongitude())
 
-            if(interactor.getWeatherPreference(context!!.getString(R.string.navigation_drawer_tide))) {
+            if(interactor.getWeatherPreference("0")) {
                 tidalSelected = true
                 requestTidalData(interactor.getLatitude(), interactor.getLongitude())
             }
@@ -88,7 +87,7 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
         view!!.setDataInRecyclerViewPosition(pos++, NowElement(visibility, context!!.resources.getString(R.string.navigation_drawer_visibility),null))
 
         for(item in 0 until listOfStrings.size){
-            if(interactor.getWeatherPreference(listOfStrings[item])){
+            if(interactor.getWeatherPreference(item.toString())) {
                 when {
                     listOfStrings[item] == context!!.resources.getString(R.string.navigation_drawer_temperature2) ->{
                         value = nowData[0].location.temperature.value.toDouble()
@@ -215,9 +214,6 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
             }
         }
 
-        Log.d("Kart", "onFinished $harbor")
-        Log.d("Kart", foundStart.toString())
-
         if(foundStart) {
             if (line[startIndex][line[startIndex].length - 6] == ' ') {
                 view!!.setDataInRecyclerView(NowElement(line[startIndex].substring(line[startIndex].length - 5, line[startIndex].length), context!!.getString(R.string.navigation_drawer_tide), harbor!!.capitalize()))
@@ -267,7 +263,6 @@ class NowPresenter(view: NowContract.View, context: Context, private var interac
     override fun requestTidalData(latitude: Float, longitude: Float) {
         findNearestHarbor(latitude, longitude)
         if(closestHarbor != null && closestHarborValue < 30000) {
-            Log.d("Kart", "$closestHarborValue, $closestHarbor")
             interactor.getTidalData(this, latitude , longitude, closestHarbor!!)
         }
     }

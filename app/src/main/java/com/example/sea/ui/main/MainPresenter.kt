@@ -96,7 +96,18 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
 
         builder.setTitle(R.string.navigation_drawer_ce_mark)
 
-        val position = measurements.indexOf(interactor.getCeMark())
+        var position = 0
+        if (interactor.getCeMark() == null) {
+            position = 0
+        }
+        else {
+            when {
+                interactor.getCeMark()!!.split(" ")[0] == "A" -> position = 0
+                interactor.getCeMark()!!.split(" ")[0] == "B" -> position = 1
+                interactor.getCeMark()!!.split(" ")[0] == "C" -> position = 2
+                interactor.getCeMark()!!.split(" ")[0] == "D" -> position = 3
+            }
+        }
 
         menuItem.isChecked = true
         builder.setSingleChoiceItems(measurements, position) { dialog, _ ->
@@ -221,7 +232,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
         )
 
         for (item in 0 until parameters.size) {
-            if (interactor.getWeatherPreference(parameters[item])) {
+            if (interactor.getWeatherPreference(item.toString())) {
                 checkedItems[item] = true
             }
         }
@@ -229,10 +240,10 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
         menuItem.isChecked = true
         builder.setMultiChoiceItems(parameters, checkedItems) { _, which, isChecked ->
             if (isChecked) {
-                interactor.setWeatherPreference(parameters[which], true)
+                interactor.setWeatherPreference(which.toString(), true)
             }
             else {
-                interactor.setWeatherPreference(parameters[which], false)
+                interactor.setWeatherPreference(which.toString(), false)
             }
 
             selected.add(which)
@@ -245,7 +256,7 @@ class MainPresenter(view: MainContract.View, private var activity: Activity, pri
 
         builder.setNegativeButton(R.string.navigation_drawer_cancel) { _, _ ->
             for (item in selected) {
-                interactor.setWeatherPreference(parameters[item], !checkedItems[item])
+                interactor.setWeatherPreference(item.toString(), !checkedItems[item])
                 checkedItems[item] = false
             }
 

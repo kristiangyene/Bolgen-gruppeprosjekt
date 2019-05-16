@@ -32,7 +32,7 @@ class NowAdapter(private val listOfElements: ArrayList<NowElement>, private var 
             context.getString(R.string.navigation_drawer_wave) -> holder.icon.setImageResource(R.drawable.waves_black)
             context.getString(R.string.navigation_drawer_tide) -> holder.icon.setImageResource(R.drawable.tide_black)
             context.getString(R.string.navigation_drawer_temperature2) -> holder.icon.setImageResource(R.drawable.thermometer_black)
-            context.getString(R.string.navigation_drawer_rain) -> holder.icon.setImageResource(R.drawable.rain_black)
+            context.getString(R.string.navigation_drawer_weather) -> holder.icon.setImageResource(R.drawable.rain_black)
             context.getString(R.string.navigation_drawer_fog) -> holder.icon.setImageResource(R.drawable.fog_black)
             context.getString(R.string.navigation_drawer_humidity) -> holder.icon.setImageResource(R.drawable.humidity_black)
             context.getString(R.string.navigation_drawer_cloudiness) -> holder.icon.setImageResource(R.drawable.cloud_black)
